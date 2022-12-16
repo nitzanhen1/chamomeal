@@ -1,0 +1,19 @@
+CREATE TABLE chamomeal.Recipes(
+	id INT AUTO_INCREMENT PRIMARY KEY ,
+	name VARCHAR(255) NOT NULL,
+	link VARCHAR(255) NOT NULL,
+	image VARCHAR(255) NOT NULL,
+	calories INT NOT NULL,
+	ingredients_count INT NOT NULL,
+	preperation_time VARCHAR(255) NOT NULL,
+	total_time VARCHAR(255) NOT NULL,
+	difficulty VARCHAR(255) NOT NULL,
+	kosher BOOLEAN NOT NULL,
+	vegetarian BOOLEAN NOT NULL,
+	vegan BOOLEAN NOT NULL,
+	gluten_free BOOLEAN NOT NULL,
+	breakfast BOOLEAN NOT NULL,
+	lunch BOOLEAN NOT NULL,
+	dinner BOOLEAN NOT NULL,
+	score INT NOT NULL
+);
