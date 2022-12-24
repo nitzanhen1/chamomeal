@@ -11,12 +11,13 @@ const Stack = createStackNavigator();
 
 function LogoTitle() {
   return (
-    <View style={styles.header} >
+    <View style={styles.container} >
       <Image
       style={styles.imageHeader}
       source={require('./app/assets/icon4.png')}
       />
-      <Text style={styles.chamoText}>CHAMO</Text><Text style={styles.mealText}>MEAL</Text>
+      <Text style={styles.mealText}>MEAL</Text>
+        <Text style={styles.chamoText}>CHAMO</Text>
       <Image
       style={styles.imageHeader}
       source={require('./app/assets/icon4.png')}
@@ -56,31 +57,31 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: '#fff',
-    justifyContent: 'center',
-    paddingTop: Platform.OS === "android" ? StatusBar.currebtHeight : 0,
-  },
-  header: {
+  // container: {
+  //   flex: 1,
+  //   // backgroundColor: '#fff',
+  //   justifyContent: 'center',
+  //   paddingTop: Platform.OS === "android" ? StatusBar.currebtHeight : 0,
+  // },
+    container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    direction: 'rtl'
 
   },
   chamoText: {
     color: COLORS.white,
     fontSize: 28,
-    paddingLeft: 20,
-    
+      paddingRight: 20,
   },
   mealText:{
     color: COLORS.secondary,
     fontSize: 28,
-    fontFamily: 'Cochin',
+    // fontFamily: 'Cochin',
     fontWeight: 'bold',   
-    paddingRight: 20,
+      paddingLeft: 20,
   },
   imageHeader: {
     justifyContent: 'flex-start',
