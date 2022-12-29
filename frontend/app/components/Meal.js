@@ -1,12 +1,24 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors';
+import FullRecipeCard from "./FullRecipeCard";
 
 
 const CartCard = ({item}) => {
+    const [visibleFullRecipe, setFullVisible] = React.useState(false);
+
+    const handleOpenFull = () => {
+        setFullVisible(true);
+    }
+
+    const handleCloseFull = () => {
+        setFullVisible(false);
+    }
     return (
         <View style={styles.cartCard}>
+            <Button onPress={handleOpenFull} title="Full" />
+            {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={item}/>}
             <Image source={item.image} style={{height: 80, width: 80}} />
             <View style={styles.card}>
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>{item.name}</Text>
