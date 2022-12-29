@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager,Modal} from "react-native";
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import CartCard from "./Meal";
+import MealCard from "./MealCard";
 
 export default class Accordion extends Component{
 
@@ -18,7 +18,6 @@ export default class Accordion extends Component{
     }
 
     render() {
-
         return (
             <View>
                 <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpand()}>
@@ -33,12 +32,12 @@ export default class Accordion extends Component{
                             // showsVerticalScrollIndicator={false}
                             scrollEnabled={false}
                             numColumns={1}
-                            contentContainerStyle={{paddingBottom: 20}}
+                            // contentContainerStyle={{paddingBottom: 20}}
                             data={this.state.data}
                             renderItem={({item: recipe, index}) =>
                                 <View style={styles.fullWidthButton}>
-                                    <Icon name={recipe.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.setEaten(index)}/>
-                                    <CartCard item={recipe}/>
+                                    <Icon name={recipe.eaten ? 'check-circle' : 'check-circle-outline'} style={styles.icon} size={30} color={COLORS.dark} onPress={() => this.setEaten(index)}/>
+                                    <MealCard item={recipe}/>
                                 </View>
                             }
                         />
@@ -65,7 +64,8 @@ export default class Accordion extends Component{
 const styles = StyleSheet.create({
     container:{
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        direction: "rtl"
     },
     title:{
         fontSize: 16,
@@ -100,8 +100,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft:30,
+        paddingLeft:20,
 
     },
+    icon:{
+        // alignSelf: "baseline"
+        // marginLeft: 0
+    }
 
 });

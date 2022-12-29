@@ -6,6 +6,9 @@ import COLORS from './app/consts/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import PantryScreen from './app/screens/PantryScreen';
+import { I18nManager } from "react-native"
+I18nManager.forceRTL(true);
+I18nManager.allowRTL(true);
 
 const Stack = createStackNavigator();
 
@@ -30,27 +33,30 @@ export default function App() {
   const [name,setName] = useState('Mash')
   return (
       <NavigationContainer>
-        <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
-        <Stack.Navigator 
-        initialRouteName="Splash"
-          screenOptions={{
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: COLORS.primary
-            },
-            headerTintColor: '#ffffff',
-            headerTitleStyle: {
-              fontSize: 25,
-              fontWeight: 'bold'
-            },
-            headerTitle: props => <LogoTitle {...props}  />
-          }}>
-          {/* <Stack.Screen name="Welcome" component={WelcomeScreen}/> */}
-          <Stack.Screen name="CHAMOMEAL" component={BottomNavigator}
-          />
-         </Stack.Navigator>
-         </SafeAreaView>
+      <View style={styles.container}>
+          {/*<SafeAreaView >*/}
+              <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+              <Stack.Navigator
+                  initialRouteName="Splash"
+                  screenOptions={{
+                      headerTitleAlign: 'center',
+                      headerStyle: {
+                          backgroundColor: COLORS.primary
+                      },
+                      headerTintColor: '#ffffff',
+                      headerTitleStyle: {
+                          fontSize: 25,
+                          fontWeight: 'bold'
+                      },
+                      headerTitle: props => <LogoTitle {...props}  />
+                  }}>
+                  {/* <Stack.Screen name="Welcome" component={WelcomeScreen}/> */}
+                  <Stack.Screen name="CHAMOMEAL" component={BottomNavigator}
+                  />
+              </Stack.Navigator>
+          {/*</SafeAreaView>*/}
+      </View>
+
        </NavigationContainer>
     );
 
@@ -68,8 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    direction: 'rtl'
-
+    direction: 'rtl',
   },
   chamoText: {
     color: COLORS.white,
