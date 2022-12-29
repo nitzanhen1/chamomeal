@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager} from "react-native";
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager,Modal} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import CartCard from "./Meal";
@@ -35,13 +35,10 @@ export default class Accordion extends Component{
                             numColumns={1}
                             contentContainerStyle={{paddingBottom: 20}}
                             data={this.state.data}
-                            renderItem={({item, index}) =>
-                                <View  >
-                                    <TouchableOpacity style={styles.fullWidthButton} onPress={()=>this.onCheck(index)}>
-                                    <Icon name={item.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark}/>
-                                    <CartCard item={item} />
-                                    {/*<View style={styles.childHr}/>*/}
-                                    </TouchableOpacity>
+                            renderItem={({item: recipe, index}) =>
+                                <View style={styles.fullWidthButton}>
+                                    <Icon name={recipe.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.setEaten(index)}/>
+                                    <CartCard item={recipe}/>
                                 </View>
                             }
                         />
@@ -51,10 +48,11 @@ export default class Accordion extends Component{
         )
     }
 
-    onCheck=(index)=>{
-        const temp = this.state.data.slice()
-        temp[index].eaten = !temp[index].eaten
-        this.setState({data: temp})
+    setEaten=(index)=>{
+        //TODO UPDATE SCORE & CALORIES (אכלתי)
+        const recipe = this.state.data.slice()
+        recipe[index].eaten = !recipe[index].eaten
+        this.setState({data: recipe})
     }
 
     toggleExpand=()=>{
