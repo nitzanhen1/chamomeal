@@ -15,7 +15,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                         <Text>X</Text>
                     </TouchableOpacity>
                     <Image source={{uri: recipe.image}} style={{height: 80, width: 80}}/>
-                    <View style={styles.card}>
+                    <View >
                         <Text style={{fontWeight: 'bold', fontSize: 16}}>{recipe.name}</Text>
                         <Text style={{fontSize: 14, color: COLORS.grey}}>{recipe.calories}</Text>
                         <Text style={{fontSize: 17, fontWeight: 'bold'}}><Icon name="filter-vintage" size={17}/>{recipe.flowers} פרחים</Text>
@@ -53,6 +53,50 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                             <Text style={{flex: 1,}}>{recipe.without_lactose}</Text>
                             <Text style={{flex: 1,}}>ללא לקטוז</Text>
                         </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.carbohydrates}</Text>
+                            <Text style={{flex: 1,}}>פחמימות</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.fats}</Text>
+                            <Text style={{flex: 1,}}>שומנים</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.sodium}</Text>
+                            <Text style={{flex: 1,}}>נתרן</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.protein}</Text>
+                            <Text style={{flex: 1,}}>חלבון</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.fibers}</Text>
+                            <Text style={{flex: 1,}}>סיבים</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.saturated_fat}</Text>
+                            <Text style={{flex: 1,}}>שומן רווי</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.cholesterol}</Text>
+                            <Text style={{flex: 1,}}>כולסטרול</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.calcium}</Text>
+                            <Text style={{flex: 1,}}>סידן</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.iron}</Text>
+                            <Text style={{flex: 1,}}>ברזל</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.potassium}</Text>
+                            <Text style={{flex: 1,}}>אשלגן</Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{flex: 1,}}>{recipe.zinc}</Text>
+                            <Text style={{flex: 1,}}>אבץ</Text>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -65,11 +109,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'center',
-        alignrecipes: 'center',
+        alignItems: 'center',
     },
     modalContainer: {
         width: '95%',
-        height: '95%',
+        height: '90%',
         backgroundColor: 'white',
         paddingHorizontal: 20,
         paddingVertical: 30,
