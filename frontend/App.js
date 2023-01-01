@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Platform, StatusBar, Image} from 'react-native';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import BottomNavigator from './app/components/BottomNavigator';
@@ -6,6 +6,8 @@ import COLORS from './app/consts/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import PantryScreen from './app/screens/PantryScreen';
+import {useFonts} from 'expo-font';
+import AppLoading from "expo-app-loading";
 import { I18nManager } from "react-native"
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
@@ -28,12 +30,21 @@ function LogoTitle() {
     </View>
     
   );
-} 
+}
+
 export default function App() {
-  const [name,setName] = useState('Mash')
+
+    const [name,setName] = useState('Mash');
+    let [fontsLoaded] = useFonts({
+        'Rubik-Regular': require('./app/assets/fonts/Rubik-Regular.ttf'),
+        'Rubik-Bold': require('./app/assets/fonts/Rubik-Bold.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <AppLoading/>;
+    }
   return (
       <NavigationContainer>
-      <View style={styles.container}>
+      <View style={styles.container} >
           {/*<SafeAreaView >*/}
               <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
               <Stack.Navigator

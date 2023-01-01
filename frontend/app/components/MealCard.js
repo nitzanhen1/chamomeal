@@ -1,22 +1,37 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { withBadge, Badge } from 'react-native-elements';
+import colors from "../consts/colors";
 
 const MealCard = ({item}) => {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-                <Image
-                    source={{uri:item.image}}
-                    style={styles.cardImage}
-                />
+                    <Image
+                        source={{uri:item.image}}
+                        style={styles.cardImage}
+                    />
+                {/*<MyComponent*/}
+                {/*    image={{uri:item.image}}*/}
+                {/*    style={styles.cardImage}*/}
+                {/*    badgeCount={item.flowers}*/}
+                {/*/>*/}
                 <View style={styles.cardContent}>
                     <View style={styles.cardTextContent}>
                         <Text style={styles.cardTitle}>{item.name}</Text>
                         <Text style={styles.cardSubtitle}>{item.calories + " קלוריות"}</Text>
                     </View>
+                    <Text style={styles.morePointsText}>רוצה לעזור לסביבה ולצבור עוד פרחים?</Text>
                     {/* Add your other card content here */}
                 </View>
+                {/*<Text style={styles.flowerContainer}><Icon name="local-florist"/>13</Text>*/}
+                <View style={styles.flowerContainer}>
+                    <Text style={styles.flowerText}>{item.flowers}</Text>
+                    <Icon name="local-florist" size={17} style={styles.flowerIcon}/>
+                </View>
 
+                <Icon name="more-vert" size={25} style={styles.moreIcon} />
             </View>
         </View>
     );
@@ -38,7 +53,7 @@ const styles = StyleSheet.create({
         height: 120,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        // justifyContent:
         borderRadius:10,
 
         backgroundColor: "white",
@@ -50,21 +65,26 @@ const styles = StyleSheet.create({
     },
     cardContent: {
         flex: 1,
-        padding: 16,
-        // fontFamily: 'Rubik-Regular',
+        flexDirection: 'column',
+
+        // padding: 16,
     },
     cardTextContent: {
         flex: 1,
-        padding: 16,
         flexDirection: 'column',
+        padding: 16,
+
     },
     cardTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontSize: 22,
+        // fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
     },
     cardSubtitle: {
-        fontSize: 10,
-        fontWeight: 'bold',
+        fontSize: 15,
+        // fontWeight: 'bold',
+        fontFamily: 'Rubik-Regular',
+
     },
     cardImage: {
         width: 102,
@@ -73,6 +93,52 @@ const styles = StyleSheet.create({
         marginLeft: 12
         // resizeMode: "contain"
     },
+    moreIcon: {
+        // top: 0
+        alignSelf: "flex-start",
+        paddingTop: 5,
+        // paddingLeft: 1
+        // marginLeft:3
+    },
+    morePointsText: {
+        fontSize: 10,
+        // fontWeight: 'bold',
+        fontFamily: 'Rubik-Regular',
+        // paddingTop: 10,
+        alignSelf: "center",
+        paddingBottom: 5
+        // textAlign: "center",
+        // flex: 1
+        // bottom: 0
+    },
+    flowerContainer: {
+        backgroundColor: colors.lightGreen,
+        paddingHorizontal: 5,
+        paddingVertical: 1,
+        borderRadius: 50,
+        alignSelf: "flex-start",
+        marginTop: 6,
+        flexDirection: 'row',
+        // width: 40,
+        justifyContent: "space-evenly",
+
+        maxWidth: 50
+
+    },
+    flowerIcon: {
+        color:"white"
+        // verticalAlign: 'bottom'
+    },
+    flowerText: {
+        paddingHorizontal: 3,
+        fontFamily: 'Rubik-Regular',
+        fontSize: 15,
+        color:"white"
+
+        // marginBottom: 1
+    }
+
+
 });
 
 export default MealCard;

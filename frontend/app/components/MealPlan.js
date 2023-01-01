@@ -15,7 +15,7 @@ export default class MealPlan extends Component {
                         name: 'שניצל',
                         calories: 1570,
                         flowers: 8,
-                        image: require('../assets/meatPizza.png'),
+                        image: 'https://d3o5sihylz93ps.cloudfront.net/app/uploads/2019/01/28092135/shutterstock_294916778-355x236.jpg',
                         eaten: false,
                     }],
                 },

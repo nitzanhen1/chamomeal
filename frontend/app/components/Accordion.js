@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     container:{
         justifyContent: 'center',
         alignItems: 'center',
-        direction: "rtl"
+        // direction: "rtl"
     },
     title:{
         fontSize: 16,
@@ -100,12 +100,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft:20,
+        // paddingLeft:20,
+        marginHorizontal: 10,
 
     },
     icon:{
         // alignSelf: "baseline"
-        // marginLeft: 0
+        marginRight: 0
     }
 
 });
