@@ -1,10 +1,21 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import FullRecipeCard from "./FullRecipeCard";
+import {View, Text, Image, StyleSheet, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withBadge, Badge } from 'react-native-elements';
 import colors from "../consts/colors";
 
 const MealCard = ({item}) => {
+    const [visibleFullRecipe, setFullVisible] = React.useState(false);
+
+    const handleOpenFull = () => {
+        setFullVisible(true);
+    }
+
+    const handleCloseFull = () => {
+        setFullVisible(false);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.card}>
@@ -21,6 +32,8 @@ const MealCard = ({item}) => {
                     <View style={styles.cardTextContent}>
                         <Text style={styles.cardTitle}>{item.name}</Text>
                         <Text style={styles.cardSubtitle}>{item.calories + " קלוריות"}</Text>
+                        <Button onPress={handleOpenFull} title="Full" />
+                        {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={item}/>}
                     </View>
                     <Text style={styles.morePointsText}>רוצה לעזור לסביבה ולצבור עוד פרחים?</Text>
                     {/* Add your other card content here */}
