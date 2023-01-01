@@ -1,11 +1,13 @@
 import { View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors'
 import {useState} from 'react';
 import { PaperProvider, Card, Title, Paragraph } from 'react-native-paper';
 import Accordion from "../components/Accordion";
 import MealPlan from "../components/MealPlan";
+import {useDispatch, useSelector} from "react-redux";
+import {getDailyMenu} from "../redux/actions";
 
 // const LeftContent = () => (
 //   <Avatar.Icon
@@ -14,10 +16,15 @@ import MealPlan from "../components/MealPlan";
 //     style={{ backgroundColor: 'green' }}
 //     size={45} />);
 export default function PlannerScreen(props) {
-
+    const { meals } = useSelector(state => state.userReducer);
+    const dispatch = useDispatch();
   const [cals,setCals] = useState(1750)
   const [totalCals,setTotalCals] = useState(2500)
-  const date = new Date()
+  const date = new Date();
+
+  useEffect(() => {
+      console.log("useEffect")
+      dispatch(getDailyMenu());}, []);
   return (
     <View style={styles.container}>
       <Text style={styles.textCals}>{cals}/{totalCals} קלוריות</Text>
@@ -26,25 +33,7 @@ export default function PlannerScreen(props) {
         {date.toDateString()}
       <Icon style={styles.icon2} name="keyboard-arrow-right" size={24}/></Text>
       <View style={styles.inputsContainer}>
-          <MealPlan></MealPlan>
-      {/*<TouchableHighlight style={styles.fullWidthButton}>*/}
-      {/*    <Text style={styles.fullWidthButtonText}>*/}
-      {/*    <Icon style={styles.icon} name="expand-more" size={24}/>*/}
-      {/*      ארוחת בוקר*/}
-      {/*      </Text>*/}
-      {/*</TouchableHighlight>*/}
-      {/*<TouchableHighlight style={styles.fullWidthButton}>*/}
-      {/*    <Text style={styles.fullWidthButtonText}>*/}
-      {/*    <Icon name="expand-more" size={24}/>*/}
-      {/*      ארוחת צהריים*/}
-      {/*      </Text>*/}
-      {/*</TouchableHighlight>*/}
-      {/*<TouchableHighlight style={styles.fullWidthButton}>*/}
-      {/*    <Text style={styles.fullWidthButtonText}>*/}
-      {/*    <Icon name="expand-more" size={24}/>*/}
-      {/*      ארוחת ערב*/}
-      {/*    </Text>*/}
-      {/*</TouchableHighlight>*/}
+          <MealPlan data={meals}></MealPlan>
       </View>
     </View>
   )

@@ -2,48 +2,33 @@ import React, {Component} from 'react';
 import { StyleSheet, View} from 'react-native';
 import Accordion from '../components/Accordion'
 import COLORS from "../consts/colors";
+import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux';
+import { getDailyMenu } from '../redux/actions';
 
 export default class MealPlan extends Component {
+    // const dispatch = useDispatch();
     constructor(props) {
         super(props);
+        // const { meals } = useSelector(state => state.userReducer);
+        // this.state = {
+        //     dailyMeal: meals
+        // }
+        // console.log("init")
         this.state = {
-            meals :[
-                {
-                    title: 'ארוחת בוקר',
-                    data: [{
-                        id: 1,
-                        name: 'שניצל',
-                        calories: 1570,
-                        flowers: 8,
-                        image: require('../assets/meatPizza.png'),
-                        eaten: false,
-                    }],
-                },
-                {
-                    title: 'ארוחת צהריים',
-                    data: [{
-                        id: 2,
-                        name: 'פיצה',
-                        calories: 1773,
-                        flowers: 7,
-                        image: require('../assets/meatPizza.png'),
-                        eaten: false,
-                    }],
-                },
-                {
-                    title: 'ארוחת ערב',
-                    data: [{
-                        id: 3,
-                        name: 'ספגטי בולונז',
-                        calories: 1632,
-                        flowers: 5,
-                        image: require('../assets/meatPizza.png'),
-                        eaten: false,
-                    }],
-                },
-            ]
-        }
+            meals: props.data
+                // [
+                // {title: 'ארוחת בוקר', data:[]},
+                // {title: 'ארוחת צהריים', data: []},
+                // {title: 'ארוחת ערב',data:[]}]
+        };
+        // this.componentDidMount()
     }
+    //
+    // async componentDidMount() {
+    //     // await dispatch(getDailyMenu());
+    // }
+
 
     render() {
         return (

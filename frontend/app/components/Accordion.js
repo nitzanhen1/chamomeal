@@ -38,7 +38,7 @@ export default class Accordion extends Component{
                             renderItem={({item, index}) =>
                                 <View  >
                                     <TouchableOpacity style={styles.fullWidthButton} onPress={()=>this.onCheck(index)}>
-                                    <Icon name={item.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark}/>
+                                    <Icon name={item.checked ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark}/>
                                     <CartCard item={item} />
                                     {/*<View style={styles.childHr}/>*/}
                                     </TouchableOpacity>
@@ -53,7 +53,8 @@ export default class Accordion extends Component{
 
     onCheck=(index)=>{
         const temp = this.state.data.slice()
-        temp[index].eaten = !temp[index].eaten
+        temp[index].checked = !temp[index].checked
+        //TODO: add a post request to database
         this.setState({data: temp})
     }
 
