@@ -34,7 +34,7 @@ router.get("/random", async (req, res, next) => {
 });
 
 router.get("/getDailyMenu/:date", async (req, res, next) =>{
-    try{s
+    try{
         const user_id = 1;
         const date = req.params.date;
         const dailyMenu = await recipe_service.getDailyMenu(user_id, date);
