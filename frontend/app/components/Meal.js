@@ -7,11 +7,11 @@ import COLORS from '../consts/colors';
 const CartCard = ({item}) => {
     return (
         <View style={styles.cartCard}>
-            <Image source={item.image} style={{height: 80, width: 80}} />
+            <Image source={{uri:item.image}} style={{height: 80, width: 80}} />
             <View style={styles.card}>
                 <Text style={{fontWeight: 'bold', fontSize: 16}}>{item.name}</Text>
                 <Text style={{fontSize: 14, color: COLORS.grey}}>{item.calories}</Text>
-                <Text style={{fontSize: 17, fontWeight: 'bold'}}><Icon name="filter-vintage" size={17}/>{item.flowers} פרחים</Text>
+                <Text style={{fontSize: 17, fontWeight: 'bold'}}><Icon name="filter-vintage" size={17}/>{item.score} פרחים</Text>
             </View>
             {/*<View style={{marginRight: 20, alignItems: 'center'}}>*/}
             {/*    <Text style={{fontWeight: 'bold', fontSize: 18}}>3</Text>*/}

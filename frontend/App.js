@@ -6,6 +6,8 @@ import COLORS from './app/consts/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import PantryScreen from './app/screens/PantryScreen';
+import { Provider } from 'react-redux';
+import { Store } from './app/redux/store';
 
 const Stack = createStackNavigator();
 
@@ -27,8 +29,9 @@ function LogoTitle() {
   );
 } 
 export default function App() {
-  const [name,setName] = useState('Mash')
+  // const [name,setName] = useState('Mash')
   return (
+      <Provider store={Store}>
       <NavigationContainer>
         <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
@@ -52,6 +55,7 @@ export default function App() {
          </Stack.Navigator>
          </SafeAreaView>
        </NavigationContainer>
+      </Provider>
     );
 
 }
@@ -69,7 +73,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     direction: 'rtl'
-
   },
   chamoText: {
     color: COLORS.white,

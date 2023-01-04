@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager,Modal} from "react-native";
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import CartCard from "./Meal";
@@ -17,8 +17,13 @@ export default class Accordion extends Component{
         }
     }
 
-    render() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.data !== this.props.data) {
+            this.setState({data: this.props.data})
+        }
+    }
 
+    render() {
         return (
             <View>
                 <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpand()}>
@@ -34,11 +39,11 @@ export default class Accordion extends Component{
                             scrollEnabled={false}
                             numColumns={1}
                             contentContainerStyle={{paddingBottom: 20}}
-                            data={this.state.data}
-                            renderItem={({item: recipe, index}) =>
-                                <View style={styles.fullWidthButton}>
-                                    <Icon name={recipe.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.setEaten(index)}/>
-                                    <CartCard item={recipe}/>
+                            data={this.props.data}
+                            renderItem={({item, index}) =>
+                                <View  >
+                                    <Icon name={item.checked ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.onCheck(index)}/>
+                                    <CartCard item={item} />
                                 </View>
                             }
                         />
@@ -48,11 +53,11 @@ export default class Accordion extends Component{
         )
     }
 
-    setEaten=(index)=>{
-        //TODO UPDATE SCORE & CALORIES (אכלתי)
-        const recipe = this.state.data.slice()
-        recipe[index].eaten = !recipe[index].eaten
-        this.setState({data: recipe})
+    onCheck=(index)=>{
+        const temp = this.state.data.slice()
+        temp[index].checked = !temp[index].checked
+        //TODO: add a post request to database
+        this.setState({data: temp})
     }
 
     toggleExpand=()=>{
