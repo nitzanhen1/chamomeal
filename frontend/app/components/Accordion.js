@@ -43,7 +43,7 @@ export default class Accordion extends Component{
                             renderItem={({item, index}) =>
                                 <View style={styles.fullWidthButton}>
                                     <Icon name={item.checked ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.onCheck(index)}/>
-                                    <CartCard item={item} />
+                                    <MealCard item={item} />
                                 </View>
                             }
                         />
