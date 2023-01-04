@@ -1,6 +1,6 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, Button} from 'react-native';
+import {View, Text, Image, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withBadge, Badge } from 'react-native-elements';
 import colors from "../consts/colors";
@@ -19,31 +19,31 @@ const MealCard = ({item}) => {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-                    <Image
-                        source={{uri:item.image}}
-                        style={styles.cardImage}
-                    />
-                {/*<MyComponent*/}
-                {/*    image={{uri:item.image}}*/}
-                {/*    style={styles.cardImage}*/}
-                {/*    badgeCount={item.flowers}*/}
-                {/*/>*/}
+                <TouchableOpacity style={styles.row} onPress={()=>handleOpenFull()}>
+                    <Image source={{uri:item.image}} style={styles.cardImage}/>
+                </TouchableOpacity>
+
                 <View style={styles.cardContent}>
-                    <View style={styles.cardTextContent}>
-                        <Text style={styles.cardTitle}>{item.name}</Text>
-                        <Text style={styles.cardSubtitle}>{item.calories + " קלוריות"}</Text>
-                        <Button onPress={handleOpenFull} title="Full" />
+                    <TouchableOpacity style={styles.cardTextContent} onPress={()=>handleOpenFull()}>
+                        {/*<View style={styles.cardTextContent}>*/}
+
+                            <Text style={styles.cardTitle}>{item.name}</Text>
+                            <Text style={styles.cardSubtitle}>{item.calories + " קלוריות"}</Text>
+                            {/*<Button onPress={handleOpenFull} title="Full" />*/}
                         {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={item}/>}
+
+                        {/*</View>*/}
+                        </TouchableOpacity>
+                    <View>
+                        <Text style={styles.morePointsText}>רוצה לעזור לסביבה ולצבור עוד פרחים?</Text>
                     </View>
-                    <Text style={styles.morePointsText}>רוצה לעזור לסביבה ולצבור עוד פרחים?</Text>
-                    {/* Add your other card content here */}
+
                 </View>
-                {/*<Text style={styles.flowerContainer}><Icon name="local-florist"/>13</Text>*/}
+
                 <View style={styles.flowerContainer}>
                     <Text style={styles.flowerText}>{item.flowers}</Text>
                     <Icon name="local-florist" size={17} style={styles.flowerIcon}/>
                 </View>
-
                 <Icon name="more-vert" size={25} style={styles.moreIcon} />
             </View>
         </View>
