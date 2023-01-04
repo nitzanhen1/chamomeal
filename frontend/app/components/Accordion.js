@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import CartCard from "./Meal";
+import MealCard from "./MealCard";
 
 export default class Accordion extends Component{
 
@@ -41,7 +41,7 @@ export default class Accordion extends Component{
                             contentContainerStyle={{paddingBottom: 20}}
                             data={this.props.data}
                             renderItem={({item, index}) =>
-                                <View  >
+                                <View style={styles.fullWidthButton}>
                                     <Icon name={item.checked ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.onCheck(index)}/>
                                     <CartCard item={item} />
                                 </View>
@@ -105,8 +105,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft:30,
+        // paddingLeft:20,
+        marginHorizontal: 10,
 
     },
+    icon:{
+        // alignSelf: "baseline"
+        marginRight: 0
+    }
 
 });

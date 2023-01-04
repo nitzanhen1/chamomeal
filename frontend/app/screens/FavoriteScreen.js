@@ -6,7 +6,7 @@ import COLORS from '../consts/colors';
 import foods from '../consts/food';
 import Checkbox from 'expo-checkbox';
 // import CheckBox from '@react-native-community/checkbox';
-import CartCard from '../components/Meal'
+import MealCard from '../components/MealCard'
 
 
 export default function FavoriteScreen() {
@@ -18,7 +18,7 @@ export default function FavoriteScreen() {
                 data={foods}
                 renderItem={({item}) =>
                     <View style={styles.meal}>
-                        <CartCard item={item} />
+                        <MealCard item={item} />
                     </View>}
             />
         </SafeAreaView>
