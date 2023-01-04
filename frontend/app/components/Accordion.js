@@ -17,8 +17,13 @@ export default class Accordion extends Component{
         }
     }
 
-    render() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.data !== this.props.data) {
+            this.setState({data: this.props.data})
+        }
+    }
 
+    render() {
         return (
             <View>
                 <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpand()}>
@@ -34,7 +39,7 @@ export default class Accordion extends Component{
                             scrollEnabled={false}
                             numColumns={1}
                             contentContainerStyle={{paddingBottom: 20}}
-                            data={this.state.data}
+                            data={this.props.data}
                             renderItem={({item, index}) =>
                                 <View  >
                                     <TouchableOpacity style={styles.fullWidthButton} onPress={()=>this.onCheck(index)}>

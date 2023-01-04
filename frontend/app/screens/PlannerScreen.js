@@ -3,18 +3,10 @@ import React, {useEffect} from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors'
 import {useState} from 'react';
-import { PaperProvider, Card, Title, Paragraph } from 'react-native-paper';
 import Accordion from "../components/Accordion";
-import MealPlan from "../components/MealPlan";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu} from "../redux/actions";
 
-// const LeftContent = () => (
-//   <Avatar.Icon
-//     color='white'
-//     icon="camera"
-//     style={{ backgroundColor: 'green' }}
-//     size={45} />);
 export default function PlannerScreen(props) {
     const { meals } = useSelector(state => state.userReducer);
     const dispatch = useDispatch();
@@ -23,18 +15,25 @@ export default function PlannerScreen(props) {
   const date = new Date();
 
   useEffect(() => {
-      console.log("useEffect")
-      dispatch(getDailyMenu());}, []);
+      dispatch(getDailyMenu()).then();}, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.textCals}>{cals}/{totalCals} קלוריות</Text>
       <Text style={styles.textDate}>
-      <Icon style={styles.icon2} name="keyboard-arrow-left" size={24}/>
+      <Icon name="keyboard-arrow-left" size={24}/>
         {date.toDateString()}
-      <Icon style={styles.icon2} name="keyboard-arrow-right" size={24}/></Text>
-      <View style={styles.inputsContainer}>
-          <MealPlan data={meals}></MealPlan>
-      </View>
+      <Icon name="keyboard-arrow-right" size={24}/></Text>
+        <View style={styles.inputsContainer}>
+            {meals.map(meal=>(
+                <View key={meal.title}>
+                    <Accordion
+                        title = {meal.title}
+                        data = {meal.data}
+                    />
+                </View>
+            ))}
+        </View>
     </View>
   )
 
@@ -64,11 +63,6 @@ const styles = StyleSheet.create({
   fullWidthButtonText: {
     fontSize:22,
     color: 'white'
-  },
-  icon:{
-    // paddingLeft: 150,
-    // alignItems: "flex-end",
-
   },
   textCals: {
     fontSize: 24,

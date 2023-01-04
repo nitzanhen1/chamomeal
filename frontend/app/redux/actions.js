@@ -1,10 +1,4 @@
-// export const SET_USER_NAME = 'SET_USER_NAME';
-// export const SET_USER_AGE = 'SET_USER_AGE';
-// export const INCREASE_AGE = 'INCREASE_AGE';
-// export const GET_CITIES = 'GET_CITIES';
 import axios from "axios";
-import { useSelector, useDispatch } from 'react-redux';
-
 
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 
@@ -15,15 +9,10 @@ export const getDailyMenu = () => {
         return async dispatch =>{
             const response = await axios.get(API_URL);
             const data = response.data;
-            // console.log(data)
-            // const {meals} = useSelector(state => state.userReducer);
             let mealsData = [
-                {title: 'ארוחת בוקר', data:[]},
-                {title: 'ארוחת צהריים', data: []},
-                {title: 'ארוחת ערב',data:[]}]
-            mealsData[0].data = data['breakfast']
-            mealsData[1].data = data['lunch']
-            mealsData[2].data = data['dinner']
+                {title: 'ארוחת בוקר', data:data['breakfast']},
+                {title: 'ארוחת צהריים', data: data['lunch']},
+                {title: 'ארוחת ערב',data:data['dinner']}]
             dispatch({
                 type: GET_DAILY_MENU,
                 payload: mealsData
@@ -42,9 +31,13 @@ export const getDailyMenu = () => {
     //         });
     //         const json = await result.json();
     //         if (json) {
+    //             let mealsData = [
+    //                 {title: 'ארוחת בוקר', data:json['breakfast']},
+    //                 {title: 'ארוחת צהריים', data: json['lunch']},
+    //                 {title: 'ארוחת ערב',data:json['dinner']}]
     //             dispatch({
     //                 type: GET_DAILY_MENU,
-    //                 payload: json
+    //                 payload: mealsData
     //             });
     //         } else {
     //             console.log('Unable to fetch!');
@@ -54,24 +47,3 @@ export const getDailyMenu = () => {
     //     console.log(error);
     // }
 }
-
-// export const setName = name => dispatch => {
-//     dispatch({
-//         type: SET_USER_NAME,
-//         payload: name,
-//     });
-// };
-//
-// export const setAge = age => dispatch => {
-//     dispatch({
-//         type: SET_USER_AGE,
-//         payload: age,
-//     });
-// };
-//
-// export const increaseAge = age => dispatch => {
-//     dispatch({
-//         type: INCREASE_AGE,
-//         payload: age,
-//     });
-// };
