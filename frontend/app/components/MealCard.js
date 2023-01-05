@@ -4,6 +4,8 @@ import {View, Text, Image, StyleSheet, Button, TouchableOpacity} from 'react-nat
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withBadge, Badge } from 'react-native-elements';
 import colors from "../consts/colors";
+import {Ionicons, Feather, AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
+import COLORS from "../consts/colors";
 
 const MealCard = ({item}) => {
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
@@ -16,36 +18,60 @@ const MealCard = ({item}) => {
         setFullVisible(false);
     }
 
+    const BadgedIcon = withBadge('+')(Icon);
+    // const alert = () => {
+    //     console.log("hello");
+    // }
+
     return (
         <View style={styles.container}>
-            <View style={styles.card}>
-                <TouchableOpacity style={styles.row} onPress={()=>handleOpenFull()}>
-                    <Image source={{uri:item.image}} style={styles.cardImage}/>
-                </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={()=>handleOpenFull()}>
+            {/*<View style={styles.card}>*/}
+            {/*    <View style={styles.row}>*/}
+                <Image source={{uri:item.image}} style={styles.cardImage}/>
+                {/*</View>*/}
+            {/*    <TouchableOpacity style={styles.row} onPress={()=>handleOpenFull()}>*/}
+                {/*</TouchableOpacity>*/}
 
                 <View style={styles.cardContent}>
-                    <TouchableOpacity style={styles.cardTextContent} onPress={()=>handleOpenFull()}>
-                        {/*<View style={styles.cardTextContent}>*/}
+                    {/*<TouchableOpacity style={styles.cardTextContent} onPress={()=>handleOpenFull()}>*/}
+                        <View style={styles.cardTextContent}>
 
-                            <Text style={styles.cardTitle}>{item.name}</Text>
+                            <Text numberOfLines={2} style={styles.cardTitle}>{item.name}</Text>
                             <Text style={styles.cardSubtitle}>{item.calories + " קלוריות"}</Text>
                             {/*<Button onPress={handleOpenFull} title="Full" />*/}
-                        {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={item}/>}
+                            {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={item}/>}
 
-                        {/*</View>*/}
-                        </TouchableOpacity>
-                    <View>
-                        <Text style={styles.morePointsText}>רוצה לעזור לסביבה ולצבור עוד פרחים?</Text>
+                        </View>
+                        {/*</TouchableOpacity>*/}
+                    <View style={styles.flowerContainer}>
+                        {/*<Icon name="local-florist" size={17} style={styles.flowerIcon}/>*/}
+                        <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
+                        <Text style={styles.flowerText}>{item.flowers}</Text>
+                        <MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} />
+                        {/*<AntDesign name="pluscircle" size={24} style={styles.plusIcon} />*/}
+                        {/*<BadgedIcon name="flower-outline" type="ionicons"></BadgedIcon>*/}
+                        {/*<Badge*/}
+                        {/*    value="+"*/}
+                        {/*    status="error"*/}
+                        {/*    containerStyle={{ position: 'absolute', top: -4, right: -4 }}*/}
+                        {/*>*/}
+                        {/*    <Icon name="heart" type="feather" />*/}
+                        {/*</Badge>*/}
+                        {/*<Feather name="plus-circle" size={24} color="black" style={styles.plusIcon}/>*/}
                     </View>
+                    {/*<View>*/}
+                    {/*    <Text style={styles.morePointsText}>רוצה לעזור לסביבה ולצבור עוד פרחים?</Text>*/}
+                    {/*</View>*/}
 
                 </View>
 
-                <View style={styles.flowerContainer}>
-                    <Text style={styles.flowerText}>{item.flowers}</Text>
-                    <Icon name="local-florist" size={17} style={styles.flowerIcon}/>
-                </View>
-                <Icon name="more-vert" size={25} style={styles.moreIcon} />
-            </View>
+
+                <TouchableOpacity style={styles.moreContainer} onPress={()=>alert()}>
+                    <Icon name="more-vert" size={25} style={styles.moreIcon} />
+                </TouchableOpacity>
+            {/*</View>*/}
+            </TouchableOpacity>
         </View>
     );
 };
@@ -63,9 +89,10 @@ const styles = StyleSheet.create({
     },
     card: {
         // width: 300,
-        height: 120,
+        height: 130,
+        // height: 150,
         flexDirection: 'row',
-        alignItems: 'center',
+        // alignItems: 'center',
         // justifyContent:
         borderRadius:10,
 
@@ -85,25 +112,29 @@ const styles = StyleSheet.create({
     cardTextContent: {
         flex: 1,
         flexDirection: 'column',
-        padding: 16,
+        paddingTop: 16,
+        paddingLeft: 10
 
     },
     cardTitle: {
-        fontSize: 22,
-        // fontWeight: 'bold',
-        fontFamily: 'Rubik-Bold',
+        fontSize: 20,
+        fontWeight: '900',
+        fontFamily: 'Rubik-Regular',
     },
     cardSubtitle: {
+        marginTop: 3,
         fontSize: 15,
         // fontWeight: 'bold',
         fontFamily: 'Rubik-Regular',
 
     },
     cardImage: {
-        width: 102,
+        width: 110,
+        // height: 102,
         height: '85%',
         borderRadius: 8,
-        marginLeft: 12
+        marginLeft: 12,
+        alignSelf: "center"
         // resizeMode: "contain"
     },
     moreIcon: {
@@ -125,30 +156,47 @@ const styles = StyleSheet.create({
         // bottom: 0
     },
     flowerContainer: {
-        backgroundColor: colors.lightGreen,
+        // backgroundColor: colors.lightGreen,
         paddingHorizontal: 5,
         paddingVertical: 1,
-        borderRadius: 50,
+        // borderRadius: 50,
         alignSelf: "flex-start",
-        marginTop: 6,
+        // alignSelf: "flex-end",
+        // alignSelf: "center",
+        // marginTop: 6,
+        marginBottom: 6,
+        marginLeft: 6,
         flexDirection: 'row',
-        // width: 40,
-        justifyContent: "space-evenly",
+        // alignItems: "center"
+        width: 40,
+        // justifyContent: "space-evenly",
 
-        maxWidth: 50
+        // maxWidth: 50
 
     },
     flowerIcon: {
-        color:"white"
+        color:"black"
         // verticalAlign: 'bottom'
     },
     flowerText: {
         paddingHorizontal: 3,
         fontFamily: 'Rubik-Regular',
-        fontSize: 15,
-        color:"white"
-
+        // fontWeight: 'bold',
+        fontSize: 17,
+        color:"black",
+        paddingTop: 3,
+        marginRight:4,
         // marginBottom: 1
+    },
+    moreContainer: {
+        // justifyContent: "flex-end" ,
+        alignItems:"flex-start",
+        // alignContent: "flex-start"
+    },
+    plusIcon: {
+        // paddingHorizontal: 4,
+        color: COLORS.lightGreen,
+        // marginHorizontal: 4
     }
 
 

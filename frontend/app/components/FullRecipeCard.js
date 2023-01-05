@@ -1,10 +1,23 @@
-import {Image, Modal, StyleSheet, Text, TouchableOpacity, View, Button, Pressable, Linking, Alert} from "react-native";
-import { Icon, Overlay, } from 'react-native-elements';
+import {
+    Image,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Button,
+    Pressable,
+    Linking,
+    Alert,
+    ScrollView
+} from "react-native";
+import { Icon, Overlay, Divider} from 'react-native-elements';
 import COLORS from "../consts/colors";
 // import Ionicons from "react-native-vector-icons/Ionicons";
 import { Ionicons, AntDesign, MaterialCommunityIcons, FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
 import colors from "../consts/colors";
 import {useCallback} from "react";
+
 
 const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
 
@@ -31,7 +44,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                             <AntDesign  name="closecircleo" size={25} style={styles.exitIcon} />
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.information}>
+                    <ScrollView style={styles.information}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>{recipe.name}</Text>
                         </View>
@@ -78,26 +91,40 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                 <Text style={styles.linkText}>למתכון המלא לחצו כאן</Text>
                             </TouchableOpacity>
                         </View>
-
+                        <View style={styles.nutritionRow}>
+                            <View style={styles.details}>
+                                <Text style={styles.carbText}>פחמימות</Text>
+                                <Text style={styles.detailsText}>{recipe.carbohydrates}</Text>
+                            </View>
+                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                            <View style={styles.details}>
+                                <Text style={styles.carbText}>חלבונים</Text>
+                                <Text style={styles.detailsText}>{recipe.protein} </Text>
+                            </View>
+                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                            <View style={styles.details}>
+                                <Text style={styles.carbText}>שומנים</Text>
+                                <Text style={styles.detailsText}>{recipe.fats} </Text>
+                            </View>
+                        </View>
                         <View style={styles.nutritionContainer}>
-                        {/*<View style={styles.detailsContainer}>*/}
                             <View style={styles.nutritionRow}>
                                 <View style={styles.details}>
                                     <Text style={styles.nutritionText}>נתרן</Text>
                                     <Text style={styles.detailsText}>{recipe.sodium}</Text>
                                 </View>
+                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
                                 <View style={styles.details}>
-                                    {/*<AntDesign name="shoppingcart" size={24} color="black" />*/}
                                     <Text style={styles.nutritionText}>סיבים תזונתיים</Text>
                                     <Text style={styles.detailsText}>{recipe.fibers} </Text>
                                 </View>
+                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
                                 <View style={styles.details}>
-                                    {/*<AntDesign name="dashboard" size={24} color="black" />*/}
                                     <Text style={styles.nutritionText}>שומן רווי</Text>
                                     <Text style={styles.detailsText}>{recipe.saturated_fat} </Text>
                                 </View>
+                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
                                 <View style={styles.details}>
-                                    {/*<Ionicons name="time-outline" size={24} color="black" />*/}
                                     <Text style={styles.nutritionText}>כולסטרול</Text>
                                     <Text style={styles.detailsText}>{recipe.cholesterol}</Text>
                                 </View>
@@ -107,27 +134,24 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                     <Text style={styles.nutritionText}>סידן</Text>
                                     <Text style={styles.detailsText}>{recipe.calcium}</Text>
                                 </View>
+                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
                                 <View style={styles.details}>
-                                    {/*<AntDesign name="shoppingcart" size={24} color="black" />*/}
                                     <Text style={styles.nutritionText}>ברזל</Text>
                                     <Text style={styles.detailsText}>{recipe.iron} </Text>
                                 </View>
+                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
                                 <View style={styles.details}>
-                                    {/*<AntDesign name="dashboard" size={24} color="black" />*/}
                                     <Text style={styles.nutritionText}>אשלגן</Text>
                                     <Text style={styles.detailsText}>{recipe.potassium} </Text>
                                 </View>
+                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
                                 <View style={styles.details}>
-                                    {/*<Ionicons name="time-outline" size={24} color="black" />*/}
                                     <Text style={styles.nutritionText}>אבץ</Text>
                                     <Text style={styles.detailsText}>{recipe.zinc}</Text>
                                 </View>
                             </View>
-
-
                         </View>
-
-                    </View>
+                    </ScrollView>
                 </View>
             </View>
         </Modal>
@@ -277,7 +301,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 4,
         elevation: 2,
-        backgroundColor: colors.white,
+        backgroundColor: colors.lightGreen,
         borderColor: COLORS.lightGreen,
         borderWidth: 1,
         shadowColor: '#868383',
@@ -287,7 +311,7 @@ const styles = StyleSheet.create({
 
     },
     linkText: {
-        color: COLORS.lightGreen,
+        color: COLORS.white,
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         // lineHeight: 21,
@@ -322,10 +346,33 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: COLORS.dark,
         textAlign: "center",
+        paddingVertical: 2
 
 
         // fontWeight: '900',
     },
+    carbText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 15,
+        color: COLORS.carbs,
+        textAlign: "center",
+        paddingVertical: 2
+    },
+    fatsText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 15,
+        color: COLORS.fats,
+        textAlign: "center",
+        paddingVertical: 2
+    },
+    proteinText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 15,
+        color: COLORS.protein,
+        textAlign: "center",
+        paddingVertical: 2
+    },
+
 
 
 });
