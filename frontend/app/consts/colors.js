@@ -8,6 +8,9 @@ const COLORS = {
     grey: '#908e8c',
     darkGrey: '#4b4747',
     divider: '#b0b0ad',
+    carbs: '#ffd94f',
+    fats: '#4fff5e',
+    protein: '#4fc1ff',
   };
   
   export default COLORS;
