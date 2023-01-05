@@ -1,13 +1,10 @@
-import React, {useCallback, useState} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Platform, StatusBar, Image} from 'react-native';
-import WelcomeScreen from './app/screens/WelcomeScreen';
+import React from 'react';
+import { StyleSheet, Text, View, SafeAreaView,StatusBar, Image} from 'react-native';
 import BottomNavigator from './app/components/BottomNavigator';
 import COLORS from './app/consts/colors';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import PantryScreen from './app/screens/PantryScreen';
 import {useFonts} from 'expo-font';
-// import AppLoading from "expo-app-loading";
 import { I18nManager } from "react-native"
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
@@ -38,9 +35,6 @@ export default function App() {
         'Rubik-Regular': require('./app/assets/fonts/Rubik-Regular.ttf'),
         'Rubik-Bold': require('./app/assets/fonts/Rubik-Bold.ttf'),
     });
-    // if (!fontsLoaded) {
-    //     return <AppLoading/>;
-    // }
   return (
       <Provider store={Store}>
       <NavigationContainer>
@@ -60,7 +54,6 @@ export default function App() {
             },
             headerTitle: props => <LogoTitle {...props}  />
           }}>
-          {/* <Stack.Screen name="Welcome" component={WelcomeScreen}/> */}
           <Stack.Screen name="CHAMOMEAL" component={BottomNavigator}
           />
          </Stack.Navigator>
@@ -72,12 +65,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   // backgroundColor: '#fff',
-  //   justifyContent: 'center',
-  //   paddingTop: Platform.OS === "android" ? StatusBar.currebtHeight : 0,
-  // },
     container: {
     flex: 1,
     alignItems: 'center',
@@ -93,7 +80,6 @@ const styles = StyleSheet.create({
   mealText:{
     color: COLORS.secondary,
     fontSize: 28,
-    // fontFamily: 'Cochin',
     fontWeight: 'bold',
       paddingRight: 10,
   },
