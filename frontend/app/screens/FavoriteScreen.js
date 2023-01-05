@@ -11,40 +11,15 @@ import MealCard from '../components/MealCard'
 
 export default function FavoriteScreen() {
     return (
-        <SafeAreaView style={styles.container}>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{paddingBottom: 80}}
-                data={foods}
-                renderItem={({item}) =>
-                    <View style={styles.meal}>
-                        <MealCard item={item} />
-                    </View>}
-            />
-        </SafeAreaView>
-    );
+        <View style={styles.view}>
+            <Text>EarthScreen</Text>
+        </View>
+    )
 };
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor: COLORS.white,
+    view: {
         flex: 1,
-        direction: 'rtl',
+        justifyContent: "center",
+        alignItems:  "center",
     },
-    header: {
-        paddingVertical: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: 20,
-    },
-    meal:{
-        height: 100,
-        elevation: 15,
-        borderRadius: 10,
-        marginVertical: 10,
-        marginHorizontal: 20,
-        paddingHorizontal: 10,
-        flexDirection: 'row',
-        // flexDirection: 'row-reverse',
-        alignItems: 'center',
-    }
 });

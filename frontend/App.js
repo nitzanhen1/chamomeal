@@ -88,19 +88,18 @@ const styles = StyleSheet.create({
   chamoText: {
     color: COLORS.white,
     fontSize: 28,
-      paddingRight: 20,
+      paddingLeft: 10,
   },
   mealText:{
     color: COLORS.secondary,
     fontSize: 28,
     // fontFamily: 'Cochin',
-    fontWeight: 'bold',   
-      paddingLeft: 20,
+    fontWeight: 'bold',
+      paddingRight: 10,
   },
   imageHeader: {
     justifyContent: 'flex-start',
     width: 40,
     height: 40,
-
   }
 });

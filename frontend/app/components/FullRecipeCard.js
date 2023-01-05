@@ -38,7 +38,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                         <View style={styles.flowersContainer}>
                             <View style={{flexDirection: 'row', paddingTop: 3}}>
                                 <Ionicons name="flower-outline" size={25} style={styles.flowersIcon}/>
-                                <Text style={styles.flowerText}>{recipe.flowers} פרחים</Text>
+                                <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
                             </View>
                             {/*<MaterialCommunityIcons name="heart-circle-outline" size={30} style={styles.heartIcon}/>*/}
                             <Ionicons  name="heart-outline" size={30} style={styles.heartIcon}/>

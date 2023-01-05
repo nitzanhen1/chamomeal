@@ -41,7 +41,7 @@ const MealCard = ({item}) => {
                 </View>
 
                 <View style={styles.flowerContainer}>
-                    <Text style={styles.flowerText}>{item.flowers}</Text>
+                    <Text style={styles.flowerText}>{item.score}</Text>
                     <Icon name="local-florist" size={17} style={styles.flowerIcon}/>
                 </View>
                 <Icon name="more-vert" size={25} style={styles.moreIcon} />
