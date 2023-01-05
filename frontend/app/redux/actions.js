@@ -25,31 +25,6 @@ export const getDailyMenu = () => {
     }catch (error) {
         console.log(error);
     }
-    // try {
-    //     return async dispatch => {
-    //         const result = await fetch(API_URL, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-    //         const json = await result.json();
-    //         if (json) {
-    //             let mealsData = [
-    //                 {title: 'ארוחת בוקר', data:json['breakfast']},
-    //                 {title: 'ארוחת צהריים', data: json['lunch']},
-    //                 {title: 'ארוחת ערב',data:json['dinner']}]
-    //             dispatch({
-    //                 type: GET_DAILY_MENU,
-    //                 payload: mealsData
-    //             });
-    //         } else {
-    //             console.log('Unable to fetch!');
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.log(error);
-    // }
 }
 export const markAsEaten = (meal_type, eaten, meal_calories) => {
     try {
