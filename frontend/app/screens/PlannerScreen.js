@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, TouchableHighlight } from 'react-native'
+import { View, Text, StyleSheet} from 'react-native'
 import React, {useEffect} from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors'
@@ -8,10 +8,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu} from "../redux/actions";
 
 export default function PlannerScreen(props) {
-    const { meals, consumed_calories } = useSelector(state => state.userReducer);
+    const { meals, consumed_calories } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-  const [cals,setCals] = useState(1750)
-  const [totalCals,setTotalCals] = useState(2500)
+  const [totalCals,setTotalCals] = useState(2500)//TODO get recommended calories for user
   const date = new Date();
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export default function PlannerScreen(props) {
                 <View key={meal.title}>
                     <Accordion
                         title = {meal.title}
-                        data = {meal.data}
+                        mealData = {meal.mealData}
                         dispatch = {dispatch}
                     />
                 </View>
@@ -37,7 +36,6 @@ export default function PlannerScreen(props) {
         </View>
     </View>
   )
-
 }
 
 const styles = StyleSheet.create({
@@ -49,36 +47,31 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems:  "center",
         direction: 'rtl'
-    }, 
-  inputsContainer: {
-    top: 50,
-  },
-  fullWidthButton: {
-    backgroundColor: COLORS.lightGreen,
-    height:50,
-    flexDirection: 'row',
-
-    // justifyContent: 'center',
-    alignItems: 'center',
-    
-  },
-  fullWidthButtonText: {
-    fontSize:22,
-    color: 'white'
-  },
-  textCals: {
-    fontSize: 24,
-    alignSelf:'center',
-    top:20,
-    fontWeight: 'bold',
-  },
-  textDate:{
-    fontSize: 20,
-    alignSelf:'center',
-    top:30,
-    alignItems: "center",
-  },
-
-
+    },
+    inputsContainer: {
+        top: 50,
+    },
+    fullWidthButton: {
+        backgroundColor: COLORS.lightGreen,
+        height:50,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    fullWidthButtonText: {
+        fontSize:22,
+        color: 'white'
+    },
+    textCals: {
+        fontSize: 24,
+        alignSelf:'center',
+        top:20,
+        fontWeight: 'bold',
+    },
+    textDate:{
+        fontSize: 20,
+        alignSelf:'center',
+        top:30,
+        alignItems: "center",
+    },
 })
 

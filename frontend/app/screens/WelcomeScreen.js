@@ -1,7 +1,5 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, View, Text, SafeAreaView} from 'react-native';
-import COLORS from '../consts/colors';
-
+import {ImageBackground, StyleSheet,Text, SafeAreaView} from 'react-native';
 
 function WelcomeScreen() {
     return (
@@ -15,13 +13,9 @@ function WelcomeScreen() {
     )
 }
 
-
 const styles = StyleSheet.create({
     background: {
         backgroundColor: "#453567"
-        // flex: 1,
-        // justifyContent: "center",
-        // alignItems:  "center",
     }, 
 })
 

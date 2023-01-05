@@ -4,8 +4,8 @@ export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
 
 const date = '2023-01-05';
-const API_URL = 'http://10.0.2.2:3000';
-// const API_URL = `http://localhost:3000`;
+// const API_URL = 'http://10.0.2.2:3000';
+const API_URL = `http://localhost:3000`;
 
 export const getDailyMenu = () => {
     try{
@@ -13,9 +13,9 @@ export const getDailyMenu = () => {
             const response = await axios.get(`${API_URL}/recipes/getDailyMenu/${date}`);
             const data = response.data;
             let mealsData = [
-                {title: 'ארוחת בוקר', data:data['breakfast']},
-                {title: 'ארוחת צהריים', data: data['lunch']},
-                {title: 'ארוחת ערב',data:data['dinner']}]
+                {title: 'ארוחת בוקר', mealData:data['breakfast']},
+                {title: 'ארוחת צהריים', mealData: data['lunch']},
+                {title: 'ארוחת ערב',mealData:data['dinner']}]
             dispatch({
                 type: GET_DAILY_MENU,
                 meals: mealsData,

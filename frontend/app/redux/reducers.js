@@ -3,12 +3,12 @@ import {GET_DAILY_MENU, MARK_AS_EATEN} from './actions';
 const initialState = {
     consumed_calories: 0,
     meals: [
-        {title: 'ארוחת בוקר', data:[]},
-        {title: 'ארוחת צהריים', data: []},
-        {title: 'ארוחת ערב',data:[]}]
+        {title: 'ארוחת בוקר', mealData:[]},
+        {title: 'ארוחת צהריים', mealData: []},
+        {title: 'ארוחת ערב',mealData:[]}]
 }
 
-function userReducer(state = initialState, action) {
+function mealReducer(state = initialState, action) {
     switch (action.type) {
         case GET_DAILY_MENU:
             return { ...state, meals: action.meals, consumed_calories: action.consumed_calories };
@@ -19,4 +19,4 @@ function userReducer(state = initialState, action) {
     }
 }
 
-export default userReducer;
+export default mealReducer;

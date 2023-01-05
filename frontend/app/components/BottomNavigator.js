@@ -1,16 +1,14 @@
 
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import {StyleSheet, Text, View, Button, Platform} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors';
-import PantryScreen from '../screens/PantryScreen';
+import SearchScreen from '../screens/SearchScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import PlannerScreen from '../screens/PlannerScreen';
 import EarthScreen from '../screens/EarthScreen';
 import PersonalScreen from '../screens/PersonalScreen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -25,7 +23,7 @@ const BottomNavigator = () => {
       >
       <Tab.Screen
         name="Search"
-        component={PantryScreen}
+        component={SearchScreen}
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="search" color={color} size={26} />

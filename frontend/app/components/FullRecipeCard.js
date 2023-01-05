@@ -1,20 +1,7 @@
-import {
-    Image,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    Button,
-    Pressable,
-    Linking,
-    Alert,
-    ScrollView
-} from "react-native";
-import { Icon, Overlay, Divider} from 'react-native-elements';
+import {Image, Modal, StyleSheet, Text, TouchableOpacity, View, Linking, Alert, ScrollView} from "react-native";
+import {Divider} from 'react-native-elements';
 import COLORS from "../consts/colors";
-// import Ionicons from "react-native-vector-icons/Ionicons";
-import { Ionicons, AntDesign, MaterialCommunityIcons, FontAwesome, SimpleLineIcons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, SimpleLineIcons} from '@expo/vector-icons';
 import colors from "../consts/colors";
 import {useCallback} from "react";
 
@@ -53,13 +40,11 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                 <Ionicons name="flower-outline" size={25} style={styles.flowersIcon}/>
                                 <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
                             </View>
-                            {/*<MaterialCommunityIcons name="heart-circle-outline" size={30} style={styles.heartIcon}/>*/}
                             <Ionicons  name="heart-outline" size={30} style={styles.heartIcon}/>
                         </View>
                         <View style={styles.detailsContainer}>
                             <View style={styles.details}>
                                 <SimpleLineIcons name="energy" size={24} color="black" />
-                                {/*<Text style={styles.detailsText}>קלוריות</Text>*/}
                                 <Text style={styles.detailsText}>קלוריות</Text>
                                 <Text style={styles.detailsText}>{recipe.calories}</Text>
                             </View>
@@ -169,53 +154,27 @@ const styles = StyleSheet.create({
         width: '95%',
         height: '90%',
         backgroundColor: 'white',
-        // paddingHorizontal: 20,
-        // paddingVertical: 30,
         borderRadius: 10,
-        // overflow: "scroll",
-        // elevation: 20,
-
     },
-    // card: {
-    //     height: 100,
-    //     marginLeft: 10,
-    //     paddingVertical: 20,
-    //     right: 0,
-    //     flex: 1,
-    //     alignItems: 'center',
-    //     justifyContent: 'space-evenly'
-    // },
     recipeImage: {
         height: '100%',
         width: '100%',
         resizeMode: "cover",
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10
-        // flex: 1
-        // borderRadius: 10,
-
-        // resizeMode: "contain",
-
     },
     imgContainer: {
         height: '40%',
         width: '100%',
         borderRadius: 10,
-        // flex: 1
-
-
     },
     exitIcon: {
         color: COLORS.darkGrey,
         backgroundColor: COLORS.white,
         borderRadius: 100
-        // position: 'absolute',
-        // top: 1,
-        // left: 1,
     },
     information: {
         padding: 10,
-
     },
     titleContainer:{
 
@@ -229,22 +188,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 6,
         justifyContent: "space-between",
-        // backgroundColor: colors.lightGreen,
-        // paddingHorizontal: 5,
-        // paddingVertical: 1,
-        // borderRadius: 50,
-        // alignSelf: "flex-start",
-        // marginTop: 6,
-        // flexDirection: 'row',
-        // // width: '100%',
-        // justifyContent: "space-evenly",
-        // // flex: 1,
-        // maxWidth: 50
     },
     flowersIcon: {
-        // fontWeight: "bold",
         color: COLORS.dark
-
     },
     flowerText: {
         paddingHorizontal: 7,
@@ -253,11 +199,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 17,
         color: COLORS.dark,
-
-        // marginBottom: 1
     },
     heartIcon: {
-        // flex: 1,
 
     },
     detailsContainer: {
@@ -268,13 +211,11 @@ const styles = StyleSheet.create({
         borderBottomColor: COLORS.divider,
         borderTopWidth: 2,
         borderBottomWidth: 2
-        // flex: 1
     },
     details: {
         flexDirection: "column",
         flex: 1,
         alignItems: "center"
-        // justifyContent: "center",
     },
     detailsText: {
         fontFamily: 'Rubik-Regular',
@@ -285,13 +226,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "center",
         marginBottom: 10,
-
     },
     dietaryText: {
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         color: COLORS.grey,
-
     },
     linkButton: {
         alignItems: 'center',
@@ -305,41 +244,26 @@ const styles = StyleSheet.create({
         borderColor: COLORS.lightGreen,
         borderWidth: 1,
         shadowColor: '#868383',
-        // shadowOffset: { width: 0, height: 30},
         shadowOpacity: 0.3,
-        // shadowRadius: 8,
-
     },
     linkText: {
         color: COLORS.white,
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
-        // lineHeight: 21,
         fontWeight: '300',
-
-        // letterSpacing: 0.25,
-        // color: 'white',
     },
     nutritionContainer: {
         flexDirection: 'column',
         marginVertical: 10,
-        // paddingVertical: 4,
         borderTopColor: COLORS.divider,
         borderBottomColor: COLORS.divider,
         borderTopWidth: 2,
         borderBottomWidth: 2,
-
     },
     nutritionRow: {
         flexDirection: 'row',
         marginVertical: 10,
         alignItems:"center"
-        // paddingVertical: 4,
-        // justifyContent: "space-around",
-        // borderTopColor: COLORS.divider,
-        // borderBottomColor: COLORS.divider,
-        // borderTopWidth: 2,
-        // borderBottomWidth: 2
     },
     nutritionText: {
         fontFamily: 'Rubik-Bold',
@@ -347,9 +271,6 @@ const styles = StyleSheet.create({
         color: COLORS.dark,
         textAlign: "center",
         paddingVertical: 2
-
-
-        // fontWeight: '900',
     },
     carbText: {
         fontFamily: 'Rubik-Bold',
@@ -358,23 +279,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingVertical: 2
     },
-    fatsText: {
-        fontFamily: 'Rubik-Bold',
-        fontSize: 15,
-        color: COLORS.fats,
-        textAlign: "center",
-        paddingVertical: 2
-    },
-    proteinText: {
-        fontFamily: 'Rubik-Bold',
-        fontSize: 15,
-        color: COLORS.protein,
-        textAlign: "center",
-        paddingVertical: 2
-    },
-
-
-
 });
 
 export default FullRecipeCard

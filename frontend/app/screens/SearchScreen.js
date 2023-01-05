@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet} from 'react-native'
 import React from 'react'
 
-export default function PantryScreen() {
+export default function SearchScreen() {
   return (
     <View style={styles.view}>
-      <Text>PantryScreen</Text>
+      <Text>SearchScreen</Text>
     </View>
   )
 }
