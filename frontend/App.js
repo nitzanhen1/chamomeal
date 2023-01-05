@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import PantryScreen from './app/screens/PantryScreen';
 import {useFonts} from 'expo-font';
-import AppLoading from "expo-app-loading";
+// import AppLoading from "expo-app-loading";
 import { I18nManager } from "react-native"
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
@@ -38,9 +38,9 @@ export default function App() {
         'Rubik-Regular': require('./app/assets/fonts/Rubik-Regular.ttf'),
         'Rubik-Bold': require('./app/assets/fonts/Rubik-Bold.ttf'),
     });
-    if (!fontsLoaded) {
-        return <AppLoading/>;
-    }
+    // if (!fontsLoaded) {
+    //     return <AppLoading/>;
+    // }
   return (
       <Provider store={Store}>
       <NavigationContainer>

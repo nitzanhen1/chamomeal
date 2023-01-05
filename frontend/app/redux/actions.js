@@ -2,13 +2,13 @@ import axios from "axios";
 
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 
-const host = 'http://10.0.2.2:3000'
-const API_URL = `https://localhost:3000/recipes/getDailyMenu/2022-12-29`;
+const API_URL = 'http://10.0.2.2:3000';
+// const API_URL = `https://localhost:3000/`;
 
 export const getDailyMenu = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(`${host}/recipes/getDailyMenu/2022-12-29`);
+            const response = await axios.get(`${API_URL}/recipes/getDailyMenu/2022-12-29`);
             const data = response.data;
             let mealsData = [
                 {title: 'ארוחת בוקר', data:data['breakfast']},
