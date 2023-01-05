@@ -5,9 +5,9 @@ var path = require("path");
 // var logger = require("morgan");
 const session = require("client-sessions");
 const DButils = require("./data/db_utils");
-// var cors = require('cors')
+const cors = require('cors')
 
-var app = express();
+const app = express();
 // app.use(logger("dev")); //logger
 app.use(express.json()); // parse application/json
 app.use(
@@ -38,8 +38,8 @@ app.get("/",function(req,res)
 
 });
 
-// app.use(cors());
-// app.options("*", cors());
+app.use(cors());
+app.options("*", cors());
 
 // const corsConfig = {
 //     origin: true,
