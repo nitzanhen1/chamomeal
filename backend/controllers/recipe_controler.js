@@ -45,4 +45,19 @@ router.get("/getDailyMenu/:date", async (req, res, next) =>{
 
 });
 
+router.post("/markAsEaten", async (req, res, next) =>{
+    try{
+        const user_id = 1;
+        const date = req.body.date;
+        const meal_type = req.body.meal_type;
+        const eaten = req.body.eaten;
+        const meal_calories = req.body.meal_calories;
+        const new_consumed_calories = await recipe_service.markAsEaten(user_id, date, meal_type, eaten, meal_calories);
+        res.status(201).send({'new_consumed_calories': new_consumed_calories});
+    }catch(error){
+        next(error);
+    }
+
+});
+
 module.exports = router;

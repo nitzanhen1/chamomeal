@@ -1,13 +1,14 @@
 import axios from "axios";
 
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
+export const MARK_AS_EATEN = 'MARK_AS_EATEN';
 
-const API_URL = 'http://localhost:3000/recipes/getDailyMenu/2022-12-29';
-
+const API_URL = 'http://localhost:3000/';
+const date = '2023-01-05'
 export const getDailyMenu = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(API_URL);
+            const response = await axios.get(API_URL+`recipes/getDailyMenu/${date}`);
             const data = response.data;
             let mealsData = [
                 {title: 'ארוחת בוקר', data:data['breakfast']},
@@ -15,9 +16,10 @@ export const getDailyMenu = () => {
                 {title: 'ארוחת ערב',data:data['dinner']}]
             dispatch({
                 type: GET_DAILY_MENU,
-                payload: mealsData
+                meals: mealsData,
+                consumed_calories: data['consumed_calories']
             });
-    }
+        }
     }catch (error) {
         console.log(error);
     }
@@ -46,4 +48,25 @@ export const getDailyMenu = () => {
     // } catch (error) {
     //     console.log(error);
     // }
+}
+export const markAsEaten = (meal_type, eaten, meal_calories) => {
+    try {
+        return async dispatch => {
+            const response = await axios.post(API_URL + 'recipes/markAsEaten',
+                {
+                    date: date,
+                    meal_type: meal_type,
+                    eaten: eaten,
+                    meal_calories: meal_calories,
+                }
+            );
+            const new_consumed_calories = response.data.new_consumed_calories;s
+            dispatch({
+                type: MARK_AS_EATEN,
+                consumed_calories: new_consumed_calories,
+            });
+        }
+    } catch (error) {
+        console.log(error);
+    }
 }

@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Pl
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import CartCard from "./Meal";
+import {markAsEaten} from "../redux/actions";
 
 export default class Accordion extends Component{
 
@@ -11,6 +12,11 @@ export default class Accordion extends Component{
         this.state = {
             data: props.data,
             expanded : false,
+            meal_type: {
+                "ארוחת בוקר": "breakfast",
+                "ארוחת צהריים": "lunch",
+                "ארוחת ערב": "dinner"
+            }
         }
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -43,7 +49,7 @@ export default class Accordion extends Component{
                             renderItem={({item, index}) =>
                                 <View  >
                                     <TouchableOpacity style={styles.fullWidthButton} onPress={()=>this.onCheck(index)}>
-                                    <Icon name={item.checked ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark}/>
+                                    <Icon name={item.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark}/>
                                     <CartCard item={item} />
                                     {/*<View style={styles.childHr}/>*/}
                                     </TouchableOpacity>
@@ -58,8 +64,8 @@ export default class Accordion extends Component{
 
     onCheck=(index)=>{
         const temp = this.state.data.slice()
-        temp[index].checked = !temp[index].checked
-        //TODO: add a post request to database
+        temp[index].eaten = !temp[index].eaten
+        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],temp[index].eaten, temp[index].calories))
         this.setState({data: temp})
     }
 
