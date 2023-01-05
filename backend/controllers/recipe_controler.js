@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const recipe_service = require("../services/recipe_service");
-// const user_service = require("../services/user_service");
 
 router.get("/", (req, res) => res.send("im here"));
 
@@ -57,7 +56,6 @@ router.post("/markAsEaten", async (req, res, next) =>{
     }catch(error){
         next(error);
     }
-
 });
 
 module.exports = router;

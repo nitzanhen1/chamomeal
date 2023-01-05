@@ -68,10 +68,8 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories){
         return new_consumed_calories;
     }
     else{
-        //Exception
+        console.log('exception dailyMenu length != 0')
     }
-
-
 }
 
 
