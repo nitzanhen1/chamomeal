@@ -5,13 +5,48 @@ import {TextInput} from 'react-native-paper';
 import {CheckBox, ListItem} from '@rneui/themed';
 import {RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
+import {useDispatch, useSelector} from "react-redux";
+import {setFoodPreference, setVegetarian} from "../redux/actions";
+//vegan, vegetarian, without_lactose, gluten_free, kosher, onCheckVegan
+// const FoodPreferences = (props) => {
+const FoodPreferences = () => {
+    const {
+        vegan,
+        vegetarian,
+        without_lactose,
+        gluten_free,
+        kosher} = useSelector(state => state.mealReducer);
+    const dispatch = useDispatch();
+    const [vegan2, setVegan] = useState(vegan);
+    const [vegetarian2, setVegetarian] = useState(vegetarian);
+    const [without_lactose2, setLactose] = useState(without_lactose);
+    const [gluten_free2, setGluten] = useState(gluten_free);
+    const [kosher2, setKosher] = useState(kosher);
 
-const FoodPreferences = (props) => {
-    const [vegan, setVegan] = useState(false);
-    const [vegetarian, setVegetarian] = useState(false);
-    const [without_lactose, setLactose] = useState(false);
-    const [gluten_free, setGluten] = useState(false);
-    const [kosher, setKosher] = useState(false);
+    // const setVegan = (vegan) => {
+    //     console.log(vegan)
+    //     props.preferences.vegan = vegan
+    //     console.log(props.preferences.vegan)
+    // }
+    // const setVegetarian = (value) => {
+    //     vegetarian = value;
+    //     console.log(value);
+    // }
+    // const setLactose = (without_lactose) => {
+    //     props.preferences.without_lactose = without_lactose
+    // }
+    // const setGluten = (gluten_free) => {
+    //     props.preferences.gluten_free = gluten_free
+    // }
+    // const setKosher = (kosher) => {
+    //     props.preferences.kosher = kosher
+    // }
+
+    const handleFood = () => {
+        const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
+        // props.onSubmitFood(foodData);
+        dispatch(setFoodPreference(foodData))
+    };
 
 
     return (
@@ -25,44 +60,45 @@ const FoodPreferences = (props) => {
             <View style={styles.prefContainer}>
                 <CheckBox
                     title="טבעונות"
-                    checked={vegan}
-                    onPress={() => setVegan(!vegan)}
+                    checked={vegan2}
+                    onPress={() => setVegan(!vegan2)}
                     containerStyle={styles.checkContainer}
                     textStyle={styles.optionText}
                     checkedColor={COLORS.lightGreen}
                 />
                 <CheckBox
                     title="צמחונות"
-                    checked={vegetarian}
-                    onPress={() => setVegetarian(!vegetarian)}
+                    checked={vegetarian2}
+                    onPress={() => setVegetarian(!vegetarian2)}
                     containerStyle={styles.checkContainer}
                     textStyle={styles.optionText}
                     checkedColor={COLORS.lightGreen}
                 />
                 <CheckBox
                     title="רגישות ללקטוז"
-                    checked={without_lactose}
-                    onPress={() => setLactose(!without_lactose)}
+                    checked={without_lactose2}
+                    onPress={() => setLactose(!without_lactose2)}
                     containerStyle={styles.checkContainer}
                     textStyle={styles.optionText}
                     checkedColor={COLORS.lightGreen}
                 />
                 <CheckBox
                     title="רגישות לגלוטן"
-                    checked={gluten_free}
-                    onPress={() => setGluten(!gluten_free)}
+                    checked={gluten_free2}
+                    onPress={() => setGluten(!gluten_free2)}
                     containerStyle={styles.checkContainer}
                     textStyle={styles.optionText}
                     checkedColor={COLORS.lightGreen}
                 />
                 <CheckBox
                     title="כשרות"
-                    checked={kosher}
-                    onPress={() => setKosher(!kosher)}
+                    checked={kosher2}
+                    onPress={() => setKosher(!kosher2)}
                     containerStyle={styles.checkContainer}
                     textStyle={styles.optionText}
                     checkedColor={COLORS.lightGreen}
                 />
+                <Button title="test" onPress={handleFood}/>
             </View>
         </ScrollView>
     )

@@ -5,9 +5,17 @@ import {TextInput} from 'react-native-paper';
 import {CheckBox, ListItem} from '@rneui/themed';
 import {RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
+import {useDispatch, useSelector} from "react-redux";
+import {setPhysicalActivity} from "../redux/actions";
 
 const PhysicalActivity = (props) => {
-    const [pa, setPA] = useState('');
+    const {pa} = useSelector(state => state.mealReducer);
+    const [pa2, setPA] = useState(pa);
+    const dispatch = useDispatch();
+
+    const handlePA = () => {
+        dispatch(setPhysicalActivity(pa2))
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -18,7 +26,7 @@ const PhysicalActivity = (props) => {
                 עד כמה אתם פעילים גופנית?
             </Text>
 
-            <RadioButton.Group onValueChange={newValue => setPA(newValue)} value={pa}>
+            <RadioButton.Group onValueChange={newValue => setPA(newValue)} value={pa2}>
                 <View style={styles.paContainer}>
                         <View style={styles.radioButtonContainer}>
                             <RadioButton color={COLORS.lightGreen} value="sedentary"></RadioButton>
@@ -38,6 +46,7 @@ const PhysicalActivity = (props) => {
                         </View>
                 </View>
             </RadioButton.Group>
+            <Button title="test" onPress={handlePA}/>
         </ScrollView>
     )
         ;

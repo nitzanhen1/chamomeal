@@ -8,14 +8,21 @@ import PhysicalActivity from "../components/PhysicalActivity";
 import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
+import {useSelector} from "react-redux";
 
 const QuestionnaireScreen = ({navigation}) => {
-    const [formData, setFormData] = useState({});
-    const [step, setStep] = useState(1);
+    const { birthDate,
+        height,
+        weight,
+        gender,
+        pa,
+        vegan,
+        vegetarian,
+        without_lactose,
+        gluten_free,
+        kosher} = useSelector(state => state.mealReducer);
 
-    const handleFormSubmit = (data) => {
-        setFormData(data);
-    };
+    const [step, setStep] = useState(1);
 
     function handlePress() {
         // navigation.navigate('BottomNavigator');
@@ -29,7 +36,6 @@ const QuestionnaireScreen = ({navigation}) => {
         navigation.navigate('BottomNavigator');
         // setStep(step -1)
     }
-
 
     return (
         <ScrollView contentContainerStyle={styles.view}>

@@ -5,17 +5,25 @@ import {TextInput} from 'react-native-paper';
 import {CheckBox, ListItem} from '@rneui/themed';
 import {RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
+import {useDispatch, useSelector} from "react-redux";
+import {setPersonalDetails} from "../redux/actions";
 
 const PersonalDetails = (props) => {
-
-    const [birthDate, setBirthDate] = useState('');
-    const [height, setHeight] = useState('');
-    const [weight, setWeight] = useState('');
-    const [gender, setGender] = useState('');
+    const {
+        height,
+        weight,
+        birthDate,
+        gender} = useSelector(state => state.mealReducer);
+    const dispatch = useDispatch();
+    const [newBirthDate, setBirthDate] = useState(birthDate);
+    const [newHeight, setHeight] = useState(height);
+    const [newWeight, setWeight] = useState(weight);
+    const [newGender, setGender] = useState(gender);
 
     const handleSubmit = () => {
-        const formData = {birthDate, height, weight, gender};
-        props.onSubmit(formData);
+        const newPersonalDetails = {newWeight, newHeight, newGender, newBirthDate};
+        // props.onSubmitFood(foodData);
+        dispatch(setPersonalDetails(newPersonalDetails))
     };
 
     return (
@@ -30,9 +38,9 @@ const PersonalDetails = (props) => {
             <TextInput
                 mode="flat"
                 label="גובה"
-                value={height}
+                value={newHeight}
                 placeholder='ס"מ'
-                onChangeText={height => setHeight(height)}
+                onChangeText={newHeight => setHeight(newHeight)}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.grey}
@@ -42,9 +50,9 @@ const PersonalDetails = (props) => {
             <TextInput
                 mode="flat"
                 label="משקל"
-                value={weight}
+                value={newWeight}
                 placeholder='ק"ג'
-                onChangeText={weight => setWeight(weight)}
+                onChangeText={newWeight => setWeight(newWeight)}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.grey}
@@ -55,9 +63,9 @@ const PersonalDetails = (props) => {
             <TextInput
                 mode="flat"
                 label="תאריך לידה"
-                value={birthDate}
+                value={newBirthDate}
                 placeholder='yyyy-mm-dd'
-                onChangeText={birthDate => setBirthDate(birthDate)}
+                onChangeText={newBirthDate => setBirthDate(newBirthDate)}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.grey}
@@ -65,7 +73,7 @@ const PersonalDetails = (props) => {
                 underlineStyle={styles.inputContainer}
             />
 
-            <RadioButton.Group onValueChange={newValue => setGender(newValue)} value={gender}>
+            <RadioButton.Group onValueChange={newValue => setGender(newValue)} value={newGender}>
                 <View style={styles.genderContainer}>
                     <Text style={styles.genderTitle}>מין</Text>
                     <View style={styles.genderOptions}>
@@ -85,6 +93,8 @@ const PersonalDetails = (props) => {
 
                 </View>
             </RadioButton.Group>
+            <Button title="test" onPress={handleSubmit}/>
+
         </ScrollView>
     )
         ;
