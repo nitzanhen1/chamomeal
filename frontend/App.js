@@ -12,7 +12,6 @@ I18nManager.allowRTL(true);
 import { Provider } from 'react-redux';
 import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
-import PlannerScreen from "./app/screens/PlannerScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import PreferenceScreen from "./app/screens/PreferenceScreen";
 
@@ -64,7 +63,6 @@ export default function App() {
                             />
                         }}>
                         <Stack.Screen name="Login" component={LoginScreen}/>
-                        <Stack.Screen name="PlannerScreen" component={PlannerScreen}/>
                         <Stack.Screen name="BottomNavigator" component={BottomNavigator}/>
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen}/>
                         <Stack.Screen name="PreferenceScreen" component={PreferenceScreen}/>
@@ -98,6 +96,6 @@ const styles = StyleSheet.create({
     imageHeader: {
         justifyContent: 'flex-start',
         width: 40,
-        height: 40,
+        height: 40,
     }
 });

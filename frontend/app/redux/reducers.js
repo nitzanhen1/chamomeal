@@ -3,9 +3,9 @@ import {GET_DAILY_MENU, MARK_AS_EATEN} from './actions';
 const initialState = {
     consumed_calories: 0,
     meals: [
-        {title: 'ארוחת בוקר', mealData:[]},
-        {title: 'ארוחת צהריים', mealData: []},
-        {title: 'ארוחת ערב',mealData:[]}]
+        {title: 'ארוחת בוקר', mealData:{}},
+        {title: 'ארוחת צהריים', mealData: {}},
+        {title: 'ארוחת ערב',mealData: {}}]
 }
 
 function mealReducer(state = initialState, action) {

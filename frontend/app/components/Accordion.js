@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, LayoutAnimation, Platform, UIManager} from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, LayoutAnimation} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import MealCard from "./MealCard";
@@ -10,19 +10,12 @@ export default class Accordion extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            mealData: props.mealData,
-            expanded : false,
+            expanded : true,
             meal_type: {
                 "ארוחת בוקר": "breakfast",
                 "ארוחת צהריים": "lunch",
                 "ארוחת ערב": "dinner"
             }
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.mealData !== this.props.mealData) {
-            this.setState({mealData: this.props.mealData})
         }
     }
 
@@ -37,28 +30,20 @@ export default class Accordion extends Component{
                 {
                     this.state.expanded &&
                     <View style={{}}>
-                        <FlatList
-                            scrollEnabled={false}
-                            numColumns={1}
-                            contentContainerStyle={{paddingBottom: 20}}
-                            data={this.props.mealData}
-                            renderItem={({item: recipe, index}) =>
-                                <View style={styles.fullWidthButton}>
-                                    <Icon name={recipe.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.markAsEaten(index)}/>
-                                    <MealCard recipe={recipe} />
-                                </View>
-                            }
-                        />
+                        <View style={styles.fullWidthButton}>
+                            <Icon name={this.props.mealData.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.markAsEaten()}/>
+                            <MealCard recipe={this.props.mealData} />
+                        </View>
                     </View>
                 }
             </View>
         )
     }
 
-    markAsEaten=(index)=>{
-        const recipe = this.state.mealData
-        recipe[index].eaten = !recipe[index].eaten
-        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe[index].eaten, recipe[index].calories))
+    markAsEaten=()=>{
+        const recipe = this.props.mealData
+        recipe.eaten = !recipe.eaten
+        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories))
         this.setState({mealData: recipe})
     }
 
@@ -95,6 +80,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 10,
-
     },
 });

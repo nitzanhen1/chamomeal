@@ -12,9 +12,9 @@ async function getDailyMenu(user_id, date){
     recipes[1].eaten = dailyMenu['lunch_eaten'];
     recipes[2].eaten = dailyMenu['dinner_eaten'];
     let fullDailyMenu = {
-            breakfast: [recipes[0]],
-            lunch: [recipes[1]],
-            dinner: [recipes[2]],
+            breakfast: recipes[0],
+            lunch: recipes[1],
+            dinner: recipes[2],
             consumed_calories: dailyMenu['consumed_calories']
     }
     return fullDailyMenu;
