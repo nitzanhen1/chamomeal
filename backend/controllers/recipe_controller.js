@@ -12,8 +12,9 @@ router.use(async function (req, res, next) {
             }
         }).catch(err => next(err));
     } else {
-        //res.sendStatus(401);
-        res.status(419).send({message: "Session expired, please login again", success: false});
+        req.user_id = 1; //TODO: delete!!
+        next(); //TODO: delete!!
+        // res.status(419).send({message: "Session expired, please login again", success: false});
     }
 });
 
@@ -36,8 +37,9 @@ router.post("/markAsEaten", async (req, res, next) =>{
         const meal_type = req.body.meal_type;
         const eaten = req.body.eaten;
         const meal_calories = req.body.meal_calories;
-        const new_consumed_calories = await recipe_service.markAsEaten(user_id, date, meal_type, eaten, meal_calories);
-        res.status(201).send({'new_consumed_calories': new_consumed_calories});
+        const meal_score = req.body.meal_score;
+        const updated_values = await recipe_service.markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score);
+        res.status(201).send(updated_values);
     }catch(error){
         next(error);
     }

@@ -1,11 +1,10 @@
 const DButils = require("../data/db_utils");
+const user_service = require("./user_service");
 
 async function getDailyMenu(user_id, date){
-    let dailyMenu = await DButils.execQuery(`select * from MealPlanHistory where user_id='${user_id}' and menu_date='${date}'`);
-    if(dailyMenu.length==0)
+    let dailyMenu = await getDailyMenuFromDB(user_id, date)
+    if(dailyMenu==null)
         dailyMenu = await generateDailyMenu(user_id, date);
-    else
-        dailyMenu = dailyMenu[0];
     const recipes_id_array = [dailyMenu['breakfast'],dailyMenu['lunch'],dailyMenu['dinner']];
     let recipes = await getRecipesByIdFromDB(recipes_id_array);
     recipes[0].eaten = dailyMenu['breakfast_eaten'];
@@ -15,7 +14,8 @@ async function getDailyMenu(user_id, date){
             breakfast: [recipes[0]],
             lunch: [recipes[1]],
             dinner: [recipes[2]],
-            consumed_calories: dailyMenu['consumed_calories']
+            consumed_calories: dailyMenu['consumed_calories'],
+            total_calories: recipes[0].calories+recipes[1].calories+recipes[2].calories
     }
     return fullDailyMenu;
 }
@@ -51,24 +51,40 @@ async function getRecipesByIdFromDB(array_recipes_id){
     return recipes;
 }
 
-async function markAsEaten(user_id, date, meal_type, eaten, meal_calories){
+async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score){
     const meal_type_eaten = meal_type+'_eaten';
-    let dailyMenu = await DButils.execQuery(`select * from MealPlanHistory where user_id='${user_id}' and menu_date='${date}'`);
-    if(dailyMenu.length!=0) {
-        dailyMenu = dailyMenu[0]
+    let dailyMenu = await getDailyMenuFromDB(user_id, date);
+    if(dailyMenu!=null) {
         let new_consumed_calories =  dailyMenu['consumed_calories']
+        let new_score = await user_service.getUserScoreFromDB(user_id)
         if((!dailyMenu[meal_type_eaten])&&(eaten)){
             new_consumed_calories+=meal_calories
+            new_score+=meal_score;
         }
         else if((dailyMenu[meal_type_eaten])&&(!eaten)){
             new_consumed_calories-=meal_calories;
+            new_score-=meal_score;
         }
         await DButils.execQuery(`update MealPlanHistory set ${meal_type_eaten}='${Number(eaten)}', consumed_calories='${new_consumed_calories}' where user_id='${user_id}' and menu_date='${date}'`);
-        return new_consumed_calories;
+        await DButils.execQuery(`update Users set score='${new_score}' where user_id='${user_id}'`);
+
+        const updated_values={
+            "new_consumed_calories":new_consumed_calories,
+            "new_score":new_score,
+        }
+        return updated_values;
     }
     else{
-        console.log('exception dailyMenu length != 0')
+        throw {status: 404, message: "daily menu doesn't exist"};
     }
+}
+
+async function getDailyMenuFromDB(user_id, date) {
+    let dailyMenu = await DButils.execQuery(`select * from MealPlanHistory where user_id = '${user_id}'and menu_date = '${date}'`);
+    if(dailyMenu.length==0)
+        return null;
+    else
+        return dailyMenu[0];
 }
 
 

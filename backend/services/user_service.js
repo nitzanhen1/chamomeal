@@ -38,6 +38,26 @@ async function calculatePALevel(age, gender, physical_activity){
     }
 }
 
+async function getUserScoreFromDB(user_id) {
+    let user_score = await DButils.execQuery(`SELECT score FROM Users WHERE user_id = '${user_id}'`);
+    return user_score[0]['score'];
+}
+
+async function getUserDetails(user_id){
+    let user = await DButils.execQuery(`SELECT * FROM Users WHERE user_id = '${user_id}'`);
+    if(user.length!=0) {
+        user =user[0]
+        let user_details = {
+            name: user['first_name'],
+            total_score: user['score'],
+            EER: user['EER'],
+        }
+        return user_details
+    }
+    throw {status: 404, message: "user doesn't exist"};
+}
 
 
 exports.updatePreferences = updatePreferences
+exports.getUserScoreFromDB = getUserScoreFromDB
+exports.getUserDetails = getUserDetails
