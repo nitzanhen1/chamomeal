@@ -3,7 +3,7 @@ import React from 'react'
 
 const RegisterScreen = ({navigation}) => {
     function handlePress(){
-        navigation.navigate('PreferenceScreen');
+        navigation.navigate('QuestionnaireScreen');
     }
 
     return (

@@ -14,7 +14,7 @@ import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
 import PlannerScreen from "./app/screens/PlannerScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
-import PreferenceScreen from "./app/screens/PreferenceScreen";
+import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -67,7 +67,7 @@ export default function App() {
                         <Stack.Screen name="PlannerScreen" component={PlannerScreen}/>
                         <Stack.Screen name="BottomNavigator" component={BottomNavigator}/>
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen}/>
-                        <Stack.Screen name="PreferenceScreen" component={PreferenceScreen}/>
+                        <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen}/>
                     </Stack.Navigator>
                 </SafeAreaView>
             </NavigationContainer>
