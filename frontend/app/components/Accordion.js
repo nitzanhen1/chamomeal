@@ -58,7 +58,7 @@ export default class Accordion extends Component{
     markAsEaten=(index)=>{
         const recipe = this.state.mealData
         recipe[index].eaten = !recipe[index].eaten
-        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe[index].eaten, recipe[index].calories))
+        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe[index].eaten, recipe[index].calories,recipe[index].score))
         this.setState({mealData: recipe})
     }
 

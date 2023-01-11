@@ -15,8 +15,8 @@ app.use(
         cookieName: "session", // the cookie key name
         secret: process.env.COOKIE_SECRET, // the encryption key
         //secret: "template", // the encryption key
-        duration: 24 * 60 * 60 * 1000, // expired after 20 sec
-        activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
+        // duration: 24 * 60 * 60 * 1000, // expired after 20 sec
+        // activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration,
         cookie: {
             httpOnly: false,
         }
@@ -51,16 +51,16 @@ app.options("*", cors());
 
 var port = process.env.PORT || "3000"; //local=3000 remote=80
 //#endregion
-// const user = require("./routes/user");
-const recipes = require("./controllers/recipe_controler");
-// const auth = require("./routes/auth");
+const user = require("./controllers/user_controller");
+const recipes = require("./controllers/recipe_controller");
+const auth = require("./controllers/auth_controller");
 // const search = require("./routes/search");
 
 
 //#region cookie middleware
 app.use(function (req, res, next) {
     if (req.session && req.session.user_id) {
-        DButils.execQuery("SELECT user_id FROM users")
+        DButils.execQuery("SELECT user_id FROM Users")
             .then((users) => {
                 if (users.find((x) => x.user_id === req.session.user_id)) {
                     req.user_id = req.session.user_id;
@@ -76,11 +76,12 @@ app.use(function (req, res, next) {
 
 // ----> For cheking that our server is alive
 app.get("/alive", (req, res) => res.send("I'm alive"));
+app.get("/session", (req, res) => res.send(req.session));
 
 // Routings
-// app.use("/users", user);
+app.use("/user", user);
 app.use("/recipes", recipes);
-// app.use("/auth", auth);
+app.use("/auth", auth);
 // app.use("/search", search);
 
 // Default router
