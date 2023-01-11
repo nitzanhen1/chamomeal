@@ -1,25 +1,27 @@
 import { View, Text, StyleSheet, Button } from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
+import {register} from "../redux/actions";
+import {useDispatch} from "react-redux";
+import handleSubmitLoginPress from "./LoginScreen";
 
 const RegisterScreen = ({navigation}) => {
+    const dispatch = useDispatch();
+
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [password1, setPassword1] = useState('');
-    const [password2, setPassword2] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const [usernameError, setUsernameError] = useState('');
     const [firstNameError, setFirstNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [password1Error, setPassword1Error] = useState('');
-    const [password2Error, setPassword2Error] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    function handlePress(){
-        navigation.navigate('QuestionnaireScreen');
-    }
     function navToLogin(){
         navigation.navigate('Login');
     }
@@ -69,34 +71,37 @@ const RegisterScreen = ({navigation}) => {
             return false
         }
     }
-    function validatePassword1(password1){
+    function validatePassword(password){
         let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-        if (re.test(password1)) {
-            setPassword1Error('')
+        if (re.test(password)) {
+            setPasswordError('')
             return true
         } else {
-            setPassword1Error("על הסיסמה להכיל 8-16 תווים, ולכלול אותיות, מספרים, ותו מיוחד")
+            setPasswordError("על הסיסמה להכיל 8-16 תווים, ולכלול אותיות, מספרים, ותו מיוחד")
             return false
         }
     }
-    function validatePassword2(password2){
-        if (!password2) {
-            setPassword2("נדרשת סיסמה")
+    function validateConfirmPassword(confirmPassword){
+        if (!confirmPassword) {
+            setConfirmPassword("נדרשת סיסמה")
             return false
-        } else if (password1 != password2) {
-            setPassword2Error("סיסמה לא נכונה");
+        } else if (password != confirmPassword) {
+            setConfirmPasswordError("סיסמה לא נכונה");
             return false
         } else {
-            setPassword2Error('')
+            setConfirmPasswordError('')
             return true
         }
     }
     function handleSubmitPress(){
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
-        validateEmail(email) && validatePassword1(password1) && validatePassword2(password2)){
-            alert("true")
-        } else {
-            alert("false")
+        validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
+            dispatch(register(username,firstName,lastName,password,email)).then((success)=>{
+                if(success) {
+                    navigation.navigate('Login')
+                } else {
+                    alert('שם משתמש קיים')
+                }});
         }
     }
 
@@ -111,6 +116,7 @@ const RegisterScreen = ({navigation}) => {
                 placeholder='שם משתמש'
                 errorStyle={{ color: 'red' }}
                 errorMessage={usernameError}
+                autoCapitalize='none'
             />
             <Input
                 onChangeText={(firstName) => {
@@ -120,6 +126,7 @@ const RegisterScreen = ({navigation}) => {
                 placeholder='שם פרטי'
                 errorStyle={{ color: 'red' }}
                 errorMessage={firstNameError}
+                autoCapitalize='none'
             />
             <Input
                 onChangeText={(lastName) => {
@@ -129,6 +136,7 @@ const RegisterScreen = ({navigation}) => {
                 placeholder='שם משפחה'
                 errorStyle={{ color: 'red' }}
                 errorMessage={lastNameError}
+                autoCapitalize='none'
             />
             <Input
                 onChangeText={(email) => {
@@ -139,32 +147,34 @@ const RegisterScreen = ({navigation}) => {
                 keyboardType="email-address"
                 errorStyle={{ color: 'red' }}
                 errorMessage={emailError}
+                autoCapitalize='none'
             />
             <Input
-                onChangeText={(password1) => {
-                    setPassword1(password1)
-                    validatePassword1(password1)
+                onChangeText={(password) => {
+                    setPassword(password)
+                    validatePassword(password)
                 }}
                 placeholder="סיסמה"
                 secureTextEntry={true}
                 maxLength={16}
                 errorStyle={{ color: 'red' }}
-                errorMessage={password1Error}
+                errorMessage={passwordError}
+                autoCapitalize='none'
             />
             <Input
-                onChangeText={(password2) => {
-                    setPassword2(password2)
-                    validatePassword2(password2)
+                onChangeText={(confirmPassword) => {
+                    setConfirmPassword(confirmPassword)
+                    validateConfirmPassword(confirmPassword)
                 }}
                 placeholder="אימות סיסמה"
                 secureTextEntry={true}
                 errorStyle={{ color: 'red' }}
-                errorMessage={password2Error}
+                errorMessage={confirmPasswordError}
+                autoCapitalize='none'
             />
-            <Button title="submit"
+            <Button title="הירשם"
                     // disabled={!isValid}
                     onPress={handleSubmitPress}/>
-            <Button title="הירשם" onPress={handlePress}/>
             <Button title="login" onPress={navToLogin}/>
         </View>
     )

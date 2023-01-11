@@ -50,7 +50,7 @@ export default function App() {
                     <Stack.Navigator
                         initialRouteName="Login"
                         screenOptions={{
-                            headerBackVisible: 'false' ,
+                            headerBackVisible: false ,
                             headerTitleAlign: 'center',
                             headerStyle: {
                                 backgroundColor: COLORS.primary

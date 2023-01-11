@@ -1,17 +1,16 @@
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity  } from 'react-native'
+import { View, Text, StyleSheet, Button  } from 'react-native'
 import React, {useState} from 'react'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
+import {useDispatch} from "react-redux";
+import {login} from "../redux/actions";
 
 const LoginScreen = ({navigation}) => {
+    const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('')
 
-    function navToMain(){
-        navigation.navigate('BottomNavigator');
-    }
 
     function navToRegister(){
         navigation.navigate('RegisterScreen');
@@ -34,18 +33,28 @@ const LoginScreen = ({navigation}) => {
             setPasswordError('נדרשת סיסמה');
             return false
         } else if (password.includes(' ')) {
-            setPasswordError('סיסמה מכיל רווחים');
+            setPasswordError('סיסמה מכילה רווחים');
             return false
         } else {
             setPasswordError('')
             return true
         }
     }
-    function handleSubmitPress(){
+    async function handleSubmitPress(){
         if (validateUsername(username) && validatePassword(userPassword)) {
-            alert('true')
-        } else {
-            alert('false')
+            try{
+                dispatch(login(username,userPassword)).then((success)=>{
+                if(!success) {
+                    navigation.navigate('QuestionnaireScreen');
+                }
+                else {
+                    navigation.navigate('BottomNavigator');
+                }});
+            }catch (error){
+                if(error.status==404) {
+                    alert('שם משתמש או סיסמה אינם נכונים')
+                }
+            }
         }
     }
 
@@ -60,6 +69,7 @@ const LoginScreen = ({navigation}) => {
                 placeholder='שם משתמש'
                 errorStyle={{ color: 'red' }}
                 errorMessage={usernameError}
+                autoCapitalize='none'
             />
             <Input
                 onChangeText={(UserPassword) => {
@@ -71,9 +81,9 @@ const LoginScreen = ({navigation}) => {
                 maxLength={16}
                 errorStyle={{ color: 'red' }}
                 errorMessage={passwordError}
+                autoCapitalize='none'
             />
             <Button title="התחבר" onPress={handleSubmitPress}/>
-            <Button title="Login" onPress={navToMain}/>
             <Button title="Register" onPress={navToRegister}/>
         </View>
     )

@@ -8,8 +8,11 @@ import PhysicalActivity from "../components/PhysicalActivity";
 import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
+import {getUserDetails, updateUserPreferences} from "../redux/actions";
+import {useDispatch} from "react-redux";
 
 const QuestionnaireScreen = ({navigation}) => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({});
     const [step, setStep] = useState(1);
 
@@ -26,6 +29,7 @@ const QuestionnaireScreen = ({navigation}) => {
         setStep(step -1)
     }
     function handleFinish() {
+        dispatch(updateUserPreferences()).then();
         navigation.navigate('BottomNavigator');
         // setStep(step -1)
     }
