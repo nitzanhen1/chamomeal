@@ -8,13 +8,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu} from "../redux/actions";
 
 export default function PlannerScreen(props) {
-    const { meals, consumed_calories } = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, date } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
   const [totalCals,setTotalCals] = useState(2500)//TODO get recommended calories for user
-  const date = new Date();
 
   useEffect(() => {
-      dispatch(getDailyMenu()).then();}, []);
+      dispatch(getDailyMenu(date)).then();}, []);
 
   return (
     <View style={styles.container}>
