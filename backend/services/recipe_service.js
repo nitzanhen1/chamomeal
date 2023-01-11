@@ -61,7 +61,6 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories){
             new_consumed_calories+=meal_calories
         }
         else if((dailyMenu[meal_type_eaten])&&(!eaten)){
-            console.log("minus")
             new_consumed_calories-=meal_calories;
         }
         await DButils.execQuery(`update MealPlanHistory set ${meal_type_eaten}='${Number(eaten)}', consumed_calories='${new_consumed_calories}' where user_id='${user_id}' and menu_date='${date}'`);
