@@ -18,7 +18,7 @@ const RegisterScreen = ({navigation}) => {
     const [password2Error, setPassword2Error] = useState('');
 
     function handlePress(){
-        navigation.navigate('PreferenceScreen');
+        navigation.navigate('QuestionnaireScreen');
     }
     function navToLogin(){
         navigation.navigate('Login');

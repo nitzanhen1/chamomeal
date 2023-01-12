@@ -5,19 +5,21 @@ import COLORS from '../consts/colors'
 import {useState} from 'react';
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu} from "../redux/actions";
+import {getDailyMenu, getUserDetails} from "../redux/actions";
 
 export default function PlannerScreen(props) {
-    const { meals, consumed_calories, date } = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, date, total_calories, score } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-  const [totalCals,setTotalCals] = useState(2500)//TODO get recommended calories for user
 
-  useEffect(() => {
-      dispatch(getDailyMenu(date)).then();}, []);
+    useEffect(() => {
+        dispatch(getDailyMenu(date)).then();
+        dispatch(getUserDetails()).then();
+    }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textCals}>{consumed_calories}/{totalCals} קלוריות</Text>
+        <Text style={styles.textCals}>{score} פרחים</Text>
+      <Text style={styles.textCals}>{consumed_calories}/{total_calories} קלוריות</Text>
       <Text style={styles.textDate}>
       <Icon name="keyboard-arrow-left" size={24}/>
         {date.toDateString()}
