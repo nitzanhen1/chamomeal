@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, Button, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
-import {Input} from 'react-native-elements';
-import {TextInput} from 'react-native-paper';
-import {CheckBox, ListItem} from '@rneui/themed';
-import {RadioButton} from 'react-native-paper';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {TextInput, RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPersonalDetails} from "../redux/actions";
+import { Button} from '@rneui/themed';
 
-const PersonalDetails = (props) => {
+
+const PersonalDetails = ({navigation}) => {
     const {
         height,
         weight,
@@ -22,8 +21,8 @@ const PersonalDetails = (props) => {
 
     const handleSubmit = () => {
         const newPersonalDetails = {newWeight, newHeight, newGender, newBirthDate};
-        // props.onSubmitFood(foodData);
         dispatch(setPersonalDetails(newPersonalDetails))
+        navigation.navigate('PhysicalActivity')
     };
 
     return (
@@ -32,7 +31,7 @@ const PersonalDetails = (props) => {
                 פרופיל פיזיולוגי
             </Text>
             <Text style={styles.disclaimer}>
-                על מנת להעריך את צריכת הקלוריות היומי המומלצת עבורך, אנו משתמשים בנוסחת EER (Estimated Energy
+                על מנת להעריך את צריכת הקלוריות היומית המומלצת עבורך, אנו משתמשים בנוסחת EER (Estimated Energy
                 Requirement). נוסחה זו משתמשת בנתוני גובה, משקל, מין וגיל.
             </Text>
             <TextInput
@@ -93,8 +92,14 @@ const PersonalDetails = (props) => {
 
                 </View>
             </RadioButton.Group>
-            <Button title="test" onPress={handleSubmit}/>
-
+            <Button
+                title="המשך"
+                onPress={handleSubmit}
+                color = {COLORS.lightGreen}
+                containerStyle={styles.nextButton}
+                titleStyle={styles.nextText}
+                radius={8}
+            />
         </ScrollView>
     )
         ;

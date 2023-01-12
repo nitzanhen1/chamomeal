@@ -1,20 +1,25 @@
 import React, {useState} from 'react';
-import {View, Text, Button, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
-import {Input} from 'react-native-elements';
-import {TextInput} from 'react-native-paper';
-import {CheckBox, ListItem} from '@rneui/themed';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPhysicalActivity} from "../redux/actions";
+import { Button} from '@rneui/themed';
 
-const PhysicalActivity = (props) => {
+
+const PhysicalActivity = ({navigation}) => {
     const {pa} = useSelector(state => state.mealReducer);
     const [pa2, setPA] = useState(pa);
     const dispatch = useDispatch();
 
     const handlePA = () => {
         dispatch(setPhysicalActivity(pa2))
+        navigation.navigate('FoodPreferences')
+    };
+
+    const handleBack = () => {
+        dispatch(setPhysicalActivity(pa2))
+        navigation.navigate('PersonalDetails')
     };
 
     return (
@@ -46,7 +51,22 @@ const PhysicalActivity = (props) => {
                         </View>
                 </View>
             </RadioButton.Group>
-            <Button title="test" onPress={handlePA}/>
+            <Button
+                title="המשך"
+                onPress={handlePA}
+                color = {COLORS.lightGreen}
+                containerStyle={styles.nextButton}
+                titleStyle={styles.nextText}
+                radius={8}
+            />
+            <Button
+                title="חזור"
+                onPress={handleBack}
+                color = {COLORS.white}
+                containerStyle={styles.backButton}
+                titleStyle={styles.backText}
+                radius={8}
+            />
         </ScrollView>
     )
         ;

@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, Button, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
-import {Input} from 'react-native-elements';
-import {TextInput} from 'react-native-paper';
-import {CheckBox, ListItem} from '@rneui/themed';
-import {RadioButton} from 'react-native-paper';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {CheckBox, Button} from '@rneui/themed';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setFoodPreference} from "../redux/actions";
@@ -22,25 +19,6 @@ const FoodPreferences = (props) => {
     const [without_lactose2, setLactose] = useState(without_lactose);
     const [gluten_free2, setGluten] = useState(gluten_free);
     const [kosher2, setKosher] = useState(kosher);
-
-    // const setVegan = (vegan) => {
-    //     console.log(vegan)
-    //     props.preferences.vegan = vegan
-    //     console.log(props.preferences.vegan)
-    // }
-    // const setVegetarian = (value) => {
-    //     vegetarian = value;
-    //     console.log(value);
-    // }
-    // const setLactose = (without_lactose) => {
-    //     props.preferences.without_lactose = without_lactose
-    // }
-    // const setGluten = (gluten_free) => {
-    //     props.preferences.gluten_free = gluten_free
-    // }
-    // const setKosher = (kosher) => {
-    //     props.preferences.kosher = kosher
-    // }
 
     const handleFood = () => {
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
@@ -104,8 +82,23 @@ const FoodPreferences = (props) => {
                     textStyle={styles.optionText}
                     checkedColor={COLORS.lightGreen}
                 />
-                <Button title="test" onPress={handleFood}/>
             </View>
+            <Button
+                title="סיים"
+                onPress={handleFood}
+                color = {COLORS.lightGreen}
+                containerStyle={styles.nextButton}
+                titleStyle={styles.nextText}
+                radius={8}
+            />
+            <Button
+                title="חזור"
+                onPress={handleBack}
+                color = {COLORS.white}
+                containerStyle={styles.backButton}
+                titleStyle={styles.backText}
+                radius={8}
+            />
         </ScrollView>
     )
         ;
@@ -133,7 +126,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginHorizontal: 10,
         marginVertical: 10,
-        // justifyContent: "flex-start"
     },
     optionText: {
         fontFamily: 'Rubik-Regular',
