@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, getUserDetails} from "../redux/actions";
 
 export default function PlannerScreen(props) {
-    const { meals, consumed_calories, date, total_calories, score } = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, date, total_calories, score, user_name} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -18,6 +18,7 @@ export default function PlannerScreen(props) {
 
   return (
     <View style={styles.container}>
+        <Text style={styles.textCals}>{user_name} שלום</Text>
         <Text style={styles.textCals}>{score} פרחים</Text>
       <Text style={styles.textCals}>{consumed_calories}/{total_calories} קלוריות</Text>
       <Text style={styles.textDate}>

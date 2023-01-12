@@ -17,3 +17,20 @@ const connection = await MySql.connection();
   return returnValue
 }
 
+exports.upload = async function (csvData) {
+    const connection = await MySql.connection();
+    try {
+        await connection.query("START TRANSACTION");
+        let query = 'INSERT INTO Recipes VALUES ?';
+
+        await connection.query(query, [csvData], (error, response) => {
+            console.log(error || response)});
+    } catch (err) {
+        await connection.query("ROLLBACK");
+        console.log('ROLLBACK at querySignUp', err);
+        throw err;
+    } finally {
+        await connection.release();
+    }
+}
+

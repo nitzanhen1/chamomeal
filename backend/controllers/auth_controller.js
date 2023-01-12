@@ -25,8 +25,12 @@ router.post("/login", async (req, res, next) => {
         const user = await auth_service.login(username, password);
         // Set cookie
         req.session.user_id = user.user_id;
-        //return cookie
-        res.status(200).send({ message: "successful login", success: true });
+        if(user['EER']==null){ //not update preferences
+            res.status(202).send({ message: "login without preferences", success: true });
+        }
+        else { //return cookie
+            res.status(200).send({message: "successful login", success: true});
+        }
     } catch (error) {
         next(error);
     }

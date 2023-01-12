@@ -1,4 +1,7 @@
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
+// import {Button} from 'react-native-elements';
+import { Button} from '@rneui/themed';
+
 import React, {useState} from 'react'
 import PersonalDetails from "../components/PersonalDetails";
 import PhysicalActivity from "../components/PhysicalActivity";
@@ -6,7 +9,7 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {updateUserPreferences} from "../redux/actions";
+import {getUserDetails, updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();

@@ -4,7 +4,6 @@ import BottomNavigator from './app/components/BottomNavigator';
 import COLORS from './app/consts/colors';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import {useFonts} from 'expo-font';
 import { I18nManager } from "react-native"
 I18nManager.forceRTL(true);
@@ -12,6 +11,7 @@ I18nManager.allowRTL(true);
 import { Provider } from 'react-redux';
 import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
+import PlannerScreen from "./app/screens/PlannerScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 
@@ -49,7 +49,8 @@ export default function App() {
                     <Stack.Navigator
                         initialRouteName="Login"
                         screenOptions={{
-                            headerBackVisible: 'false' ,
+                            // headerShown: false,
+                            headerBackVisible: false ,
                             headerTitleAlign: 'center',
                             headerStyle: {
                                 backgroundColor: COLORS.primary
@@ -59,13 +60,21 @@ export default function App() {
                                 fontSize: 25,
                                 fontWeight: 'bold'
                             },
-                            headerTitle: props => <LogoTitle {...props}
-                            />
+                            // headerTitle: props => <LogoTitle {...props}
+                            // />
                         }}>
-                        <Stack.Screen name="Login" component={LoginScreen}/>
-                        <Stack.Screen name="BottomNavigator" component={BottomNavigator}/>
-                        <Stack.Screen name="RegisterScreen" component={RegisterScreen}/>
-                        <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen}/>
+                        <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
+                        <Stack.Screen name="PlannerScreen" component={PlannerScreen}/>
+                        <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown:false}}/>
+                        <Stack.Screen name="RegisterScreen" component={RegisterScreen}
+                                      options={{
+                                          headerTitle:'הרשמה',
+                                          headerBackVisible: true,
+                                          headerTitleAlign: "left",
+                                          headerStyle: { backgroundColor : COLORS.white},
+                                          headerTintColor: COLORS.grey
+                                      }}/>
+                        <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen} options={{headerShown:false}}/>
                     </Stack.Navigator>
                 </SafeAreaView>
             </NavigationContainer>

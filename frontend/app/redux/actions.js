@@ -3,11 +3,12 @@ import axios from "axios";
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
 export const GET_USER_DETAILS = 'GET_USER_DETAILS';
-export const SET_VEGETARIAN = 'SET_VEGETARIAN';
 export const SET_FOOD_PREFERENCE = 'SET_FOOD_PREFERENCE';
 export const SET_ACTIVITY_PREFERENCE = 'SET_ACTIVITY_PREFERENCE';
 export const SET_PERSONAL_DETAILS = 'SET_PERSONAL_DETAILS';
 export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
+export const GET_USER_PREFERENCES = 'GET_USER_PREFERENCES';
+export const LOGOUT = 'LOGOUT';
 
 const API_URL = 'http://10.0.2.2:3000';
 // const API_URL = `http://localhost:3000`;
@@ -54,6 +55,71 @@ export const markAsEaten = (meal_type, eaten, meal_calories, meal_score, date) =
             });
         }
     } catch (error) {
+        console.log(error);
+    }
+}
+export const register = (username, first_name, last_name, password, email) => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/register`,
+                    {
+                        username: username,
+                        first_name: first_name,
+                        last_name: last_name,
+                        password: password,
+                        email: email,
+                    });
+                if(response.status==201){
+                    return true;}
+            }catch (error){
+                return false;
+            }
+        }
+    }catch (error) {
+        return false;
+    }
+}
+
+export const login = (username, password) => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/login`,
+                    {
+                        username: username,
+                        password: password,
+                    });
+                if(response.status==200){
+                    return true;
+                }
+                else if(response.status==200){
+                    return false;
+                }
+            }catch (error){
+                throw error;
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+export const logout = () => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/logout`);
+                if(response.status==200){
+                    dispatch({
+                        type: LOGOUT,
+                    });
+                    return true;
+                }
+            }catch (error){
+                return false;
+            }
+        }
+    }catch (error) {
         console.log(error);
     }
 }
