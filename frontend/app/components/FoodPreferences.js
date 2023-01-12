@@ -23,14 +23,12 @@ const FoodPreferences = (props) => {
     async function handleFood(){
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
         await dispatch(setFoodPreference(foodData));
-        // console.log("after"+ vegan, vegetarian, without_lactose, gluten_free, kosher)
-        props.handleFinish();
+        props.handleFinish(foodData);
     }
 
     const handleBack = () => {
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
         dispatch(setFoodPreference(foodData));
-        // console.log("after"+ vegan, vegetarian, without_lactose, gluten_free, kosher)
         props.navigation.navigate('PhysicalActivity')
     };
 
