@@ -5,36 +5,31 @@ import PhysicalActivity from "../components/PhysicalActivity";
 import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
 
 const QuestionnaireScreen = ({navigation}) => {
-    const { birthDate,
+    const { date_of_birth,
         height,
         weight,
         gender,
-        pa,
+        physical_activity,
         vegan,
         vegetarian,
         without_lactose,
         gluten_free,
         kosher} = useSelector(state => state.mealReducer);
-
+    const dispatch = useDispatch();
     const [step, setStep] = useState(1);
 
-    function handlePress() {
-        // navigation.navigate('BottomNavigator');
-        setStep(step +1)
-    }
-    function handleBack() {
-        // navigation.navigate('BottomNavigator');
-        setStep(step -1)
-    }
     function handleFinish() {
-        // navigation.navigate('BottomNavigator');
-        // setStep(step -1)
+        console.log('hi')
+        console.log(date_of_birth, height, weight, gender, physical_activity, vegan, vegetarian, without_lactose, gluten_free, kosher)
+        dispatch(updateUserPreferences(date_of_birth, height, weight, gender, physical_activity, vegan, vegetarian, without_lactose, gluten_free, kosher));
+        navigation.navigate('BottomNavigator');
     }
 
     return (
@@ -67,7 +62,6 @@ const styles = StyleSheet.create({
     formContainer: {
         height: "83%",
         width: "97%",
-        // paddingHorizontal: 5,
         backgroundColor: colors.grey,
         marginTop: 10,
     },

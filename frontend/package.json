@@ -20,7 +20,6 @@
     "@formatjs/intl-relativetimeformat": "^11.1.8",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/checkbox": "^0.5.14",
-    "@react-native-community/datetimepicker": "6.5.2",
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.4.1",

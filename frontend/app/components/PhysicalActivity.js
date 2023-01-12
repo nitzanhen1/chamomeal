@@ -8,8 +8,8 @@ import { Button} from '@rneui/themed';
 
 
 const PhysicalActivity = ({navigation}) => {
-    const {pa} = useSelector(state => state.mealReducer);
-    const [pa2, setPA] = useState(pa);
+    const {physical_activity} = useSelector(state => state.mealReducer);
+    const [pa2, setPA] = useState(physical_activity);
     const dispatch = useDispatch();
 
     const handlePA = () => {

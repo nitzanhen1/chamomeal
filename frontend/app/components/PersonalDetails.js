@@ -11,10 +11,10 @@ const PersonalDetails = ({navigation}) => {
     const {
         height,
         weight,
-        birthDate,
+        date_of_birth,
         gender} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const [newBirthDate, setBirthDate] = useState(birthDate);
+    const [newBirthDate, setBirthDate] = useState(date_of_birth);
     const [newHeight, setHeight] = useState(height);
     const [newWeight, setWeight] = useState(weight);
     const [newGender, setGender] = useState(gender);

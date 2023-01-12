@@ -20,15 +20,17 @@ const FoodPreferences = (props) => {
     const [gluten_free2, setGluten] = useState(gluten_free);
     const [kosher2, setKosher] = useState(kosher);
 
-    const handleFood = () => {
+    async function handleFood(){
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
-        dispatch(setFoodPreference(foodData));
+        await dispatch(setFoodPreference(foodData));
+        // console.log("after"+ vegan, vegetarian, without_lactose, gluten_free, kosher)
         props.handleFinish();
-    };
+    }
 
     const handleBack = () => {
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
         dispatch(setFoodPreference(foodData));
+        // console.log("after"+ vegan, vegetarian, without_lactose, gluten_free, kosher)
         props.navigation.navigate('PhysicalActivity')
     };
 

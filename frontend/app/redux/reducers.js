@@ -5,7 +5,7 @@ import {
     SET_VEGETARIAN,
     SET_FOOD_PREFERENCE,
     SET_ACTIVITY_PREFERENCE,
-    SET_PERSONAL_DETAILS
+    SET_PERSONAL_DETAILS, UPDATE_USER_PREFERENCES
 } from './actions';
 
 const initialState = {
@@ -18,18 +18,16 @@ const initialState = {
         {title: 'ארוחת בוקר', mealData:[]},
         {title: 'ארוחת צהריים', mealData: []},
         {title: 'ארוחת ערב',mealData:[]}],
-    preferences: {
-        birthDate: '',
-        height: '',
-        weight: '',
-        gender: '',
-        pa: '',
-        vegan: false,
-        vegetarian: false,
-        without_lactose: false,
-        gluten_free: false,
-        kosher: false
-    }
+    date_of_birth: '',
+    height: 0,
+    weight: 0,
+    gender: '',
+    physical_activity: '',
+    vegan: false,
+    vegetarian: false,
+    without_lactose: false,
+    gluten_free: false,
+    kosher: false
 }
 
 function mealReducer(state = initialState, action) {
@@ -46,9 +44,11 @@ function mealReducer(state = initialState, action) {
             return { ...state, vegan: action.vegan, vegetarian: action.vegetarian, without_lactose: action.without_lactose,
                 gluten_free: action.gluten_free, kosher: action.kosher};
         case SET_ACTIVITY_PREFERENCE:
-            return { ...state, pa: action.pa};
+            return { ...state, physical_activity: action.physical_activity};
         case SET_PERSONAL_DETAILS:
-            return { ...state, birthDate: action.birthDate, height:action.height, weight: action.weight, gender: action.gender};
+            return { ...state, date_of_birth: action.date_of_birth, height:action.height, weight: action.weight, gender: action.gender};
+        case UPDATE_USER_PREFERENCES:
+            return state;
         default:
             return state;
     }
