@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {register} from "../redux/actions";
 import {useDispatch} from "react-redux";
-import handleSubmitLoginPress from "./LoginScreen";
 
 const RegisterScreen = ({navigation}) => {
     const dispatch = useDispatch();
