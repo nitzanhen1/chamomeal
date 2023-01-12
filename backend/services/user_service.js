@@ -1,6 +1,12 @@
 const DButils = require("../data/db_utils");
 const moment = require('moment');
 
+async function getPreferences(user_id){
+    const cols = "gender, date_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER"
+    const preferences = await getUserFromDB(user_id, cols);
+    return preferences
+}
+
 async function updatePreferences(user_id, preferences ){
     let {gender, date_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose} = preferences;
     const EER = await calculateEER(gender, date_of_birth, height, weight, physical_activity)
@@ -38,26 +44,27 @@ async function calculatePALevel(age, gender, physical_activity){
     }
 }
 
-async function getUserScoreFromDB(user_id) {
-    let user_score = await DButils.execQuery(`SELECT score FROM Users WHERE user_id = '${user_id}'`);
-    return user_score[0]['score'];
-}
 
-async function getUserDetails(user_id){
-    let user = await DButils.execQuery(`SELECT * FROM Users WHERE user_id = '${user_id}'`);
-    if(user.length!=0) {
-        user =user[0]
-        let user_details = {
-            name: user['first_name'],
-            total_score: user['score'],
-            EER: user['EER'],
-        }
-        return user_details
+async function getUserFromDB(user_id, cols="*") {
+    let user = await DButils.execQuery(`SELECT ${cols} FROM Users WHERE user_id = '${user_id}'`);
+    if(user.length>0) {
+        return user[0];
     }
     throw {status: 404, message: "user doesn't exist"};
 }
 
+async function getUserDetails(user_id){
+    let user = await getUserFromDB(user_id);
+    let user_details = {
+        name: user['first_name'],
+        total_score: user['score'],
+        EER: user['EER'],
+    }
+    return user_details
+}
+
 
 exports.updatePreferences = updatePreferences
-exports.getUserScoreFromDB = getUserScoreFromDB
+exports.getUserFromDB = getUserFromDB
 exports.getUserDetails = getUserDetails
+exports.getPreferences = getPreferences

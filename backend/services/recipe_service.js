@@ -21,9 +21,12 @@ async function getDailyMenu(user_id, date){
 }
 
 async function generateDailyMenu(user_id, date){
-    let breakfastRecipesId = await DButils.execQuery(`select recipe_id from Recipes where breakfast=true`);
-    let lunchRecipesId = await DButils.execQuery(`select recipe_id from Recipes where lunch=true`);
-    let dinnerRecipesId = await DButils.execQuery(`select recipe_id from Recipes where dinner=true`);
+    const user = await user_service.getUserFromDB(user_id);
+    let preferences = `kosher>=${user['kosher']} and vegetarian>=${user['vegetarian']} and vegan>=${user['vegan']} and gluten_free>=${user['gluten_free']} and without_lactose>=${user['without_lactose']}`
+
+    let breakfastRecipesId = await DButils.execQuery(`select recipe_id from Recipes where breakfast=1 and ${preferences}`);
+    let lunchRecipesId = await DButils.execQuery(`select recipe_id from Recipes where lunch=1 and  ${preferences}`);
+    let dinnerRecipesId = await DButils.execQuery(`select recipe_id from Recipes where dinner=1 and ${preferences}`);
     let randomBreakfastId, randomLunchId, randomDinnerId;
     do {
         randomBreakfastId = breakfastRecipesId[Math.floor(Math.random() * breakfastRecipesId.length)]['recipe_id'];
@@ -56,7 +59,7 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
     let dailyMenu = await getDailyMenuFromDB(user_id, date);
     if(dailyMenu!=null) {
         let new_consumed_calories =  dailyMenu['consumed_calories']
-        let new_score = await user_service.getUserScoreFromDB(user_id)
+        let new_score = (await user_service.getUserFromDB(user_id))['score']
         if((!dailyMenu[meal_type_eaten])&&(eaten)){
             new_consumed_calories+=meal_calories
             new_score+=meal_score;

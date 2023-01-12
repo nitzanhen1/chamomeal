@@ -41,4 +41,14 @@ router.post("/updatePreferences", async (req, res, next) => {
     }
 })
 
+router.get("/getPreferences", async (req, res, next) => {
+    try {
+        const user_id = req.user_id;
+        const preferences = await user_service.getPreferences(user_id)
+        res.status(200).send(preferences);
+    } catch (error) {
+        next(error);
+    }
+})
+
 module.exports = router;

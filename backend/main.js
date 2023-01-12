@@ -54,6 +54,7 @@ var port = process.env.PORT || "3000"; //local=3000 remote=80
 const user = require("./controllers/user_controller");
 const recipes = require("./controllers/recipe_controller");
 const auth = require("./controllers/auth_controller");
+const upload_data = require("./data/upload_data");
 // const search = require("./routes/search");
 
 
@@ -82,6 +83,7 @@ app.get("/session", (req, res) => res.send(req.session));
 app.use("/user", user);
 app.use("/recipes", recipes);
 app.use("/auth", auth);
+app.use("/data", upload_data);
 // app.use("/search", search);
 
 // Default router

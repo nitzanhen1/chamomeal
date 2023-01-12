@@ -3,9 +3,8 @@ import axios from "axios";
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
 export const GET_USER_DETAILS = 'GET_USER_DETAILS';
-export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
-export const REGISTER = 'REGISTER';
-export const LOGIN = 'LOGIN';
+export const GET_USER_PREFERENCES = 'GET_USER_PREFERENCES';
+export const LOGOUT = 'LOGOUT';
 
 const date = '2023-01-05';
 // const API_URL = 'http://10.0.2.2:3000';
@@ -57,6 +56,25 @@ export const login = (username, password) => {
         console.log(error);
     }
 }
+export const logout = () => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/logout`);
+                if(response.status==200){
+                    dispatch({
+                        type: LOGOUT,
+                    });
+                    return true;
+                }
+            }catch (error){
+                return false;
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
 
 export const getUserDetails = () => {
     try{
@@ -91,9 +109,6 @@ export const updateUserPreferences = (preferences) => {
                     without_lactose:true,
                     physical_activity:"low active"
                 });
-            dispatch({
-                type: UPDATE_USER_PREFERENCES
-            });
         }
     }catch (error) {
         console.log(error);
