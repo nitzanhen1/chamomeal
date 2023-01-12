@@ -9,8 +9,8 @@ export const SET_ACTIVITY_PREFERENCE = 'SET_ACTIVITY_PREFERENCE';
 export const SET_PERSONAL_DETAILS = 'SET_PERSONAL_DETAILS';
 export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
 
-// const API_URL = 'http://10.0.2.2:3000';
-const API_URL = `http://localhost:3000`;
+const API_URL = 'http://10.0.2.2:3000';
+// const API_URL = `http://localhost:3000`;
 
 export const getDailyMenu = (date) => {
     try{
@@ -33,12 +33,13 @@ export const getDailyMenu = (date) => {
         console.log(error);
     }
 }
-export const markAsEaten = (meal_type, eaten, meal_calories, meal_score) => {
+export const markAsEaten = (meal_type, eaten, meal_calories, meal_score, date) => {
     try {
         return async dispatch => {
+            const date_today = date.toISOString().substring(0, 10);
             const response = await axios.post(`${API_URL}/recipes/markAsEaten`,
                 {
-                    date: date,
+                    date: date_today,
                     meal_type: meal_type,
                     eaten: eaten,
                     meal_calories: meal_calories,
