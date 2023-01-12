@@ -151,6 +151,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    nextButton: {
+        marginTop: 10,
+        width: '85%',
+        height: 65,
+        alignSelf: "center"
+    },
+    nextText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 20
+    }
 });
 
 export default PersonalDetails;

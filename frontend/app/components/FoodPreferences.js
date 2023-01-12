@@ -6,10 +6,10 @@ import {CheckBox, ListItem} from '@rneui/themed';
 import {RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {setFoodPreference, setVegetarian} from "../redux/actions";
-//vegan, vegetarian, without_lactose, gluten_free, kosher, onCheckVegan
-// const FoodPreferences = (props) => {
-const FoodPreferences = () => {
+import {setFoodPreference} from "../redux/actions";
+import PhysicalActivity from "./PhysicalActivity";
+
+const FoodPreferences = (props) => {
     const {
         vegan,
         vegetarian,
@@ -44,8 +44,14 @@ const FoodPreferences = () => {
 
     const handleFood = () => {
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
-        // props.onSubmitFood(foodData);
-        dispatch(setFoodPreference(foodData))
+        dispatch(setFoodPreference(foodData));
+        props.handleFinish();
+    };
+
+    const handleBack = () => {
+        const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
+        dispatch(setFoodPreference(foodData));
+        props.navigation.navigate('PhysicalActivity')
     };
 
 
@@ -142,6 +148,29 @@ const styles = StyleSheet.create({
         borderColor: COLORS.grey,
         marginVertical: 10,
         borderRadius: 10,
+    },
+    nextButton: {
+        marginTop: 10,
+        width: '85%',
+        height: 65,
+        alignSelf: "center"
+
+    },
+    nextText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 20
+    },
+    backButton: {
+        width: '85%',
+        height: 45,
+        alignSelf: "center",
+        borderWidth: 1,
+        borderColor: COLORS.lightGreen
+    },
+    backText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 20,
+        color: COLORS.grey
     },
 });
 

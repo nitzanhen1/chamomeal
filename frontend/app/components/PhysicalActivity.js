@@ -109,6 +109,28 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderRadius: 10,
     },
+    nextButton: {
+        marginTop: 10,
+        width: '85%',
+        height: 65,
+        alignSelf: "center"
+    },
+    nextText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 20
+    },
+    backButton: {
+        width: '85%',
+        height: 45,
+        alignSelf: "center",
+        borderWidth: 1,
+        borderColor: COLORS.lightGreen
+    },
+    backText: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 20,
+        color: COLORS.grey
+    },
 });
 
 export default PhysicalActivity;
