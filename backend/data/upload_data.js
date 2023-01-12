@@ -19,9 +19,6 @@ async function UploadCsvDataToMySQL(filePath){
 
             await DButils.upload(csvData);
 
-            // delete file after saving to MySQL database
-            // -> you can comment the statement to see the uploaded CSV file.
-            fs.unlinkSync(filePath)
         });
 
     stream.pipe(csvStream);
@@ -29,7 +26,7 @@ async function UploadCsvDataToMySQL(filePath){
 router.post("/uploadData", async (req, res, next) => {
     try {
         await UploadCsvDataToMySQL(req.body.filename);
-        res.status(200).send({message:"ok"});
+        // res.status(200).send({message:"ok"});
     } catch (error) {
         next(error);
     }
