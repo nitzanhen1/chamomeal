@@ -11,6 +11,8 @@ import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {getUserDetails, updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {HeaderBackButton} from "@react-navigation/elements";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -39,11 +41,49 @@ const QuestionnaireScreen = ({navigation}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:false
+                        headerShown:true
                     }}>
-                    <Stack.Screen name="PersonalDetails" component={PersonalDetails}/>
-                    <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}/>
-                    <Stack.Screen name="FoodPreferences">
+                    <Stack.Screen name="PersonalDetails" component={PersonalDetails}
+                                  options={{
+                                      headerTitle:"פרופיל פיזיולוגי",
+                                      headerTitleAlign: "left",
+                                      headerTitleStyle:
+                                          {
+                                              fontFamily: 'Rubik-Bold',
+                                              fontWeight: "600",
+                                              fontSize: 27,
+                                              color: COLORS.title,
+                                          },
+                                      headerBackVisible: false,
+                                  }}/>
+                    <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
+                                  options={{
+                                      headerTitle:"פעילות גופנית",
+                                      headerTitleAlign: "left",
+                                      headerTitleStyle:
+                                          {
+                                              fontFamily: 'Rubik-Bold',
+                                              fontWeight: "600",
+                                              fontSize: 27,
+                                              color: COLORS.title,
+                                          },
+                                      headerBackVisible: false,
+                                  }}
+                    />
+                    <Stack.Screen name="FoodPreferences"
+                                  options={{
+                                      headerTitle:"העדפות תזונתיות",
+                                      headerTitleAlign: "left",
+                                      headerTitleStyle:
+                                          {
+                                              fontFamily: 'Rubik-Bold',
+                                              fontWeight: "600",
+                                              fontSize: 27,
+                                              color: COLORS.title,
+                                          },
+                                      headerBackVisible: false,
+                                  }}
+                    >
                         {(props) => <FoodPreferences {...props} handleFinish={(foodData)=>handleFinish(foodData)} />}
                     </Stack.Screen>
                 </Stack.Navigator>

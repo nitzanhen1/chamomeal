@@ -7,7 +7,7 @@ const COLORS = {
     darkGreen: '#4f6e45',
     light: '#E5E5E5',
     grey: '#908e8c',
-    darkGrey: '#4b4747',
+    darkGrey: '#706a6a',
     divider: '#b0b0ad',
     carbs: '#ffd94f',
     fats: '#4fff5e',

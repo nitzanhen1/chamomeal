@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {RadioButton} from 'react-native-paper';
+import {HelperText, RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPhysicalActivity} from "../redux/actions";
@@ -12,9 +12,14 @@ const PhysicalActivity = ({navigation}) => {
     const [pa2, setPA] = useState(physical_activity);
     const dispatch = useDispatch();
 
+    const [PAError, setPAError] = useState('');
+
+
     const handlePA = () => {
-        dispatch(setPhysicalActivity(pa2))
-        navigation.navigate('FoodPreferences')
+        if (validatePA()){
+            dispatch(setPhysicalActivity(pa2))
+            navigation.navigate('FoodPreferences')
+        }
     };
 
     const handleBack = () => {
@@ -22,11 +27,20 @@ const PhysicalActivity = ({navigation}) => {
         navigation.navigate('PersonalDetails')
     };
 
+    function validatePA(){
+        if (!pa2) {
+            setPAError('שדה זה הוא חובה');
+            return false
+        } else {
+            setPAError('')
+            return true
+        }
+    }
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>
-                פעילות גופנית
-            </Text>
+            {/*<Text style={styles.title}>*/}
+            {/*    פעילות גופנית*/}
+            {/*</Text>*/}
             <Text style={styles.question}>
                 עד כמה אתם פעילים גופנית?
             </Text>
@@ -49,6 +63,9 @@ const PhysicalActivity = ({navigation}) => {
                             <RadioButton color={COLORS.lightGreen} value="very active"/>
                             <Text style={styles.optionText}>פעיל/ה במידה רבה</Text>
                         </View>
+                    <HelperText type="error" visible={!pa2}>
+                        {PAError}
+                    </HelperText>
                 </View>
             </RadioButton.Group>
             <Button
@@ -77,19 +94,20 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: COLORS.white,
     },
-    title: {
-        fontFamily: 'Rubik-Bold',
-        fontWeight: "600",
-        fontSize: 27,
-        color: COLORS.title,
-        marginHorizontal: 10,
-
-    },
+    // title: {
+    //     fontFamily: 'Rubik-Bold',
+    //     fontWeight: "600",
+    //     fontSize: 27,
+    //     color: COLORS.title,
+    //     marginHorizontal: 10,
+    //
+    // },
     question: {
         fontFamily: 'Rubik-Regular',
         fontWeight: '700',
-        color: COLORS.grey,
+        color: COLORS.darkGrey,
         marginHorizontal: 10,
+        marginTop:10
 
     },
     inputText: {
@@ -102,7 +120,7 @@ const styles = StyleSheet.create({
 
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
-        color: COLORS.grey,
+        color: COLORS.darkGrey,
         marginHorizontal: 12,
     },
     paContainer: {
@@ -118,19 +136,19 @@ const styles = StyleSheet.create({
     optionText: {
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
-        color: COLORS.grey,
+        color: COLORS.darkGrey,
     },
     radioButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         height:50,
         borderWidth:1,
-        borderColor: COLORS.grey,
+        borderColor: COLORS.darkGrey,
         marginVertical: 10,
         borderRadius: 10,
     },
     nextButton: {
-        marginTop: 10,
+        marginTop: 0,
         width: '85%',
         height: 65,
         alignSelf: "center"
@@ -149,7 +167,7 @@ const styles = StyleSheet.create({
     backText: {
         fontFamily: 'Rubik-Bold',
         fontSize: 20,
-        color: COLORS.grey
+        color: COLORS.darkGrey
     },
 });
 

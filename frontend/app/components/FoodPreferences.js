@@ -35,9 +35,6 @@ const FoodPreferences = (props) => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>
-                העדפות תזונתיות
-            </Text>
             <Text style={styles.question}>
                 באפשרותכם לסמן יותר מהעדפה אחת
             </Text>
@@ -119,8 +116,9 @@ const styles = StyleSheet.create({
     question: {
         fontFamily: 'Rubik-Regular',
         fontWeight: '700',
-        color: COLORS.grey,
+        color: COLORS.darkGrey,
         marginHorizontal: 10,
+        marginTop: 10
     },
     prefContainer: {
         flexDirection: 'column',
@@ -130,14 +128,14 @@ const styles = StyleSheet.create({
     optionText: {
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
-        color: COLORS.grey,
+        color: COLORS.darkGrey,
     },
     checkContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         height:50,
         borderWidth:1,
-        borderColor: COLORS.grey,
+        borderColor: COLORS.darkGrey,
         marginVertical: 10,
         borderRadius: 10,
     },
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
     backText: {
         fontFamily: 'Rubik-Bold',
         fontSize: 20,
-        color: COLORS.grey
+        color: COLORS.darkGrey
     },
 });
 
