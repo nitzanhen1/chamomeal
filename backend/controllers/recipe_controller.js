@@ -45,4 +45,27 @@ router.post("/markAsEaten", async (req, res, next) =>{
     }
 });
 
+router.post("/addToFavorites", async (req, res, next)=>{
+    try{
+        const user_id = req.user_id;
+        const recipe_id = req.body.recipe_id;
+        const success = await recipe_service.addToFavorites(user_id, recipe_id)
+        if(success){
+            res.status(201).send({message: "recipe added to favorite successfully", success: true});
+        }
+    }catch(error){
+        next(error);
+    }
+});
+
+router.get("/getFavoritesRecipes", async (req, res, next)=>{
+    try{
+        const user_id = req.user_id;
+        const favorites_recipes = await recipe_service.getFavoritesRecipes(user_id);
+        res.status(200).send(favorites_recipes);
+    }catch(error){
+        next(error);
+    }
+});
+
 module.exports = router;
