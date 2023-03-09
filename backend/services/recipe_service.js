@@ -92,6 +92,23 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
     }
 }
 
+async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_calories) {
+    try {
+        const user = await user_service.getUserFromDB(user_id);
+        let preferences = `kosher>=${user['kosher']} and vegetarian>=${user['vegetarian']} and vegan>=${user['vegan']} and gluten_free>=${user['gluten_free']} and without_lactose>=${user['without_lactose']}`
+        let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, preferences);
+        let random_recipe_id;
+        do {
+            random_recipe_id = recipes_ids[Math.floor(Math.random() * recipes_ids.length)]['recipe_id'];
+        } while (recipe_id === random_recipe_id);
+        await DButils.execQuery(`update MealPlanHistory set ${meal_type}='${recipe_id}' where user_id = '${user_id}' and menu_date = '${date}'`);
+        return getDailyMenu(user_id, date)
+    }
+    catch (err){
+        throw err;
+    }
+}
+
 async function getRecipesIdsArrayByFilters(meal_type, calories, preferences){
     let threshold = 50;
     let recipes_ids_array = [];
@@ -151,3 +168,4 @@ exports.markAsEaten = markAsEaten
 exports.getFavoritesRecipes = getFavoritesRecipes
 exports.addToFavorites = addToFavorites
 exports.deleteFromFavorites = deleteFromFavorites
+exports.replaceRecipeByRandom = replaceRecipeByRandom

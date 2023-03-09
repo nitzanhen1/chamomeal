@@ -45,6 +45,20 @@ router.post("/markAsEaten", async (req, res, next) =>{
     }
 });
 
+router.post("/replaceRecipeByRandom", async (req, res, next) =>{
+    try{
+        const user_id = req.user_id;
+        const recipe_id = req.recipe_id;
+        const date = req.body.date;
+        const meal_type = req.body.meal_type;
+        const meal_calories = req.body.meal_calories;
+        const dailyMenu = await recipe_service.replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_calories);
+        res.status(201).send(dailyMenu);
+    }catch(error){
+        next(error);
+    }
+});
+
 router.post("/addToFavorites", async (req, res, next)=>{
     try{
         const user_id = req.user_id;
