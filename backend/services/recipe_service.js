@@ -28,35 +28,39 @@ async function generateDailyMenu(user_id, date){
         let breakfast_calories = ((Math.floor(Math.random() * (32 - 28 + 1)) + 28) / 100) * EER;
         let lunch_calories = ((Math.floor(Math.random() * (42 - 38 + 1)) + 38) / 100) * EER;
         let dinner_calories = EER - breakfast_calories - lunch_calories;
-        let breakfastRecipesId = await DButils.execQuery(`select recipe_id from Recipes where breakfast=1 and calories between ${breakfast_calories - 50} and ${breakfast_calories + 50} and ${preferences}`);
-        let lunchRecipesId = await DButils.execQuery(`select recipe_id from Recipes where lunch=1 and calories between ${lunch_calories - 50} and ${lunch_calories + 50} and ${preferences}`);
-        let dinnerRecipesId = await DButils.execQuery(`select recipe_id from Recipes where dinner=1 and calories between ${dinner_calories - 50} and ${dinner_calories + 50} and ${preferences}`);
-        let randomBreakfastId, randomLunchId, randomDinnerId;
+
+        let breakfast_recipes_ids = await getRecipesIdsArrayByFilters("breakfast", breakfast_calories, preferences);
+        let lunch_recipes_ids = await getRecipesIdsArrayByFilters("lunch", lunch_calories, preferences);
+        let dinner_recipes_ids = await getRecipesIdsArrayByFilters("dinner", dinner_calories, preferences);
+        let random_breakfast_id, random_lunch_id, random_dinner_id;
         do {
-            randomBreakfastId = breakfastRecipesId[Math.floor(Math.random() * breakfastRecipesId.length)]['recipe_id'];
-            randomLunchId = lunchRecipesId[Math.floor(Math.random() * lunchRecipesId.length)]['recipe_id'];
-            randomDinnerId = dinnerRecipesId[Math.floor(Math.random() * dinnerRecipesId.length)]['recipe_id'];
-        } while (randomBreakfastId === randomLunchId || randomBreakfastId === randomDinnerId || randomLunchId === randomDinnerId);
+            random_breakfast_id = breakfast_recipes_ids[Math.floor(Math.random() * breakfast_recipes_ids.length)]['recipe_id'];
+            random_lunch_id = lunch_recipes_ids[Math.floor(Math.random() * lunch_recipes_ids.length)]['recipe_id'];
+            random_dinner_id = dinner_recipes_ids[Math.floor(Math.random() * dinner_recipes_ids.length)]['recipe_id'];
+        } while (random_breakfast_id === random_lunch_id || random_breakfast_id === random_dinner_id || random_lunch_id === random_dinner_id);
         let generatedMenu = {
             user_id: user_id,
             menu_date: date,
-            breakfast: randomBreakfastId,
-            lunch: randomLunchId,
-            dinner: randomDinnerId,
+            breakfast: random_breakfast_id,
+            lunch: random_lunch_id,
+            dinner: random_dinner_id,
             breakfast_eaten: false,
             lunch_eaten: false,
             dinner_eaten: false,
             consumed_calories: 0,
         }
-        await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}','${date}', '${randomBreakfastId}', '${randomLunchId}', '${randomDinnerId}', 0, 0, 0, 0)`);
+        await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}','${date}', '${random_breakfast_id}', '${random_lunch_id}', '${random_dinner_id}', 0, 0, 0, 0)`);
         return generatedMenu;
     }
     throw {status: 404, message: "Need to fill user's preferences"};
 }
 
 async function getRecipesByIdFromDB(array_recipes_id){
-    array_recipes_id = array_recipes_id.join()
-    let recipes = await DButils.execQuery(`select * from Recipes where recipe_id in (${array_recipes_id}) ORDER BY FIELD(recipe_id, ${array_recipes_id})`);
+    let recipes = [];
+    if(array_recipes_id.length>0) {
+        array_recipes_id = array_recipes_id.join()
+        recipes = await DButils.execQuery(`select * from Recipes where recipe_id in (${array_recipes_id}) ORDER BY FIELD(recipe_id, ${array_recipes_id})`);
+    }
     return recipes;
 }
 
@@ -88,6 +92,15 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
     }
 }
 
+async function getRecipesIdsArrayByFilters(meal_type, calories, preferences){
+    let threshold = 50;
+    let recipes_ids_array = [];
+    do{
+        recipes_ids_array = await DButils.execQuery(`select recipe_id from Recipes where ${meal_type}=1 and calories between ${calories - threshold} and ${calories + threshold} and ${preferences}`);
+        threshold+=20;
+    }while(recipes_ids_array.length>0)
+    return recipes_ids_array;
+}
 
 async function getFavoritesRecipes(user_id) {
     try {
@@ -101,11 +114,23 @@ async function getFavoritesRecipes(user_id) {
         throw {status: 404, message: err};
     }
 }
+
 async function addToFavorites(user_id, recipe_id) {
     try {
         let local_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        await DButils.execQuery(`insert into favorites values ('${user_id}','${recipe_id}','${local_time}')`);
-        return true;
+        let favorite_recipe = await DButils.execQuery(`select * from favorites where user_id='${user_id}' and recipe_id='${recipe_id}'`);
+        if (favorite_recipe.length=0)
+            await DButils.execQuery(`insert into favorites values ('${user_id}', '${recipe_id}', '${local_time}')`);
+        else
+            await DButils.execQuery(`update favorites set added_date='${local_time}' where user_id='${user_id}' and recipe_id='${recipe_id}'`);
+    }
+    catch (err){
+        throw {status: 404, message: err};
+    }
+}
+async function deleteFromFavorites(user_id, recipe_id) {
+    try {
+        await DButils.execQuery(`delete from favorites where user_id='${user_id}' and recipe_id='${recipe_id}'`);
     }
     catch (err){
         throw {status: 404, message: err};
@@ -125,3 +150,4 @@ exports.getDailyMenu = getDailyMenu
 exports.markAsEaten = markAsEaten
 exports.getFavoritesRecipes = getFavoritesRecipes
 exports.addToFavorites = addToFavorites
+exports.deleteFromFavorites = deleteFromFavorites

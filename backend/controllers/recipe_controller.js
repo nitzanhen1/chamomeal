@@ -49,9 +49,14 @@ router.post("/addToFavorites", async (req, res, next)=>{
     try{
         const user_id = req.user_id;
         const recipe_id = req.body.recipe_id;
-        const success = await recipe_service.addToFavorites(user_id, recipe_id)
-        if(success){
-            res.status(201).send({message: "recipe added to favorite successfully", success: true});
+        let success;
+        if(req.body.is_favorite){
+            await recipe_service.addToFavorites(user_id, recipe_id);
+            res.status(201).send({message: "recipe added to favorites successfully", success: true});
+        }
+        else{
+            await recipe_service.deleteFromFavorites(user_id, recipe_id);
+            res.status(201).send({message: "recipe removed from favorites successfully", success: true});
         }
     }catch(error){
         next(error);
