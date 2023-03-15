@@ -4,13 +4,7 @@ const auth_service = require("../services/auth_service");
 
 router.post("/register", async (req, res, next) => {
     try {
-        let user_details = {
-            username: req.body.username,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            password: req.body.password,
-            email: req.body.email,
-        }
+        let user_details = req.body
         await auth_service.register(user_details);
         res.status(201).send({ message: "new user created", success: true });
     } catch (error) {
@@ -20,8 +14,7 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
     try {
-        const username =  req.body.username;
-        const password = req.body.password;
+        const { username, password } = req.body;
         const user = await auth_service.login(username, password);
         // Set cookie
         req.session.user_id = user.user_id;

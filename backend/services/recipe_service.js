@@ -17,21 +17,20 @@ async function getDailyMenu(user_id, date) {
             consumed_calories: dailyMenu['consumed_calories'],
             total_calories: recipes[0].calories+recipes[1].calories+recipes[2].calories
     }
-    return fullDailyMenu;
 }
 
 async function generateDailyMenu(user_id, date) {
-    const user = await user_service.getUserFromDB(user_id);
-    let preferences = `kosher>=${user['kosher']} and vegetarian>=${user['vegetarian']} and vegan>=${user['vegan']} and gluten_free>=${user['gluten_free']} and without_lactose>=${user['without_lactose']}`
-    if(user['EER']!=null) {
-        let EER = user['EER'];
+    const prefs = user_service.getPreferences(user_id)
+    let prefs_query = `kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
+    if(prefs['EER']!=null) {
+        let EER = prefs['EER'];
         let breakfast_calories = ((Math.floor(Math.random() * (32 - 28 + 1)) + 28) / 100) * EER;
         let lunch_calories = ((Math.floor(Math.random() * (42 - 38 + 1)) + 38) / 100) * EER;
         let dinner_calories = EER - breakfast_calories - lunch_calories;
 
-        let breakfast_recipes_ids = await getRecipesIdsArrayByFilters("breakfast", breakfast_calories, preferences);
-        let lunch_recipes_ids = await getRecipesIdsArrayByFilters("lunch", lunch_calories, preferences);
-        let dinner_recipes_ids = await getRecipesIdsArrayByFilters("dinner", dinner_calories, preferences);
+        let breakfast_recipes_ids = await getRecipesIdsArrayByFilters("breakfast", breakfast_calories, prefs_query);
+        let lunch_recipes_ids = await getRecipesIdsArrayByFilters("lunch", lunch_calories, prefs_query);
+        let dinner_recipes_ids = await getRecipesIdsArrayByFilters("dinner", dinner_calories, prefs_query);
         let random_breakfast_id, random_lunch_id, random_dinner_id;
         do {
             random_breakfast_id = breakfast_recipes_ids[Math.floor(Math.random() * breakfast_recipes_ids.length)];
@@ -104,15 +103,6 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
             "new_score": new_score,
         }
 
-        await checkBadges(user_id, new_score).then(async (result) => {
-            console.log(result)
-            if (result[0] == true) {
-                console.log('changed', result[1])
-                updated_values["badges"] = result[1] //badges
-            }
-        })
-
-        console.log('updated_values', updated_values)
         return updated_values;
     } else {
         throw {status: 404, message: "daily menu doesn't exist"};
@@ -131,9 +121,9 @@ async function replaceRecipeById(user_id, recipe_id, date, meal_type) {
 
 async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_calories) {
     try {
-        const user = await user_service.getUserFromDB(user_id);
-        let preferences = `kosher>=${user['kosher']} and vegetarian>=${user['vegetarian']} and vegan>=${user['vegan']} and gluten_free>=${user['gluten_free']} and without_lactose>=${user['without_lactose']}`
-        let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, preferences);
+        const prefs = user_service.getPreferences(user_id)
+        let prefs_query = `kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
+        let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, prefs_query);
         let random_recipe_id;
         do {
             random_recipe_id = recipes_ids[Math.floor(Math.random() * recipes_ids.length)];
@@ -147,9 +137,9 @@ async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_c
 async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calories, meal_score) {
     try {
         let gt = ((meal_score===10) ? ">=" : ">")
-        const user = await user_service.getUserFromDB(user_id);
-        let preferences = `score ${gt} ${meal_score} and kosher>=${user['kosher']} and vegetarian>=${user['vegetarian']} and vegan>=${user['vegan']} and gluten_free>=${user['gluten_free']} and without_lactose>=${user['without_lactose']}`
-        let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, preferences);
+        const prefs = user_service.getPreferences(user_id)
+        let prefs_query = `score ${gt} ${meal_score} and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
+        let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, prefs_query);
         let random_recipe_id, random_index;
         let sustainable_recipes = [];
         do {
@@ -248,6 +238,7 @@ async function checkBadges(user_id, new_score) {
         }
     }
 }
+
 
 
 exports.getDailyMenu = getDailyMenu
