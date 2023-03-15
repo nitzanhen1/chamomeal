@@ -13,6 +13,13 @@ async function register(user_details) {
         `INSERT INTO Users (username, first_name, last_name, password, email, score)
          VALUES ('${user_details.username}', '${user_details.first_name}', '${user_details.last_name}', '${hash_password}', '${user_details.email}', 0)`
     );
+    let id = await DButils.execQuery(`SELECT user_id FROM Users WHERE username = '${user_details.username}'`);
+    console.log(id)
+    if (id){
+        await DButils.execQuery(
+            `INSERT INTO badges (user_id) VALUES ('${id[0].user_id}')`
+        );
+    }
 }
 
 async function login(username, password){

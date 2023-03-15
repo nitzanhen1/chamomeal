@@ -1,11 +1,11 @@
 const DButils = require("../data/db_utils");
 const user_service = require("./user_service");
 
-async function getDailyMenu(user_id, date){
+async function getDailyMenu(user_id, date) {
     let dailyMenu = await getDailyMenuFromDB(user_id, date)
-    if(dailyMenu==null)
+    if (dailyMenu == null)
         dailyMenu = await generateDailyMenu(user_id, date);
-    const recipes_id_array = [dailyMenu['breakfast'],dailyMenu['lunch'],dailyMenu['dinner']];
+    const recipes_id_array = [dailyMenu['breakfast'], dailyMenu['lunch'], dailyMenu['dinner']];
     let recipes = await getRecipesByIdFromDB(recipes_id_array);
     recipes[0].eaten = dailyMenu['breakfast_eaten'];
     recipes[1].eaten = dailyMenu['lunch_eaten'];
@@ -17,9 +17,10 @@ async function getDailyMenu(user_id, date){
             consumed_calories: dailyMenu['consumed_calories'],
             total_calories: recipes[0].calories+recipes[1].calories+recipes[2].calories
     }
+    return fullDailyMenu;
 }
 
-async function generateDailyMenu(user_id, date){
+async function generateDailyMenu(user_id, date) {
     const user = await user_service.getUserFromDB(user_id);
     let preferences = `kosher>=${user['kosher']} and vegetarian>=${user['vegetarian']} and vegan>=${user['vegan']} and gluten_free>=${user['gluten_free']} and without_lactose>=${user['without_lactose']}`
     if(user['EER']!=null) {
@@ -82,29 +83,38 @@ async function getRecipesByIdFromDB(array_recipes_id){
     return recipes;
 }
 
-async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score){
-    const meal_type_eaten = meal_type+'_eaten';
+async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score) {
+    const meal_type_eaten = meal_type + '_eaten';
     let dailyMenu = await getDailyMenuFromDB(user_id, date);
-    if(dailyMenu!=null) {
-        let new_consumed_calories =  dailyMenu['consumed_calories']
+    if (dailyMenu != null) {
+        let new_consumed_calories = dailyMenu['consumed_calories']
         let new_score = (await user_service.getUserFromDB(user_id))['score']
-        if((!dailyMenu[meal_type_eaten])&&(eaten)){
-            new_consumed_calories+=meal_calories
-            new_score+=meal_score;
-        }
-        else if((dailyMenu[meal_type_eaten])&&(!eaten)){
-            new_consumed_calories-=meal_calories;
-            new_score-=meal_score;
+        if ((!dailyMenu[meal_type_eaten]) && (eaten)) {
+            new_consumed_calories += meal_calories
+            new_score += meal_score;
+        } else if ((dailyMenu[meal_type_eaten]) && (!eaten)) {
+            new_consumed_calories -= meal_calories;
+            new_score -= meal_score;
         }
         await DButils.execQuery(`update MealPlanHistory set ${meal_type_eaten}='${Number(eaten)}', consumed_calories='${new_consumed_calories}' where user_id='${user_id}' and menu_date='${date}'`);
         await DButils.execQuery(`update Users set score='${new_score}' where user_id='${user_id}'`);
 
-        return {
-            "new_consumed_calories":new_consumed_calories,
-            "new_score":new_score
+        let updated_values = {
+            "new_consumed_calories": new_consumed_calories,
+            "new_score": new_score,
         }
-    }
-    else{
+
+        await checkBadges(user_id, new_score).then(async (result) => {
+            console.log(result)
+            if (result[0] == true) {
+                console.log('changed', result[1])
+                updated_values["badges"] = result[1] //badges
+            }
+        })
+
+        console.log('updated_values', updated_values)
+        return updated_values;
+    } else {
         throw {status: 404, message: "daily menu doesn't exist"};
     }
 }
@@ -205,10 +215,38 @@ async function deleteFromFavorites(user_id, recipe_id) {
 
 async function getDailyMenuFromDB(user_id, date) {
     let dailyMenu = await DButils.execQuery(`select * from MealPlanHistory where user_id = '${user_id}'and menu_date = '${date}'`);
-    if(dailyMenu.length===0)
+    if(dailyMenu.length === 0)
         return null;
     else
         return dailyMenu[0];
+}
+
+async function checkBadges(user_id, new_score) {
+    let badges = await DButils.execQuery(`select * from badges where user_id='${user_id}'`);
+    badges = badges[0]
+    let score_key = [10, 20, 50, 100, 200, 350, 500, 750, 1000]
+    for (let i = 0; i < score_key.length - 1; i++) {
+        let col1 = score_key[i] + 'p'
+        console.log('new_score',new_score,'score key', score_key[i])
+        if (new_score >= score_key[i]) {
+            if (badges[col1] == false) { //earned new badge
+                console.log('earned')
+                await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
+                badges[col1] = true
+                return true, badges;
+            }
+        } else {
+            if (badges[col1] == true) {
+                console.log('lost')
+                await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
+                badges[col1] = false
+                return true, badges;
+            } else { // no change needed
+                console.log('no change')
+                return false;
+            }
+        }
+    }
 }
 
 
