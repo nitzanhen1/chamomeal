@@ -1,46 +1,62 @@
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native'
-import React from 'react'
+import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity} from 'react-native'
+import React, {useState} from 'react'
 import {useSelector} from "react-redux";
 
 export default function GameScreen() {
-    const {badges, user_name} = useSelector(state => state.mealReducer);
-    const sources = [
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
-        require('../assets/badges/flower6.png'),
+    const {badges, user_name, score} = useSelector(state => state.mealReducer);
+    const badge_details = [
+        {id:1, badge: badges[0], source: require('../assets/badges/flower6.png'), text: '10 פרחים', showText: false},
+        {id:2, badge: badges[1], source: require('../assets/badges/flower6.png'), text: '20 פרחים', showText: false},
+        {id:3, badge: badges[2], source: require('../assets/badges/flower6.png'), text: '50 פרחים', showText: false},
+        {id:4, badge: badges[3], source: require('../assets/badges/flower6.png'), text: '100 פרחים', showText: false},
+        {id:5, badge: badges[4], source: require('../assets/badges/flower6.png'), text: '200 פרחים', showText: false},
+        {id:6, badge: badges[5], source: require('../assets/badges/flower6.png'), text: '350 פרחים', showText: false},
+        {id:7, badge: badges[6], source: require('../assets/badges/flower6.png'), text: '500 פרחים', showText: false},
+        {id:8, badge: badges[7], source: require('../assets/badges/flower6.png'), text: '750 פרחים', showText: false},
+        {id:9, badge: badges[8], source: require('../assets/badges/flower6.png'), text: '1000 פרחים', showText: false},
+        {id:10, badge: false, source: require('../assets/badges/flower6.png'), text: '', showText: false}, //TODO delete or add badges
+        {id:11, badge: false, source: require('../assets/badges/flower6.png'), text: '', showText: false}, //TODO delete or add badges
+        {id:12, badge: false, source: require('../assets/badges/flower6.png'), text: '', showText: false}, //TODO delete or add badges
     ]
-    const renderItem = ({item, index}) => (
-        <View style={styles.view}>
-            {item ? (
-                <Image
-                    source={sources[index]}
-                    style={styles.image}
-                />
-            ) : (
-                <View>
-                    <Image source={sources[index]} style={styles.grey_background} />
+    const [visibleTextMap, setVisibleTextMap] = useState({});
+    const renderItem = ({item}) => {
+        const onPressImage = () => {
+            setVisibleTextMap(prevState => ({...prevState, [item.id]: true}));
+            setTimeout(() => {
+                setVisibleTextMap(prevState => ({...prevState, [item.id]: false}));
+            }, 2000); // hide text after 2 seconds
+        };
+
+        return (
+            <TouchableOpacity onPress={onPressImage}>
+            <View style={styles.view}>
+                {item.badge ? (
                     <Image
-                        source={sources[index]}
-                        style={styles.bw_image}
+                        source={item.source}
+                        style={styles.image}
                     />
-                </View>
-            )}
-        </View>
-    );
+                ) : (
+                    <View>
+                        <Image source={item.source} style={[styles.image, styles.grey_background]}/>
+                        <Image
+                            source={item.source}
+                            style={[styles.image,styles.bw_image]}
+                        />
+                    </View>
+                )}
+                {visibleTextMap[item.id] && <Image source={item.source} style={[styles.image,styles.clicked_effect]}/>}
+                {visibleTextMap[item.id] && <Text style={styles.textImg}>{item.text}</Text>}
+            </View>
+            </TouchableOpacity>
+        );
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.textCals}>{user_name} שלום</Text>
+            <Text style={styles.textCals}>עד כה צברת: {score}</Text>
             <FlatList
-                data={badges}
+                data={badge_details}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => `${index}`}
                 numColumns={3}
@@ -53,42 +69,45 @@ export default function GameScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent:"center",
-        alignItems:"center",
+        justifyContent: "center",
+        alignItems: "center",
         top: 50
     },
     textCals: {
         fontSize: 24,
-        alignSelf:'center',
-        top:20,
+        alignSelf: 'center',
+        top: 20,
         fontWeight: 'bold',
+    },
+    textImg: {
+        fontSize: 18,
+        alignSelf: 'center',
+        top: '60%',
+        fontWeight: 'bold',
+        position: 'absolute',
     },
     list_img: {
         top: 50,
         justifyContent: 'space-evenly',
         alignItems: 'center',
-
     },
     image: {
         width: 100,
         height: 100,
-        margin: 5,
+        margin: 12,
         resizeMode: 'contain',
-        // border: 'black'
+        borderRadius:10,
     },
     bw_image: {
-        width: 100,
-        height: 100,
-        margin: 5,
-        resizeMode: 'contain',
         opacity: 0.25,
     },
-    grey_background:{
+    grey_background: {
         position: 'absolute',
-        width: 100,
-        height: 100,
-        margin: 5,
-        resizeMode: 'contain',
         tintColor: 'gray'
+    },
+    clicked_effect:{
+        position: 'absolute',
+        tintColor: 'white',
+        opacity: 0.7,
     }
 });
