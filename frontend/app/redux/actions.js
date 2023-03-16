@@ -8,6 +8,8 @@ export const SET_ACTIVITY_PREFERENCE = 'SET_ACTIVITY_PREFERENCE';
 export const SET_PERSONAL_DETAILS = 'SET_PERSONAL_DETAILS';
 export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
 export const GET_USER_PREFERENCES = 'GET_USER_PREFERENCES';
+export const UPDATE_BADGES = 'UPDATE_BADGES';
+export const SET_EARNED = 'SET_EARNED';
 export const LOGOUT = 'LOGOUT';
 
 const API_URL = 'http://10.0.2.2:3000';
@@ -53,6 +55,14 @@ export const markAsEaten = (meal_type, eaten, meal_calories, meal_score, date) =
                 consumed_calories: data['new_consumed_calories'],
                 score: data['new_score'],
             });
+            if (data['badges'] != null) {
+                console.log('inside badge returned' + JSON.stringify(data['badges']))
+                dispatch({
+                    type: UPDATE_BADGES,
+                    badges: data['badges'],
+                    earned: data['earned'],
+                });
+            }
         }
     } catch (error) {
         console.log(error);
@@ -129,11 +139,13 @@ export const getUserDetails = () => {
         return async dispatch =>{
             const response = await axios.get(`${API_URL}/user/getUserDetails`);
             const data = response.data;
+            console.log('inside badge returned' + JSON.stringify(data['badges']))
 
             dispatch({
                 type: GET_USER_DETAILS,
                 user_name: data['name'],
                 score: data['total_score'],
+                badges: data['badges'],
                 EER: data['EER'],
             });
         }
@@ -203,3 +215,13 @@ export const setPersonalDetails = (newPersonalDetails) =>{
         });
     }
 }
+
+export const setEarned = (earned) =>{
+    return async dispatch => {
+        dispatch({
+            type: SET_EARNED,
+            earned: earned,
+        });
+    }
+}
+

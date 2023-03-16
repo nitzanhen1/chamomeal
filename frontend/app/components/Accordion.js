@@ -15,7 +15,6 @@ export default class Accordion extends Component{
                 "ארוחת צהריים": "lunch",
                 "ארוחת ערב": "dinner"
             },
-            date: new Date() //TODO change pass from props
         }
     }
 
@@ -43,7 +42,7 @@ export default class Accordion extends Component{
     markAsEaten=()=>{
         const recipe = this.props.mealData
         recipe.eaten = !recipe.eaten
-        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.state.date))
+        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date))
         this.setState({mealData: recipe})
     }
 

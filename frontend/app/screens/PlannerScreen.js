@@ -13,7 +13,7 @@ export default function PlannerScreen(props) {
 
     useEffect(() => {
         dispatch(getDailyMenu(date)).then();
-        dispatch(getUserDetails()).then();
+        dispatch(getUserDetails()).then(); //TODO move to login
     }, []);
 
   return (
@@ -31,6 +31,7 @@ export default function PlannerScreen(props) {
                     <Accordion
                         title = {meal.title}
                         mealData = {meal.mealData}
+                        date = {date}
                         dispatch = {dispatch}
                     />
                 </View>
