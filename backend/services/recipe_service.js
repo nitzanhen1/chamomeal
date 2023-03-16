@@ -20,7 +20,7 @@ async function getDailyMenu(user_id, date) {
 }
 
 async function generateDailyMenu(user_id, date) {
-    const prefs = user_service.getPreferences(user_id)
+    const prefs = await user_service.getPreferences(user_id)
     let prefs_query = `kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
     if(prefs['EER']!=null) {
         let EER = prefs['EER'];
@@ -36,7 +36,7 @@ async function generateDailyMenu(user_id, date) {
             random_breakfast_id = breakfast_recipes_ids[Math.floor(Math.random() * breakfast_recipes_ids.length)];
             random_lunch_id = lunch_recipes_ids[Math.floor(Math.random() * lunch_recipes_ids.length)];
             random_dinner_id = dinner_recipes_ids[Math.floor(Math.random() * dinner_recipes_ids.length)];
-        } while (random_breakfast_id === random_lunch_id || random_breakfast_id === random_dinner_id || random_lunch_id === random_dinner_id);
+        } while (random_breakfast_id == random_lunch_id || random_breakfast_id == random_dinner_id || random_lunch_id == random_dinner_id);
         let generatedMenu = {
             user_id: user_id,
             menu_date: date,
@@ -64,13 +64,13 @@ async function getRecipesByIdFromDB(array_recipes_id){
         let duplicate_recipes = [];
         let index = 0;
         for(let i=0; i<array_recipes_id.length; i++){
-            if((index < recipes.length) && (array_recipes_id[i] === recipes[index]['recipe_id'])) {
+            if((index < recipes.length) && (array_recipes_id[i] == recipes[index]['recipe_id'])) {
                 duplicate_recipes.push(recipes[index])
                 index++;
             }
             else {
                 for (let j = 0; j < recipes.length; j++) {
-                    if (array_recipes_id[i] === recipes[j]['recipe_id']) {
+                    if (array_recipes_id[i] == recipes[j]['recipe_id']) {
                         duplicate_recipes.push(recipes[j])
                         break;
                     }
@@ -121,13 +121,13 @@ async function replaceRecipeById(user_id, recipe_id, date, meal_type) {
 
 async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_calories) {
     try {
-        const prefs = user_service.getPreferences(user_id)
+        const prefs = await user_service.getPreferences(user_id)
         let prefs_query = `kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
         let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, prefs_query);
         let random_recipe_id;
         do {
             random_recipe_id = recipes_ids[Math.floor(Math.random() * recipes_ids.length)];
-        } while (recipe_id === random_recipe_id);
+        } while (recipe_id == random_recipe_id);
         return replaceRecipeById(user_id, random_recipe_id, date, meal_type);
     }
     catch (err){
@@ -136,8 +136,8 @@ async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_c
 }
 async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calories, meal_score) {
     try {
-        let gt = ((meal_score===10) ? ">=" : ">")
-        const prefs = user_service.getPreferences(user_id)
+        let gt = ((meal_score==10) ? ">=" : ">")
+        const prefs = await user_service.getPreferences(user_id)
         let prefs_query = `score ${gt} ${meal_score} and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
         let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, prefs_query);
         let random_recipe_id, random_index;
@@ -148,7 +148,7 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
             const elementsBefore = recipes_ids.slice(0, random_index)
             const elementsAfter = recipes_ids.slice(random_index+1);
             recipes_ids = elementsBefore.concat(elementsAfter);
-            if (recipe_id !== random_recipe_id){
+            if (recipe_id != random_recipe_id){
                 sustainable_recipes.push(random_recipe_id);
             }
         } while (sustainable_recipes.length < 3);
