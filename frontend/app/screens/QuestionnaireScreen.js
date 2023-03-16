@@ -1,7 +1,4 @@
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-// import {Button} from 'react-native-elements';
-import { Button} from '@rneui/themed';
-
 import React, {useState} from 'react'
 import PersonalDetails from "../components/PersonalDetails";
 import PhysicalActivity from "../components/PhysicalActivity";
@@ -9,9 +6,8 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserDetails, updateUserPreferences} from "../redux/actions";
+import {updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {HeaderBackButton} from "@react-navigation/elements";
 
 
 const Stack = createNativeStackNavigator();
@@ -31,7 +27,7 @@ const QuestionnaireScreen = ({navigation}) => {
     const [step, setStep] = useState(1);
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(date_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
+        dispatch(updateUserPreferences(date_of_birth.toISOString().substring(0, 10), height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
         navigation.navigate('BottomNavigator');
     }
 

@@ -1,8 +1,6 @@
-import { View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, ScrollView} from 'react-native'
 import React, {useEffect} from 'react'
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors'
-import {useState} from 'react';
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, getUserDetails} from "../redux/actions";
@@ -16,16 +14,17 @@ export default function PlannerScreen(props) {
         dispatch(getUserDetails()).then();
     }, []);
 
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+
+    let dateToShow = `${day}.${month}.${year}`;
+
   return (
     <View style={styles.container}>
-        <Text style={styles.textCals}>{user_name} שלום</Text>
-        <Text style={styles.textCals}>{score} פרחים</Text>
-      <Text style={styles.textCals}>{consumed_calories}/{total_calories} קלוריות</Text>
-      <Text style={styles.textDate}>
-      <Icon name="keyboard-arrow-left" size={24}/>
-        {date.toDateString()}
-      <Icon name="keyboard-arrow-right" size={24}/></Text>
-        <View style={styles.inputsContainer}>
+        <Text style={styles.textDate}>{dateToShow}</Text>
+        <Text style={styles.textCals}>{consumed_calories}/{total_calories} קלוריות</Text>
+        <ScrollView style={styles.inputsContainer}>
             {meals.map(meal=>(
                 <View key={meal.title}>
                     <Accordion
@@ -35,7 +34,7 @@ export default function PlannerScreen(props) {
                     />
                 </View>
             ))}
-        </View>
+        </ScrollView>
     </View>
   )
 }
@@ -43,6 +42,7 @@ export default function PlannerScreen(props) {
 const styles = StyleSheet.create({
     container:{
         direction: 'rtl',
+        height: '100%'
     },
     view: {
         flex: 1,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         direction: 'rtl'
     },
     inputsContainer: {
-        top: 50,
+        marginTop: 10,
     },
     fullWidthButton: {
         backgroundColor: COLORS.lightGreen,
@@ -64,16 +64,27 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     textCals: {
-        fontSize: 24,
-        alignSelf:'center',
-        top:20,
-        fontWeight: 'bold',
-    },
-    textDate:{
         fontSize: 20,
         alignSelf:'center',
-        top:30,
+        fontFamily: 'Rubik-Regular',
+        marginTop: 10,
+    },
+    textDate:{
+        fontSize: 18,
+        textAlign: 'center',
+        backgroundColor: 'rgba(104,154,93,0.12)',
+        width: '100%',
+        height: 30,
+        marginTop: 10,
+        paddingTop: 4,
+        fontFamily: 'Rubik-Regular',
+        letterSpacing: 1,
+        color: COLORS.darkGreen
+    },
+    details: {
+        flexDirection: "row",
         alignItems: "center",
+        alignContent:"center"
     },
 })
 

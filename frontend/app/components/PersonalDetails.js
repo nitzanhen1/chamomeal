@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
 import {TextInput, RadioButton, HelperText} from 'react-native-paper';
-import {Input} from "react-native-elements";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPersonalDetails} from "../redux/actions";
@@ -99,9 +98,6 @@ const PersonalDetails = ({navigation}) => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            {/*<Text style={styles.title}>*/}
-            {/*    פרופיל פיזיולוגי*/}
-            {/*</Text>*/}
             <Text style={styles.disclaimer}>
                 על מנת להעריך את צריכת הקלוריות היומית המומלצת עבורך, אנו משתמשים בנוסחת EER (Estimated Energy
                 Requirement). נוסחה זו משתמשת בנתוני גובה, משקל, מין וגיל.
@@ -148,9 +144,8 @@ const PersonalDetails = ({navigation}) => {
                 mode="flat"
                 label="תאריך לידה"
                 value={!dateChanged ? '':newBirthDate.toISOString().substring(0, 10)}
-                // placeholder='yyyy-mm-dd'
                 onChangeText={(newBirthDate) => {
-                    setBirthDate(newBirthDate);
+                    setBirthDate(newBirthDate.toISOString().substring(0, 10));
                     setDateChanged(true);
                 }}
                 selectionColor={COLORS.primary}
@@ -212,14 +207,6 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: COLORS.white,
     },
-    // title: {
-    //     fontFamily: 'Rubik-Bold',
-    //     fontWeight: "600",
-    //     fontSize: 27,
-    //     color: COLORS.title,
-    //     marginHorizontal: 10,
-    //
-    // },
     disclaimer: {
         fontFamily: 'Rubik-Regular',
         fontWeight: '700',

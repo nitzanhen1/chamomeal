@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     row:{
         flexDirection: 'row',
         justifyContent:'space-between',
-        height:56,
+        height:43,
         paddingLeft:25,
         paddingRight:25,
         alignItems:'center',
-        backgroundColor: COLORS.lightGreen,
+        backgroundColor: COLORS.row,
     },
     parentHr:{
         height:1,

@@ -14,6 +14,7 @@ const COLORS = {
     protein: '#4fc1ff',
     title: '#273a25',
     meal: '#ffc14f',
+    row: 'rgba(122,204,110,0.54)',
   };
   
   export default COLORS;
