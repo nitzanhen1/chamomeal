@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 
 async function register(user_details) {
     let users = await DButils.execQuery(`SELECT * FROM Users WHERE username = '${user_details.username}'`);
-    console.log(users)
     if (users.length>0) {
         throw {status: 409, message: "username already exists"};
     }

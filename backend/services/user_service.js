@@ -1,10 +1,25 @@
 const DButils = require("../data/db_utils");
 const moment = require('moment');
 
+
+async function userMiddleware(req,res,next){
+    if (req.session && req.session.user_id) {
+        DButils.execQuery("SELECT user_id FROM users").then((users) => {
+            if (users.find((x) => x.user_id === req.session.user_id)) {
+                req.user_id = req.session.user_id;
+                next();
+            }
+        }).catch(err => next(err));
+    } else {
+        req.user_id = 1; //TODO: delete!!
+        next(); //TODO: delete!!
+        //  res.status(419).send({message: "Session expired, please login again", success: false});
+    }
+}
 async function getPreferences(user_id){
     const cols = "gender, date_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER"
     const preferences = await getUserFromDB(user_id, cols);
-    return preferences
+    return preferences;
 }
 
 async function updatePreferences(user_id, preferences ){
@@ -105,6 +120,7 @@ async function getBadgesFromDB(user_id, cols="*") {
 }
 
 
+exports.userMiddleware = userMiddleware
 exports.updatePreferences = updatePreferences
 exports.getUserFromDB = getUserFromDB
 exports.getUserDetails = getUserDetails
