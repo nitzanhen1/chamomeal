@@ -56,7 +56,6 @@ export const markAsEaten = (meal_type, eaten, meal_calories, meal_score, date) =
                 score: data['new_score'],
             });
             if (data['badges'] != null) {
-                console.log('inside badge returned' + JSON.stringify(data['badges']))
                 dispatch({
                     type: UPDATE_BADGES,
                     badges: data['badges'],
@@ -139,7 +138,6 @@ export const getUserDetails = () => {
         return async dispatch =>{
             const response = await axios.get(`${API_URL}/user/getUserDetails`);
             const data = response.data;
-            console.log('inside badge returned' + JSON.stringify(data['badges']))
 
             dispatch({
                 type: GET_USER_DETAILS,
@@ -182,7 +180,6 @@ export const updateUserPreferences = (date_of_birth, height, weight, gender, phy
 }
 
 export const setFoodPreference = (newFood) =>{
-    console.log('set food'+ newFood.vegan2, newFood.vegetarian2, newFood.without_lactose2, newFood.gluten_free2,newFood.kosher2)
     return async dispatch => {
         await dispatch({
             type: SET_FOOD_PREFERENCE,

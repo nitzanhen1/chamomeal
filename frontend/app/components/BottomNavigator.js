@@ -16,7 +16,7 @@ import {setEarned} from "../redux/actions";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const BottomNavigator = () => {
+const BottomNavigator = ({ navigation }) => {
     const {earned} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -24,9 +24,9 @@ const BottomNavigator = () => {
         if(earned){
             Alert.alert('New Badge Unlocked!', 'New Badge Unlocked!',
                 [
-                    { text: 'Yes', onPress: () => console.log('Yes Pressed') },
+                    { text: 'Go see', onPress: () => navigation.navigate('Sustainability') },
                     {
-                        text: 'No',
+                        text: 'Later',
                         onPress: () => console.log('No Pressed'),
                         style: 'cancel',
                     },
@@ -53,7 +53,7 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="favorites"
+        name="Favorites"
         component={FavoriteScreen}
         options={{
           tabBarIcon: ({color}) => (
@@ -73,7 +73,7 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="sustainability"
+        name="Sustainability"
         component={GameScreen}
         options={{
           tabBarIcon: ({color}) => (
@@ -82,7 +82,7 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="account"
+        name="Account"
         component={PersonalScreen}
         options={{
           tabBarIcon: ({color}) => (

@@ -11,7 +11,6 @@ I18nManager.allowRTL(true);
 import { Provider } from 'react-redux';
 import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
-import PlannerScreen from "./app/screens/PlannerScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 
@@ -64,7 +63,6 @@ export default function App() {
                             // />
                         }}>
                         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
-                        <Stack.Screen name="PlannerScreen" component={PlannerScreen}/>
                         <Stack.Screen name="BottomNavigator" component={BottomNavigator} options={{headerShown:false}}/>
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen}
                                       options={{
