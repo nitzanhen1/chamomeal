@@ -76,14 +76,13 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
         }
 
         await checkBadges(user_id, new_score).then(async (result) => {
-            console.log(result)
             if (result[0] == true) {
-                console.log('changed', result[1])
+                delete result[1]['user_id']
                 updated_values["badges"] = result[1] //badges
+                updated_values["earned"] = result[2] //true\false
             }
         })
 
-        console.log('updated_values', updated_values)
         return updated_values;
     } else {
         throw {status: 404, message: "daily menu doesn't exist"};
@@ -104,20 +103,21 @@ async function checkBadges(user_id, new_score) {
     let score_key = [10, 20, 50, 100, 200, 350, 500, 750, 1000]
     for (let i = 0; i < score_key.length - 1; i++) {
         let col1 = score_key[i] + 'p'
-        console.log('new_score',new_score,'score key', score_key[i])
         if (new_score >= score_key[i]) {
             if (badges[col1] == false) { //earned new badge
                 console.log('earned')
                 await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
-                badges[col1] = true
-                return true, badges;
+                badges[col1] = 1
+                let earned = true //notify frontend to alert user
+                return [true, badges, earned];
             }
         } else {
             if (badges[col1] == true) {
                 console.log('lost')
                 await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
-                badges[col1] = false
-                return true, badges;
+                badges[col1] = 0
+                let earned = false //badge lost no need to notify user
+                return [true, badges, earned];
             } else { // no change needed
                 console.log('no change')
                 return false;
