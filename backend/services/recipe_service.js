@@ -75,10 +75,9 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
             "new_score": new_score,
         }
 
-        await checkBadges(user_id, new_score).then(async (result) => {
+        await user_service.checkBadges(user_id, new_score).then(async (result) => {
             if (result[0] == true) {
-                delete result[1]['user_id']
-                updated_values["badges"] = result[1] //badges
+                updated_values["badges"] = Object.values(result[1]) //badges
                 updated_values["earned"] = result[2] //true\false
             }
         })
@@ -96,36 +95,6 @@ async function getDailyMenuFromDB(user_id, date) {
     else
         return dailyMenu[0];
 }
-
-async function checkBadges(user_id, new_score) {
-    let badges = await DButils.execQuery(`select * from badges where user_id='${user_id}'`);
-    badges = badges[0]
-    let score_key = [10, 20, 50, 100, 200, 350, 500, 750, 1000]
-    for (let i = 0; i < score_key.length - 1; i++) {
-        let col1 = score_key[i] + 'p'
-        if (new_score >= score_key[i]) {
-            if (badges[col1] == false) { //earned new badge
-                console.log('earned')
-                await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
-                badges[col1] = 1
-                let earned = true //notify frontend to alert user
-                return [true, badges, earned];
-            }
-        } else {
-            if (badges[col1] == true) {
-                console.log('lost')
-                await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
-                badges[col1] = 0
-                let earned = false //badge lost no need to notify user
-                return [true, badges, earned];
-            } else { // no change needed
-                console.log('no change')
-                return false;
-            }
-        }
-    }
-}
-
 
 exports.getDailyMenu = getDailyMenu
 exports.markAsEaten = markAsEaten

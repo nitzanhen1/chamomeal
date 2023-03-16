@@ -60,7 +60,48 @@ async function getUserDetails(user_id){
         total_score: user['score'],
         EER: user['EER'],
     }
+    let badges = await getBadgesFromDB(user_id);
+    user_details['badges'] = Object.values(badges)
     return user_details
+}
+
+
+async function checkBadges(user_id, new_score) {
+    let badges = await getBadgesFromDB(user_id)
+    let score_key = [10, 20, 50, 100, 200, 350, 500, 750, 1000]
+    for (let i = 0; i < score_key.length - 1; i++) {
+        let col1 = score_key[i] + 'p'
+        if (new_score >= score_key[i]) {
+            if (badges[col1] == false) { //earned new badge
+                console.log('earned')
+                await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
+                badges[col1] = 1
+                let earned = true //notify frontend to alert user
+                return [true, badges, earned];
+            }
+        } else {
+            if (badges[col1] == true) {
+                console.log('lost')
+                await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
+                badges[col1] = 0
+                let earned = false //badge lost no need to notify user
+                return [true, badges, earned];
+            } else { // no change needed
+                console.log('no change')
+                return false;
+            }
+        }
+    }
+}
+
+async function getBadgesFromDB(user_id, cols="*") {
+    let badges = await DButils.execQuery(`SELECT ${cols} FROM badges WHERE user_id = '${user_id}'`);
+    if(badges.length>0) {
+        badges = badges[0]
+        delete badges['user_id']
+        return badges;
+    }
+    throw {status: 404, message: "badges doesn't exist for user"};
 }
 
 
@@ -68,3 +109,4 @@ exports.updatePreferences = updatePreferences
 exports.getUserFromDB = getUserFromDB
 exports.getUserDetails = getUserDetails
 exports.getPreferences = getPreferences
+exports.checkBadges = checkBadges;
