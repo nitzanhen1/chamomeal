@@ -102,15 +102,15 @@ export const login = (username, password) => {
                 if(response.status==200){
                     return true;
                 }
-                else if(response.status==200){
+                else if(response.status==202){
                     return false;
                 }
             }catch (error){
-                throw error;
+                return null;
             }
         }
     }catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 export const logout = () => {

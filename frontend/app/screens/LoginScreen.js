@@ -47,16 +47,18 @@ const LoginScreen = ({navigation}) => {
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
                 dispatch(login(username,userPassword)).then((success)=>{
-                if(!success) {
-                    navigation.navigate('QuestionnaireScreen');
-                }
-                else {
-                    navigation.navigate('BottomNavigator');
-                }});
-            }catch (error){
-                if(error.status==404) {
+                if(success==null) {
                     alert('שם משתמש או סיסמה אינם נכונים')
                 }
+                else if(!success){
+                    navigation.navigate('QuestionnaireScreen');
+                }
+                else{
+                    navigation.navigate('BottomNavigator');
+                }
+                });
+            }catch (error){
+                console.log(error)
             }
         }
     }
