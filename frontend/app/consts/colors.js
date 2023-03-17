@@ -7,13 +7,14 @@ const COLORS = {
     darkGreen: '#4f6e45',
     light: '#E5E5E5',
     grey: '#908e8c',
-    darkGrey: '#4b4747',
+    darkGrey: '#706a6a',
     divider: '#b0b0ad',
     carbs: '#ffd94f',
     fats: '#4fff5e',
     protein: '#4fc1ff',
     title: '#273a25',
     meal: '#ffc14f',
+    row: 'rgba(122,204,110,0.54)',
   };
   
   export default COLORS;

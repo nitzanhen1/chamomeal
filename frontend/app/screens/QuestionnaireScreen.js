@@ -1,7 +1,4 @@
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-// import {Button} from 'react-native-elements';
-import { Button} from '@rneui/themed';
-
 import React, {useState} from 'react'
 import PersonalDetails from "../components/PersonalDetails";
 import PhysicalActivity from "../components/PhysicalActivity";
@@ -9,8 +6,9 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserDetails, updateUserPreferences} from "../redux/actions";
+import {updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +27,7 @@ const QuestionnaireScreen = ({navigation}) => {
     const [step, setStep] = useState(1);
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(date_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
+        dispatch(updateUserPreferences(date_of_birth.toISOString().substring(0, 10), height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
         navigation.navigate('BottomNavigator');
     }
 
@@ -39,11 +37,49 @@ const QuestionnaireScreen = ({navigation}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:false
+                        headerShown:true
                     }}>
-                    <Stack.Screen name="PersonalDetails" component={PersonalDetails}/>
-                    <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}/>
-                    <Stack.Screen name="FoodPreferences">
+                    <Stack.Screen name="PersonalDetails" component={PersonalDetails}
+                                  options={{
+                                      headerTitle:"פרופיל פיזיולוגי",
+                                      headerTitleAlign: "left",
+                                      headerTitleStyle:
+                                          {
+                                              fontFamily: 'Rubik-Bold',
+                                              fontWeight: "600",
+                                              fontSize: 27,
+                                              color: COLORS.title,
+                                          },
+                                      headerBackVisible: false,
+                                  }}/>
+                    <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
+                                  options={{
+                                      headerTitle:"פעילות גופנית",
+                                      headerTitleAlign: "left",
+                                      headerTitleStyle:
+                                          {
+                                              fontFamily: 'Rubik-Bold',
+                                              fontWeight: "600",
+                                              fontSize: 27,
+                                              color: COLORS.title,
+                                          },
+                                      headerBackVisible: false,
+                                  }}
+                    />
+                    <Stack.Screen name="FoodPreferences"
+                                  options={{
+                                      headerTitle:"העדפות תזונתיות",
+                                      headerTitleAlign: "left",
+                                      headerTitleStyle:
+                                          {
+                                              fontFamily: 'Rubik-Bold',
+                                              fontWeight: "600",
+                                              fontSize: 27,
+                                              color: COLORS.title,
+                                          },
+                                      headerBackVisible: false,
+                                  }}
+                    >
                         {(props) => <FoodPreferences {...props} handleFinish={(foodData)=>handleFinish(foodData)} />}
                     </Stack.Screen>
                 </Stack.Navigator>

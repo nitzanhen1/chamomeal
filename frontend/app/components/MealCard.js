@@ -29,7 +29,7 @@ const MealCard = ({recipe}) => {
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
-                        <MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} />
+                        {/*<MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} />*/}
                     </View>
                 </View>
                 <TouchableOpacity style={styles.moreContainer} onPress={()=>alert()}>
