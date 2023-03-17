@@ -80,7 +80,7 @@ router.post("/addToFavorites", async (req, res, next)=>{
     }
 });
 
-router.get("/getFavoritesRecipes", async (req, res, next)=>{
+router.get("/getFavorites", async (req, res, next)=>{
     try{
         const user_id = req.user_id;
         const favorites_recipes = await recipe_service.getFavoritesRecipes(user_id);

@@ -222,3 +222,31 @@ export const setEarned = (earned) =>{
     }
 }
 
+export const getFavorites = () =>{
+    try{
+        return async dispatch =>{
+            const response = await axios.get(`${API_URL}/recipes/getFavorites`);
+            const data = response.data;
+        return data;
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+export const addToFavorites = (recipe_id, isFavorite) =>{
+    try{
+        return async dispatch =>{
+            const response = await axios.post(`${API_URL}/recipes/addToFavorites`,
+                {
+                    recipe_id : recipe_id,
+                    is_favorite: isFavorite
+                });
+            if(response.status==201){
+                return true;
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+

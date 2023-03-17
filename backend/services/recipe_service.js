@@ -3,8 +3,13 @@ const user_service = require("./user_service");
 
 async function getDailyMenu(user_id, date) {
     let dailyMenu = await getDailyMenuFromDB(user_id, date)
-    if (dailyMenu == null)
+    if (dailyMenu == null) {
+        let today = new Date().toISOString().slice(0, 10).replace('T', ' ')
+        if(new Date(today)>new Date(date)){
+            return {};
+        }
         dailyMenu = await generateDailyMenu(user_id, date);
+    }
     const recipes_id_array = [dailyMenu['breakfast'], dailyMenu['lunch'], dailyMenu['dinner']];
     let recipes = await getRecipesByIdFromDB(recipes_id_array);
     recipes[0].eaten = dailyMenu['breakfast_eaten'];
@@ -181,7 +186,8 @@ async function getFavoritesRecipes(user_id) {
         const recipes_id = await DButils.execQuery(`select recipe_id from Favorites where user_id='${user_id}' order by added_date desc`);
         let recipes_id_array = [];
         recipes_id.map((element) => recipes_id_array.push(element.recipe_id));
-        return await getRecipesByIdFromDB(recipes_id_array);
+        let favoriteRecipes =  await getRecipesByIdFromDB(recipes_id_array);
+        return favoriteRecipes.map(element => ({...element, isFavorite: true}))
     }
     catch (err){
         throw {status: 404, message: err};
