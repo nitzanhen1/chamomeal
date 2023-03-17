@@ -9,8 +9,6 @@ import {
     GET_USER_PREFERENCES,
     LOGOUT, UPDATE_BADGES, SET_EARNED
 } from './actions';
-const today = new Date()
-const birthday = new Date(new Date().setFullYear(new Date().getFullYear() + -16))
 
 const initialState = {
     user_name: "",
@@ -24,8 +22,8 @@ const initialState = {
         {title: 'ארוחת בוקר', mealData:{}},
         {title: 'ארוחת צהריים', mealData: {}},
         {title: 'ארוחת ערב',mealData: {}}],
-    date: today,
-    date_of_birth: birthday,
+    date: new Date(),
+    date_of_birth: new Date(new Date().setFullYear(new Date().getFullYear() + -16)),
     height: 0,
     weight: 0,
     gender: '',

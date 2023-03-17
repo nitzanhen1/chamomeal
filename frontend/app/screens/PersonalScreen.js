@@ -7,13 +7,14 @@ export default function PersonalScreen({navigation}) {
     const dispatch = useDispatch();
 
     function logoutUser() {
-        dispatch(logout()).then((success)=>{
+        dispatch(logout()).then((success)=> {
             if(success) {
                 navigation.navigate('Login')
             } else {
                 alert('something went wrong')
                 navigation.navigate('Login')
-            }});
+            }
+        });
     }
 
     return (

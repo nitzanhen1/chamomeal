@@ -74,11 +74,11 @@ export default function App() {
                 return 'התפריט היומי שלי';
             case 'Search':
                 return 'חיפוש';
-            case 'favorites':
+            case 'Favorites':
                 return 'מועדפים';
-            case 'save the global':
-                return 'קיימות';
-            case 'account':
+            case 'Sustainability':
+                return 'ההישגים שלי';
+            case 'Account':
                 return 'החשבון שלי';
         }
     }
