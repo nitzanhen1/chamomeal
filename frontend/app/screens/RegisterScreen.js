@@ -96,7 +96,6 @@ const RegisterScreen = ({navigation}) => {
         }
     }
     function handleSubmitPress(){
-        console.log('hey');
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
         validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
             dispatch(register(username,firstName,lastName,password,email)).then((success)=>{

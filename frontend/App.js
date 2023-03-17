@@ -50,18 +50,18 @@ export default function App() {
         switch (routeName) {
             case 'Meal Planner':
                 return (
-                    <TouchableOpacity style={styles.flowerContainer} onPress={() => navigation.navigate('save the global')}>
+                    <TouchableOpacity style={styles.flowerContainer} onPress={() => navigation.navigate('Sustainability')}>
                         <Text style={styles.flowerText}>{score}</Text>
                         <Ionicons name="flower-outline" size={24} style={styles.flowerIcon}/>
                     </TouchableOpacity>
                 );
             case 'Search':
                 return null;
-            case 'favorites':
+            case 'Favorites':
                 return null;
-            case 'save the global':
+            case 'Sustainability':
                 return null;
-            case 'account':
+            case 'Account':
                 return null;
         }
     }

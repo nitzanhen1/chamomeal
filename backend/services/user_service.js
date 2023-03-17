@@ -88,7 +88,6 @@ async function checkBadges(user_id, new_score) {
         let col1 = score_key[i] + 'p'
         if (new_score >= score_key[i]) {
             if (badges[col1] == false) { //earned new badge
-                console.log('earned')
                 await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
                 badges[col1] = 1
                 let earned = true //notify frontend to alert user
@@ -96,13 +95,11 @@ async function checkBadges(user_id, new_score) {
             }
         } else {
             if (badges[col1] == true) {
-                console.log('lost')
                 await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
                 badges[col1] = 0
                 let earned = false //badge lost no need to notify user
                 return [true, badges, earned];
             } else { // no change needed
-                console.log('no change')
                 return false;
             }
         }

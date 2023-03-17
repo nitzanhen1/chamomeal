@@ -22,12 +22,11 @@ const BottomNavigator = ({ navigation }) => {
     useEffect(() => {
         // This code will be executed whenever the value of 'badges' changes
         if(earned){
-            Alert.alert('New Badge Unlocked!', 'New Badge Unlocked!',
+            Alert.alert('כל הכבוד', 'זכית בהישג חדש! תוכל לצפות בו בעמוד הקיימות',
                 [
-                    { text: 'Go see', onPress: () => navigation.navigate('Sustainability') },
+                    { text: 'צפה כעת', onPress: () => navigation.navigate('Sustainability') },
                     {
-                        text: 'Later',
-                        onPress: () => console.log('No Pressed'),
+                        text: 'אחר כך',
                         style: 'cancel',
                     },
                 ],
@@ -47,6 +46,7 @@ const BottomNavigator = ({ navigation }) => {
         name="Search"
         component={SearchScreen}
         options={{
+            tabBarLabel: "חיפוש",
           tabBarIcon: ({color}) => (
             <Icon name="search" color={color} size={26} />
           ),
@@ -56,6 +56,7 @@ const BottomNavigator = ({ navigation }) => {
         name="Favorites"
         component={FavoriteScreen}
         options={{
+            tabBarLabel: "מועדפים",
           tabBarIcon: ({color}) => (
             <Icon name="favorite-border" color={color} size={26} />
           ),
@@ -65,6 +66,7 @@ const BottomNavigator = ({ navigation }) => {
         name="Meal Planner"
         component={PlannerScreen}
         options={{
+            tabBarLabel: "תפריט יומי",
           tabBarIcon: ({color}) => (
             <View style={styles.centerTabd}>
               <Icon name="list-alt" color={color} size={26} />
@@ -76,6 +78,7 @@ const BottomNavigator = ({ navigation }) => {
         name="Sustainability"
         component={GameScreen}
         options={{
+            tabBarLabel: "ההישגים שלי",
           tabBarIcon: ({color}) => (
             <Icon name="public" color={color} size={26} />
           ),
@@ -85,6 +88,7 @@ const BottomNavigator = ({ navigation }) => {
         name="Account"
         component={PersonalScreen}
         options={{
+            tabBarLabel: "פרופיל אישי",
           tabBarIcon: ({color}) => (
             <Icon name="account-circle" color={color} size={26} />
           ),
