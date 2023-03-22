@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, LayoutAnimation} from "react-native";
+import {View, TouchableOpacity, Text, StyleSheet, LayoutAnimation, Image} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
 import MealCard from "./MealCard";
 import {markAsEaten} from "../redux/actions";
 
 export default class Accordion extends Component{
-
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +15,7 @@ export default class Accordion extends Component{
                 "ארוחת בוקר": "breakfast",
                 "ארוחת צהריים": "lunch",
                 "ארוחת ערב": "dinner"
-            }
+            },
         }
     }
 
@@ -23,7 +23,11 @@ export default class Accordion extends Component{
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.row} onPress={()=>this.toggleExpand()}>
-                    <Text style={[styles.title]}>{this.props.title}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Iconn name={this.props.mealData.eaten ? 'check-circle-outline' : 'checkbox-blank-circle-outline' } size={27} color={COLORS.dark} onPress={() => this.markAsEaten()}/>
+                        <Text style={[styles.title]}>{this.props.title}</Text>
+                    </View>
+
                     <Icon name={this.state.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={COLORS.dark} />
                 </TouchableOpacity>
                 <View style={styles.parentHr}/>
@@ -31,7 +35,15 @@ export default class Accordion extends Component{
                     this.state.expanded &&
                     <View style={{}}>
                         <View style={styles.fullWidthButton}>
-                            <Icon name={this.props.mealData.eaten ? 'check-circle' : 'check-circle-outline'} size={30} color={COLORS.dark} onPress={() => this.markAsEaten()}/>
+                            <View style={styles.icons}>
+                                <TouchableOpacity onPress={() => {console.log('A Pressed!')}}>
+                                    <Image
+                                        style={{width: 28, height: 28,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
+                                        source={require('frontend/app/assets/earth-globe-12153.png')}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+
                             <MealCard recipe={this.props.mealData} />
                         </View>
                     </View>
@@ -43,7 +55,7 @@ export default class Accordion extends Component{
     markAsEaten=()=>{
         const recipe = this.props.mealData
         recipe.eaten = !recipe.eaten
-        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories))
+        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date))
         this.setState({mealData: recipe})
     }
 
@@ -61,15 +73,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight:'bold',
         color: COLORS.dark,
+        marginTop: 4,
+        marginLeft: 10
     },
     row:{
         flexDirection: 'row',
         justifyContent:'space-between',
-        height:56,
-        paddingLeft:25,
+        height:43,
+        paddingLeft:11,
         paddingRight:25,
         alignItems:'center',
-        backgroundColor: COLORS.lightGreen,
+        backgroundColor: COLORS.row,
     },
     parentHr:{
         height:1,
@@ -81,4 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 10,
     },
+    icons:{
+        marginRight: 5
+    }
 });
