@@ -1,20 +1,117 @@
-import { View, Text, StyleSheet, Button } from 'react-native'
-import React from 'react'
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import React, {useState} from 'react'
+import { Input } from 'react-native-elements';
+import {useDispatch} from "react-redux";
+import {login} from "../redux/actions";
+import COLORS from "../consts/colors";
+import { Button} from '@rneui/themed';
+
 
 const LoginScreen = ({navigation}) => {
-    function navToMain(){
-        navigation.navigate('BottomNavigator');
-    }
+    const dispatch = useDispatch();
+    const [username, setUsername] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    const [usernameError, setUsernameError] = useState('');
+    const [passwordError, setPasswordError] = useState('')
+
 
     function navToRegister(){
         navigation.navigate('RegisterScreen');
     }
 
+    function validateUsername(username){
+        if (!username) {
+            setUsernameError('נדרש שם משתמש');
+            return false
+        } else if (username.includes(' ')) {
+            setUsernameError('שם משתמש מכיל רווחים');
+            return false
+        } else {
+            setUsernameError('')
+            return true
+        }
+    }
+    function validatePassword(password){
+        if (!password) {
+            setPasswordError('נדרשת סיסמה');
+            return false
+        } else if (password.includes(' ')) {
+            setPasswordError('סיסמה מכילה רווחים');
+            return false
+        } else {
+            setPasswordError('')
+            return true
+        }
+    }
+    async function handleSubmitPress(){
+        if (validateUsername(username) && validatePassword(userPassword)) {
+            try{
+                dispatch(login(username,userPassword)).then((success)=>{
+                if(success==null) {
+                    alert('שם משתמש או סיסמה אינם נכונים')
+                }
+                else if(!success){
+                    navigation.navigate('QuestionnaireScreen');
+                }
+                else{
+                    navigation.navigate('BottomNavigator');
+                }
+                });
+            }catch (error){
+                console.log(error)
+            }
+        }
+    }
+
     return (
         <View style={styles.view}>
-            <Text>LoginScreen</Text>
-            <Button title="Login" onPress={navToMain}/>
-            <Button title="Register" onPress={navToRegister}/>
+            <View style={styles.container}>
+                <View style={styles.title}>
+                    <Image
+                        style={styles.image}
+                        source={require('frontend/app/assets/CHAMOMEAL.png')}
+                    />
+                </View>
+                <Input
+                    onChangeText={(username) => {
+                        validateUsername(username)
+                        setUsername(username)
+                    }}
+                    placeholder='שם משתמש'
+                    errorStyle={{ color: 'red' }}
+                    errorMessage={usernameError}
+                    autoCapitalize='none'
+                    containerStyle={styles.input}
+                    inputContainerStyle={styles.input}
+                />
+                <Input
+                    onChangeText={(UserPassword) => {
+                        setUserPassword(UserPassword)
+                        validatePassword(UserPassword)
+                    }}
+                    placeholder="סיסמה"
+                    secureTextEntry={true}
+                    maxLength={16}
+                    errorStyle={{ color: 'red' }}
+                    errorMessage={passwordError}
+                    containerStyle={styles.input}
+                    inputContainerStyle={styles.input}
+                    autoCapitalize='none'
+                    inputStyle={styles.text}
+                />
+                <Button
+                    title="התחבר"
+                    onPress={handleSubmitPress}
+                    color = {COLORS.lightGreen}
+                    containerStyle={styles.nextButton}
+                    titleStyle={styles.nextText}
+                    radius={8}
+                />
+                <TouchableOpacity onPress={navToRegister} style={styles.registerLink}>
+                    <Text style={styles.account}>אין לך משתמש? </Text>
+                    <Text style={styles.register}>הירשם עכשיו!</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -25,6 +122,64 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems:  "center",
     },
+    container: {
+        height: '100%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.white,
+
+    },
+    title:{
+        bottom: 50
+    },
+    logoChamo: {
+        fontSize: 50,
+        fontWeight: '900',
+        color: COLORS.lightGreen
+    },
+    logoMeal: {
+        fontSize: 50,
+        fontWeight: '900',
+        letterSpacing: 13,
+        color: COLORS.meal
+    },
+    input:{
+        borderBottomColor: COLORS.lightGreen
+    },
+    text:{
+        textAlign:"right"
+    },
+    nextButton: {
+        marginTop: 10,
+        width: '85%',
+        height: 65,
+        alignSelf: "center"
+    },
+    nextText: {
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+    register: {
+        fontSize: 16,
+        color: COLORS.lightGreen,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+        textDecorationColor: COLORS.darkGreen,
+    },
+    registerLink: {
+        flexDirection: "row"
+    },
+    account: {
+        fontSize: 16,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+    },
+    image: {
+        width: 271,
+        height: 130,
+
+    }
 })
 
 export default LoginScreen;
