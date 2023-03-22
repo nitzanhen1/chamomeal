@@ -49,7 +49,8 @@ app.options("*", cors());
 // app.use(cors(corsConfig));
 // app.options("*", cors(corsConfig));
 
-var port = process.env.PORT || "3000"; //local=3000 remote=80
+// var port = process.env.PORT || "3000"; //for local
+var port = process.env.PORT || "443"; //for remote
 //#endregion
 const user = require("./controllers/user_controller");
 const recipes = require("./controllers/recipe_controller");
