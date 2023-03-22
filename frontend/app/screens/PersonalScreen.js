@@ -68,8 +68,8 @@ export default function PersonalScreen({navigation}) {
                 buttonStyle={{height: 50}}
             />
             <Button
-                title="עדכון העדפות"
-                onPress={() => console.log("hello")}
+                title="עדכון סיסמה"
+                onPress={() => navigation.navigate('ChangePassword')}
                 color = {COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}

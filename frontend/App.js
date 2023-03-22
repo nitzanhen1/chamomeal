@@ -17,6 +17,7 @@ import EditUserInfo from "./app/components/EditUserInfo";
 import {getGlobalDetails} from "./app/redux/actions";
 import {Ionicons, Feather} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
+import ChangePassword from "./app/components/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -137,6 +138,17 @@ export default function App() {
                                       options={{
                                           headerShown:true,
                                           headerTitle:'עדכון פרטי משתמש',
+                                          headerRight: () => (returnButton()
+                                          ),
+                                          headerTitleStyle: {
+                                              fontSize: 21,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
+                                      }}/>
+                        <Stack.Screen name="ChangePassword" component={ChangePassword}
+                                      options={{
+                                          headerShown:true,
+                                          headerTitle:'עדכון סיסמה',
                                           headerRight: () => (returnButton()
                                           ),
                                           headerTitleStyle: {

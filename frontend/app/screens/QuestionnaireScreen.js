@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import React, {useState} from 'react'
 import PersonalDetails from "../components/PersonalDetails";
 import PhysicalActivity from "../components/PhysicalActivity";
@@ -6,8 +6,10 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {updateUserPreferences} from "../redux/actions";
+import {setEarned, updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {useNavigation} from "@react-navigation/native";
+import {Feather} from "@expo/vector-icons";
 
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +33,27 @@ const QuestionnaireScreen = ({navigation}) => {
         navigation.navigate('BottomNavigator');
     }
 
+    function handleBack(){
+        Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
+            [
+                { text: 'כן', onPress: () => navigation.goBack() },
+                {
+                    text: 'לא',
+                    // onPress: () => console.log('No Pressed'),
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: true });
+        dispatch(setEarned(false));
+    }
+
+    function returnButton(){
+        const navigation = useNavigation();
+        return (
+            <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => handleBack()}/>
+        );
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.view}>
             <View style={styles.formContainer}>
@@ -50,7 +73,9 @@ const QuestionnaireScreen = ({navigation}) => {
                                               fontSize: 27,
                                               color: COLORS.title,
                                           },
-                                      headerBackVisible: true,
+                                      headerBackVisible: false,
+                                      headerRight: () => (returnButton()
+                                      ),
                                   }}/>
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{

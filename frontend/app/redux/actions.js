@@ -206,6 +206,25 @@ export const updateUserPreferences = (date_of_birth, height, weight, gender, phy
         console.log(error);
     }
 }
+export const updatePassword = (old_pass, new_pass) => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/user/resetPassword`,
+                    {
+                        old_pass: old_pass,
+                        new_pass: new_pass,
+                    });
+                if(response.status==201){
+                    return true;}
+            }catch (error){
+                return false;
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
 
 export const setFoodPreference = (newFood) =>{
     return async dispatch => {

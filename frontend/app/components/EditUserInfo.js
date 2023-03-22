@@ -10,7 +10,7 @@ import {AntDesign, } from "@expo/vector-icons";
 
 
 
-const RegisterScreen = ({navigation}) => {
+const EditUserInfo = ({navigation}) => {
     const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');
@@ -220,4 +220,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RegisterScreen;
+export default EditUserInfo;
