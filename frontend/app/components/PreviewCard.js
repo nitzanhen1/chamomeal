@@ -9,9 +9,8 @@ import {useDispatch} from "react-redux";
 const PreviewCard = ({props}) => {
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const [recipe, setRecipe] = React.useState(props);
+    const [favorite, setFavorite] = React.useState(recipe.isFavorite ? 'heart' : 'heart-outline')
     const dispatch = useDispatch();
-    const [iconName, setIconName] = useState(recipe.isFavorite ? 'heart' : 'heart-outline');
-    const animation = useRef(new Animated.Value( 1)).current;
 
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -22,27 +21,18 @@ const PreviewCard = ({props}) => {
     }
 
     const handleIconPress = async () => {
-        await addFavorite();
-        const toValue = 1;
-        setIconName(recipe.isFavorite ? 'heart' : 'heart-outline');
-        Animated.timing(animation, {
-            toValue,
-            duration: 500,
-            useNativeDriver: true,
-        }).start();
-    };
-
-
-    const addFavorite = () => {
-        let isFavoriteAfter = !recipe.isFavorite;
-        dispatch(addToFavorites(recipe.recipe_id, isFavoriteAfter)).then(success=>{
-            if (success){
-                let recipeUpdated = recipe;
-                recipeUpdated.isFavorite = isFavoriteAfter;
+        let recipeUpdated = recipe;
+        recipeUpdated.isFavorite = !recipe.isFavorite;
+        setFavorite(recipeUpdated.isFavorite ? 'heart' : 'heart-outline')
+        setRecipe(recipeUpdated)
+        dispatch(addToFavorites(recipe.recipe_id, recipeUpdated.isFavorite )).then(success=>{
+            if (!success){
+                recipeUpdated.isFavorite = !recipe.isFavorite;
+                setFavorite(recipeUpdated.isFavorite ? 'heart' : 'heart-outline')
                 setRecipe(recipeUpdated)
             }
         });
-    }
+    };
 
     return (
         <View style={styles.container}>
@@ -60,9 +50,7 @@ const PreviewCard = ({props}) => {
                     </View>
                 </View>
                 <TouchableOpacity  style={styles.heartContainer} onPress={handleIconPress}>
-                    <Animated.View style={{ opacity: animation }}>
-                        <Iconn style={styles.heartIcon} name={iconName} size={32} color="#ff6666" />
-                    </Animated.View>
+                        <Iconn style={styles.heartIcon} name={favorite} size={32} color="#ff6666" />
                 </TouchableOpacity>
             </TouchableOpacity>
         </View>

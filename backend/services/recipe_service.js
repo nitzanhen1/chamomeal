@@ -12,6 +12,7 @@ async function getDailyMenu(user_id, date) {
     }
     const recipes_id_array = [dailyMenu['breakfast'], dailyMenu['lunch'], dailyMenu['dinner']];
     let recipes = await getRecipesByIdFromDB(recipes_id_array);
+    recipes = await addIsFavorite(user_id, recipes)
     recipes[0].eaten = dailyMenu['breakfast_eaten'];
     recipes[1].eaten = dailyMenu['lunch_eaten'];
     recipes[2].eaten = dailyMenu['dinner_eaten'];
@@ -59,32 +60,36 @@ async function generateDailyMenu(user_id, date) {
     throw {status: 404, message: "Need to fill user's preferences"};
 }
 
-async function getRecipesByIdFromDB(array_recipes_id){
-    let recipes = [];
-    if(array_recipes_id.length>0) {
-        const recipes_id_join = array_recipes_id.join()
-        recipes = await DButils.execQuery(`select * from Recipes where recipe_id in (${recipes_id_join}) ORDER BY FIELD(recipe_id, ${recipes_id_join})`);
-    }
-    if(array_recipes_id.length>recipes.length){ //only if there are two or more recipes with the same id
-        let duplicate_recipes = [];
-        let index = 0;
-        for(let i=0; i<array_recipes_id.length; i++){
-            if((index < recipes.length) && (array_recipes_id[i] == recipes[index]['recipe_id'])) {
-                duplicate_recipes.push(recipes[index])
-                index++;
-            }
-            else {
-                for (let j = 0; j < recipes.length; j++) {
-                    if (array_recipes_id[i] == recipes[j]['recipe_id']) {
-                        duplicate_recipes.push(recipes[j])
-                        break;
+async function getRecipesByIdFromDB(array_recipes_id, addIsFavorite){
+    try {
+        let recipes = [];
+        if (array_recipes_id.length > 0) {
+            const recipes_id_join = array_recipes_id.join()
+            recipes = await DButils.execQuery(`select * from Recipes where recipe_id in (${recipes_id_join})
+                                               ORDER BY FIELD(recipe_id, ${recipes_id_join})`);
+        }
+        if (array_recipes_id.length > recipes.length) { //only if there are two or more recipes with the same id
+            let duplicate_recipes = [];
+            let index = 0;
+            for (let i = 0; i < array_recipes_id.length; i++) {
+                if ((index < recipes.length) && (array_recipes_id[i] == recipes[index]['recipe_id'])) {
+                    duplicate_recipes.push(recipes[index])
+                    index++;
+                } else {
+                    for (let j = 0; j < recipes.length; j++) {
+                        if (array_recipes_id[i] == recipes[j]['recipe_id']) {
+                            duplicate_recipes.push(recipes[j])
+                            break;
+                        }
                     }
                 }
             }
+            recipes = duplicate_recipes;
         }
-        recipes = duplicate_recipes;
+        return recipes;
+    }catch (err){
+        throw {status: 404, message: err}
     }
-    return recipes;
 }
 
 async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score) {
@@ -153,7 +158,7 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
         let prefs_query = `score ${gt} ${meal_score} and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
         let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, prefs_query);
         let random_recipe_id, random_index;
-        let sustainable_recipes = [];
+        let sustainable_recipes_ids = [];
         do {
             random_index = Math.floor(Math.random() * recipes_ids.length);
             random_recipe_id = recipes_ids[random_index];
@@ -161,10 +166,12 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
             const elementsAfter = recipes_ids.slice(random_index+1);
             recipes_ids = elementsBefore.concat(elementsAfter);
             if (recipe_id != random_recipe_id){
-                sustainable_recipes.push(random_recipe_id);
+                sustainable_recipes_ids.push(random_recipe_id);
             }
         } while (sustainable_recipes.length < 3);
-        return getRecipesByIdFromDB(sustainable_recipes);
+        let sustainable_recipes =  await getRecipesByIdFromDB(sustainable_recipes_ids)
+        sustainable_recipes = await addIsFavorite(user_id, sustainable_recipes);
+        return sustainable_recipes;
     }
     catch (err){
         throw err;
@@ -182,22 +189,32 @@ async function getRecipesIdsArrayByFilters(meal_type, calories, preferences){
 }
 
 async function getFavoritesRecipes(user_id) {
+        let favorites_id_array = await getFavoritesIds(user_id);
+        let favoriteRecipes =  await getRecipesByIdFromDB(favorites_id_array);
+        return favoriteRecipes.map(element => ({...element, isFavorite: true}))
+}
+
+async function getFavoritesIds(user_id){
     try {
-        const recipes_id = await DButils.execQuery(`select recipe_id from Favorites where user_id='${user_id}' order by added_date desc`);
+        const recipes_id = await DButils.execQuery(`select recipe_id from Favorites where user_id = '${user_id}' order by added_date desc`);
         let recipes_id_array = [];
         recipes_id.map((element) => recipes_id_array.push(element.recipe_id));
-        let favoriteRecipes =  await getRecipesByIdFromDB(recipes_id_array);
-        return favoriteRecipes.map(element => ({...element, isFavorite: true}))
-    }
-    catch (err){
+        return recipes_id_array;
+    } catch (err){
         throw {status: 404, message: err};
     }
+}
+
+async function addIsFavorite(user_id, recipes_array){
+    const favoriteRecipesIds = await getFavoritesIds(user_id);
+    return recipes_array.map(element => ({...element, isFavorite: (favoriteRecipesIds.includes(element["recipe_id"]))}))
+
 }
 
 async function addToFavorites(user_id, recipe_id) {
     try {
         let local_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        let favorite_recipe = await DButils.execQuery(`select * from favorites where user_id='${user_id}' and recipe_id='${recipe_id}'`);
+        let favorite_recipe = await DButils.execQuery(`select recipe_id from favorites where user_id='${user_id}' and recipe_id='${recipe_id}'`);
         if (favorite_recipe.length===0)
             await DButils.execQuery(`insert into favorites values ('${user_id}', '${recipe_id}', '${local_time}')`);
         else
@@ -228,6 +245,7 @@ exports.getDailyMenu = getDailyMenu
 exports.markAsEaten = markAsEaten
 exports.getFavoritesRecipes = getFavoritesRecipes
 exports.addToFavorites = addToFavorites
+exports.addIsFavorite = addIsFavorite
 exports.deleteFromFavorites = deleteFromFavorites
 exports.replaceRecipeByRandom = replaceRecipeByRandom
 exports.getSustainableRecipes = getSustainableRecipes

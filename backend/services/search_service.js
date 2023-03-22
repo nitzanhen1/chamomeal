@@ -1,6 +1,7 @@
 const DButils = require("../data/db_utils");
 const user_service = require("./user_service");
-async function search(user_id, query, onlyIngredients, mealTypeFilter, includePrefs){
+const recipe_service = require("./recipe_service");
+async function search(user_id, query, onlyIngredients, includePrefs, mealTypeFilter){
     if(query==null || query==""){
         return [];
     }
@@ -8,11 +9,10 @@ async function search(user_id, query, onlyIngredients, mealTypeFilter, includePr
     if(!onlyIngredients){
         recipe_name_query = `or name LIKE '%${query}%'`
     }
-    if(mealTypeFilter!=null){
+    if(mealTypeFilter!=null && (["breakfast","lunch","dinner"].includes(mealTypeFilter))){
         meal_type_query = `and ${mealTypeFilter}=1 `
     }
     if(includePrefs){
-        console.log("is true")
         const prefs = await user_service.getPreferences(user_id)
         prefs_query = `and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
     }
@@ -22,7 +22,8 @@ async function search(user_id, query, onlyIngredients, mealTypeFilter, includePr
         ingredients_recipes_ids=[0]
     }
     let ing_recipes_ids_join = ingredients_recipes_ids.join()
-    const results = await DButils.execQuery(`select distinct * from recipes where (recipe_id in (${ing_recipes_ids_join}) ${recipe_name_query}) ${meal_type_query} ${prefs_query} order by score desc limit 30`);
+    let results = await DButils.execQuery(`select distinct * from recipes where (recipe_id in (${ing_recipes_ids_join}) ${recipe_name_query}) ${meal_type_query} ${prefs_query} order by score desc limit 30`);
+    results = await recipe_service.addIsFavorite(user_id, results)
     return results;
 }
 

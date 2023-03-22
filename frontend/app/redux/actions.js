@@ -13,6 +13,7 @@ export const SET_EARNED = 'SET_EARNED';
 export const LOGOUT = 'LOGOUT';
 
 const API_URL = 'http://10.0.2.2:3000';
+// const API_URL = 'http://132.73.84.195:443';
 // const API_URL = `http://localhost:3000`;
 
 export const getDailyMenu = (date) => {
@@ -244,6 +245,25 @@ export const addToFavorites = (recipe_id, isFavorite) =>{
             if(response.status==201){
                 return true;
             }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
+export const search = (searchQuery,onlyIngredientsFilter,includePrefsFilter,mealTypeFilter) =>{
+    try{
+        return async dispatch =>{
+            const response = await axios.get(`${API_URL}/search`,
+                {
+                    params: {
+                        query: searchQuery,
+                        onlyIngredientsFilter: onlyIngredientsFilter,
+                        includePrefsFilter:includePrefsFilter,
+                        mealTypeFilter:mealTypeFilter
+                    }});
+            const data = response.data;
+            return data;
         }
     }catch (error) {
         console.log(error);
