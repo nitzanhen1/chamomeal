@@ -134,15 +134,15 @@ export const logout = () => {
     }
 }
 
-export const getUserDetails = () => {
+export const geGlobalDetails = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/user/getUserDetails`);
+            const response = await axios.get(`${API_URL}/user/geGlobalDetails`);
             const data = response.data;
 
             dispatch({
                 type: GET_USER_DETAILS,
-                user_name: data['name'],
+                first_name: data['name'],
                 score: data['total_score'],
                 badges: data['badges'],
                 EER: data['EER'],
