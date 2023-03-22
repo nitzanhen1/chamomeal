@@ -3,6 +3,7 @@ import axios from "axios";
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
 export const GET_USER_DETAILS = 'GET_USER_DETAILS';
+export const GET_Q_DETAILS = 'GET_Q_DETAILS';
 export const SET_FOOD_PREFERENCE = 'SET_FOOD_PREFERENCE';
 export const SET_ACTIVITY_PREFERENCE = 'SET_ACTIVITY_PREFERENCE';
 export const SET_PERSONAL_DETAILS = 'SET_PERSONAL_DETAILS';
@@ -149,6 +150,33 @@ export const getUserDetails = () => {
         }
     }catch (error) {
         console.log(error);
+    }
+}
+
+export const getQuestionnaireDetails = () => {
+    try{
+        return async dispatch =>{
+
+            const response = await axios.get(`${API_URL}/user/getPreferences`);
+            const data = response.data;
+            console.log(JSON.stringify(data));
+            dispatch({
+                type: GET_Q_DETAILS,
+                gender: data['gender'].toString(),
+                date_of_birth: data['date_of_birth'].substring(0, 10),
+                height: data['height'].toString(),
+                weight: data['weight'].toString(),
+                physical_activity: data['physical_activity'],
+                kosher: data['kosher'],
+                vegetarian: data['vegetarian'],
+                vegan: data['vegan'],
+                gluten_free: data['gluten_free'],
+                without_lactose: data['without_lactose'],
+            });
+        }
+    }catch (error) {
+        console.log(error);
+        throw error;
     }
 }
 

@@ -76,13 +76,14 @@ const PersonalDetails = ({navigation}) => {
     }
 
     function validateBirthday(){
-        if (!dateChanged) {
-            setBirthDateError('אנא בחר את תאריך הלידה שלך');
-            return false
-        }else {
-            setBirthDateError('')
-            return true
-        }
+        return true
+        // if (!dateChanged) {
+        //     setBirthDateError('אנא בחר את תאריך הלידה שלך');
+        //     return false
+        // }else {
+        //     setBirthDateError('')
+        //     return true
+        // }
     }
 
     function validateGender(){
@@ -140,36 +141,49 @@ const PersonalDetails = ({navigation}) => {
                 {newWeightError}
             </HelperText>
 
+            {/*<TextInput*/}
+            {/*    mode="flat"*/}
+            {/*    label="תאריך לידה"*/}
+            {/*    value={!dateChanged ? '':newBirthDate.toISOString().substring(0, 10)}*/}
+            {/*    onChangeText={(newBirthDate) => {*/}
+            {/*        setBirthDate(newBirthDate.toISOString().substring(0, 10));*/}
+            {/*        setDateChanged(true);*/}
+            {/*    }}*/}
+            {/*    selectionColor={COLORS.primary}*/}
+            {/*    activeUnderlineColor={COLORS.primary}*/}
+            {/*    underlineColor={COLORS.darkGrey}*/}
+            {/*    style={styles.inputText}*/}
+            {/*    underlineStyle={styles.inputContainer}*/}
+            {/*    right={<TextInput.Icon icon="calendar" onPress={showDatepicker}/>}*/}
+            {/*    editable={false}*/}
+            {/*/>*/}
+            {/*<HelperText type="error" visible={!dateChanged}>*/}
+            {/*    {newBirthDateError}*/}
+            {/*</HelperText>*/}
+
+            {/*{show && (*/}
+            {/*    <DateTimePicker*/}
+            {/*        testID="dateTimePicker"*/}
+            {/*        value={newBirthDate}*/}
+            {/*        mode={mode}*/}
+            {/*        is24Hour={true}*/}
+            {/*        onChange={onChange}*/}
+            {/*        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + -16))}*/}
+            {/*    />*/}
+            {/*)}*/}
+
             <TextInput
                 mode="flat"
                 label="תאריך לידה"
-                value={!dateChanged ? '':newBirthDate.toISOString().substring(0, 10)}
-                onChangeText={(newBirthDate) => {
-                    setBirthDate(newBirthDate.toISOString().substring(0, 10));
-                    setDateChanged(true);
-                }}
+                value={newBirthDate}
+                placeholder='yyyy-mm-dd'
+                onChangeText={newBirthDate => setBirthDate(newBirthDate)}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
-                underlineColor={COLORS.darkGrey}
+                underlineColor={COLORS.grey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
-                right={<TextInput.Icon icon="calendar" onPress={showDatepicker}/>}
-                editable={false}
             />
-            <HelperText type="error" visible={!dateChanged}>
-                {newBirthDateError}
-            </HelperText>
-
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={newBirthDate}
-                    mode={mode}
-                    is24Hour={true}
-                    onChange={onChange}
-                    maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + -16))}
-                />
-            )}
 
             <RadioButton.Group onValueChange={newValue => setGender(newValue)} value={newGender}>
                 <View style={styles.genderContainer}>

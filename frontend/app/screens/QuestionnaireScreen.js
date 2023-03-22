@@ -27,7 +27,7 @@ const QuestionnaireScreen = ({navigation}) => {
     const [step, setStep] = useState(1);
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(date_of_birth.toISOString().substring(0, 10), height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
+        dispatch(updateUserPreferences(date_of_birth.substring(0, 10), height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
         navigation.navigate('BottomNavigator');
     }
 
@@ -50,7 +50,7 @@ const QuestionnaireScreen = ({navigation}) => {
                                               fontSize: 27,
                                               color: COLORS.title,
                                           },
-                                      headerBackVisible: false,
+                                      headerBackVisible: true,
                                   }}/>
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{
