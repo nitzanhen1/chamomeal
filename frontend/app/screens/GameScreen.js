@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {useSelector} from "react-redux";
 
 export default function GameScreen() {
-    const {badges, user_name, score} = useSelector(state => state.mealReducer);
+    const {badges, first_name, score} = useSelector(state => state.mealReducer);
     const badge_details = [
         {id:1, badge: badges[0], source: require('../assets/badges/flower6.png'), text: '10 פרחים', showText: false},
         {id:2, badge: badges[1], source: require('../assets/badges/flower6.png'), text: '20 פרחים', showText: false},
@@ -53,7 +53,7 @@ export default function GameScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.textCals}>{user_name} שלום</Text>
+            <Text style={styles.textCals}>{first_name} שלום</Text>
             <Text style={styles.textCals}>עד כה צברת: {score}</Text>
             <FlatList
                 data={badge_details}

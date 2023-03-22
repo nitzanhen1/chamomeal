@@ -1,16 +1,16 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getQuestionnaireDetails, getUserDetails, logout, register} from "../redux/actions";
+import {getDailyMenu, getQuestionnaireDetails, geGlobalDetails, logout, register} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
 
 export default function PersonalScreen({navigation}) {
-    const { user_name } = useSelector(state => state.mealReducer);
+    const { first_name } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     // useEffect(() => {
-    //         dispatch(getUserDetails()).then(); //TODO move to login
+    //         dispatch(geGlobalDetails()).then(); //TODO move to login
     //     },[]);
 
     function logoutUser() {
@@ -48,7 +48,7 @@ export default function PersonalScreen({navigation}) {
     return (
     // <View style={styles.view}>
         <View style={styles.container}>
-            <Text style={styles.helloText}>שלום {user_name}!</Text>
+            <Text style={styles.helloText}>שלום {first_name}!</Text>
             <Button
                 title="עדכון פרטי חשבון"
                 onPress={() => navigation.navigate('EditUserInfo')}
