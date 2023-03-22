@@ -68,7 +68,7 @@ async function getUserFromDB(user_id, cols="*") {
     throw {status: 404, message: "user doesn't exist"};
 }
 
-async function getUserDetails(user_id){
+async function getGlobalDetails(user_id){
     let user = await getUserFromDB(user_id);
     let user_details = {
         name: user['first_name'],
@@ -123,6 +123,6 @@ async function getBadgesFromDB(user_id, cols="*") {
 exports.userMiddleware = userMiddleware
 exports.updatePreferences = updatePreferences
 exports.getUserFromDB = getUserFromDB
-exports.getUserDetails = getUserDetails
+exports.getGlobalDetails = getGlobalDetails
 exports.getPreferences = getPreferences
 exports.checkBadges = checkBadges;

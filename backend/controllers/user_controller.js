@@ -5,10 +5,10 @@ router.use(async function (req, res, next) {
     await user_service.userMiddleware(req,res,next);
 });
 
-router.get("/getUserDetails", async (req, res, next) => {
+router.get("/getGlobalDetails", async (req, res, next) => {
     try {
         const user_id = req.user_id;
-        const userDetails = await user_service.getUserDetails(user_id)
+        const userDetails = await user_service.getGlobalDetails(user_id)
         res.status(200).send(userDetails);
     } catch (error) {
         next(error);

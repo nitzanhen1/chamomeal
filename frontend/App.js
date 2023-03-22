@@ -14,7 +14,7 @@ import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 import EditUserInfo from "./app/components/EditUserInfo";
-import {getUserDetails} from "./app/redux/actions";
+import {getGlobalDetails} from "./app/redux/actions";
 import {Ionicons, Feather} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -49,7 +49,7 @@ export default function App() {
         const navigation = useNavigation();
 
         useEffect(() => {
-            dispatch(getUserDetails()).then();
+            dispatch(getGlobalDetails()).then();
         }, []);
 
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';

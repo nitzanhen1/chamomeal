@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
-export const GET_USER_DETAILS = 'GET_USER_DETAILS';
+export const GET_GLOBAL_DETAILS = 'GET_GLOBAL_DETAILS';
 export const GET_Q_DETAILS = 'GET_Q_DETAILS';
 export const SET_FOOD_PREFERENCE = 'SET_FOOD_PREFERENCE';
 export const SET_ACTIVITY_PREFERENCE = 'SET_ACTIVITY_PREFERENCE';
@@ -134,15 +134,15 @@ export const logout = () => {
     }
 }
 
-export const getUserDetails = () => {
+export const getGlobalDetails = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/user/getUserDetails`);
+            const response = await axios.get(`${API_URL}/user/getGlobalDetails`);
             const data = response.data;
 
             dispatch({
-                type: GET_USER_DETAILS,
-                user_name: data['name'],
+                type: GET_GLOBAL_DETAILS,
+                first_name: data['name'],
                 score: data['total_score'],
                 badges: data['badges'],
                 EER: data['EER'],

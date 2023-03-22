@@ -1,7 +1,7 @@
 import {
     GET_DAILY_MENU,
     MARK_AS_EATEN,
-    GET_USER_DETAILS,
+    GET_GLOBAL_DETAILS,
     GET_Q_DETAILS,
     SET_FOOD_PREFERENCE,
     SET_ACTIVITY_PREFERENCE,
@@ -12,7 +12,7 @@ import {
 } from './actions';
 
 const initialState = {
-    user_name: "",
+    first_name: "",
     badges: [],
     earned: false,
     EER: 0,
@@ -38,8 +38,8 @@ const initialState = {
 
 function mealReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_USER_DETAILS:
-            return { ...state, user_name: action.user_name, score: action.score, badges: action.badges, EER: action.EER}
+        case GET_GLOBAL_DETAILS:
+            return { ...state, first_name: action.first_name, score: action.score, badges: action.badges, EER: action.EER}
         case GET_Q_DETAILS:
             return { ...state, gender: action.gender, date_of_birth: action.date_of_birth, height: action.height, weight: action.weight, physical_activity: action.physical_activity, vegan: action.vegan, vegetarian: action.vegetarian, without_lactose: action.without_lactose,
                 gluten_free: action.gluten_free, kosher: action.kosher}
