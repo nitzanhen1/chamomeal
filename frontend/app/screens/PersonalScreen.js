@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getQuestionnaireDetails, geGlobalDetails, logout, register} from "../redux/actions";
+import {getDailyMenu, getQuestionnaireDetails, getGlobalDetails, logout, register} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
 
@@ -10,7 +10,7 @@ export default function PersonalScreen({navigation}) {
     const dispatch = useDispatch();
 
     // useEffect(() => {
-    //         dispatch(geGlobalDetails()).then(); //TODO move to login
+    //         dispatch(getGlobalDetails()).then(); //TODO move to login
     //     },[]);
 
     function logoutUser() {

@@ -3,7 +3,7 @@ import React, {useEffect} from 'react'
 import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, geGlobalDetails} from "../redux/actions";
+import {getDailyMenu, getGlobalDetails} from "../redux/actions";
 
 export default function PlannerScreen(props) {
     const { meals, consumed_calories, date, total_calories} = useSelector(state => state.mealReducer);
@@ -11,7 +11,7 @@ export default function PlannerScreen(props) {
 
     useEffect(() => {
         dispatch(getDailyMenu(date)).then();
-        dispatch(geGlobalDetails()).then(); //TODO move to login
+        dispatch(getGlobalDetails()).then(); //TODO move to login
     }, []);
 
     let day = date.getDate();
