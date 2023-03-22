@@ -12,8 +12,8 @@ export const UPDATE_BADGES = 'UPDATE_BADGES';
 export const SET_EARNED = 'SET_EARNED';
 export const LOGOUT = 'LOGOUT';
 
-const API_URL = 'http://10.0.2.2:3000';
-// const API_URL = `http://localhost:3000`;
+const API_URL = 'http://10.0.2.2:3000'; //localhost
+// const API_URL = 'http://132.73.84.195:443'; //remote backend
 
 export const getDailyMenu = (date) => {
     try{
