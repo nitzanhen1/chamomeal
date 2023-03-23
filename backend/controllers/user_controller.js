@@ -8,8 +8,8 @@ router.use(async function (req, res, next) {
 router.get("/getGlobalDetails", async (req, res, next) => {
     try {
         const user_id = req.user_id;
-        const userDetails = await user_service.getGlobalDetails(user_id)
-        res.status(200).send(userDetails);
+        const globalDetails = await user_service.getGlobalDetails(user_id)
+        res.status(200).send(globalDetails);
     } catch (error) {
         next(error);
     }
@@ -43,6 +43,27 @@ router.post("/resetPassword", async (req, res, next) => {
         let {old_pass, new_pass} = req.body
         await user_service.resetPassword(user_id, old_pass, new_pass);
         res.status(201).send({ message: "password updated successfully", success: true });
+    } catch (error) {
+        next(error);
+    }
+})
+
+router.get("/getUserDetails", async (req, res, next) => {
+    try {
+        const user_id = req.user_id;
+        const userDetails = await user_service.getUserDetails(user_id)
+        res.status(200).send(userDetails);
+    } catch (error) {
+        next(error);
+    }
+})
+
+router.post("/updateUserDetails", async (req, res, next) => {
+    try {
+        const user_id = req.user_id;
+        const details = req.body;
+        await user_service.updateUserDetails(user_id, details)
+        res.status(201).send({ message: "user details updated successfully", success: true });
     } catch (error) {
         next(error);
     }

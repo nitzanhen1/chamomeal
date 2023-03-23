@@ -19,7 +19,7 @@ async function userMiddleware(req, res, next) {
 }
 
 async function getPreferences(user_id) {
-    const cols = "gender, date_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER"
+    const cols = "gender, year_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER"
     const preferences = await getUserFromDB(user_id, cols);
     return preferences;
 }
@@ -27,7 +27,7 @@ async function getPreferences(user_id) {
 async function updatePreferences(user_id, preferences) {
     let {
         gender,
-        date_of_birth,
+        year_of_birth,
         height,
         weight,
         physical_activity,
@@ -37,14 +37,14 @@ async function updatePreferences(user_id, preferences) {
         gluten_free,
         without_lactose
     } = preferences;
-    const EER = await calculateEER(gender, date_of_birth, height, weight, physical_activity)
-    await DButils.execQuery(`update Users set gender='${Number(gender)}', date_of_birth='${date_of_birth}', height='${height}', weight='${weight}',
+    const EER = await calculateEER(gender, year_of_birth, height, weight, physical_activity)
+    await DButils.execQuery(`update Users set gender='${Number(gender)}', year_of_birth='${year_of_birth}', height='${height}', weight='${weight}',
                  physical_activity='${physical_activity}', kosher='${Number(kosher)}', vegetarian='${Number(vegetarian)}', vegan='${Number(vegan)}',
                  gluten_free='${Number(gluten_free)}', without_lactose='${Number(without_lactose)}', EER='${EER}' where user_id='${user_id}'`);
 }
 
-async function calculateEER(gender, date_of_birth, height, weight, physical_activity) {
-    const age = moment().diff(date_of_birth, 'years');
+async function calculateEER(gender, year_of_birth, height, weight, physical_activity) {
+    const age = moment().year() - year_of_birth
     let height_in_m = height / 100;
     const PA_level = await calculatePALevel(age, gender, physical_activity);
     let EER = 0;
@@ -83,7 +83,7 @@ async function getUserFromDB(user_id, cols = "*") {
 async function getGlobalDetails(user_id) {
     let user = await getUserFromDB(user_id);
     let user_details = {
-        name: user['first_name'],
+        first_name: user['first_name'],
         total_score: user['score'],
         EER: user['EER'],
     }
@@ -150,11 +150,30 @@ async function resetPassword(user_id, old_pass, new_pass) {
     throw {status: 404, message: "password incorrect"};
 }
 
+async function getUserDetails(user_id) {
+    let user = await getUserFromDB(user_id);
+    let user_details = {
+        first_name: user['first_name'],
+        last_name: user['last_name'],
+        email: user['email'],
+    }
+    return user_details
+}
+
+async function updateUserDetails(user_id, details) {
+    let {first_name, last_name, email} = details;
+    await DButils.execQuery(`update Users set 
+    first_name='${first_name}', last_name='${last_name}', email='${email}' where user_id='${user_id}'`);
+}
+
+
 
 exports.userMiddleware = userMiddleware
 exports.updatePreferences = updatePreferences
+exports.updateUserDetails = updateUserDetails
 exports.getUserFromDB = getUserFromDB
 exports.getGlobalDetails = getGlobalDetails
+exports.getUserDetails = getUserDetails
 exports.getPreferences = getPreferences
 exports.checkBadges = checkBadges;
 exports.resetPassword = resetPassword;

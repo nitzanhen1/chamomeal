@@ -142,7 +142,7 @@ export const getGlobalDetails = () => {
 
             dispatch({
                 type: GET_GLOBAL_DETAILS,
-                first_name: data['name'],
+                first_name: data['first_name'],
                 score: data['total_score'],
                 badges: data['badges'],
                 EER: data['EER'],
