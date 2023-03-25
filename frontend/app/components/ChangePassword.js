@@ -1,7 +1,7 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, StyleSheet } from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
-import {register, updatePassword} from "../redux/actions";
+import {updatePassword} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
@@ -16,7 +16,18 @@ const ChangePassword = ({navigation}) => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const [passwordError, setPasswordError] = useState('');
+    const [oldPasswordError, setOldPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    function validateOldPassword(oldPassword){
+        if (!oldPassword) {
+            setOldPasswordError("אנא הכנס סיסמה נוכחית")
+            return false
+        } else {
+            setOldPasswordError('')
+            return true
+        }
+    }
 
     function validatePassword(newPassword){
         let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
@@ -28,12 +39,13 @@ const ChangePassword = ({navigation}) => {
             return false
         }
     }
+
     function validateConfirmPassword(confirmPassword){
         if (!confirmPassword) {
-            setConfirmPassword("נדרשת סיסמה")
+            setConfirmPasswordError("נדרשת סיסמה")
             return false
         } else if (newPassword != confirmPassword) {
-            setConfirmPasswordError("סיסמה לא נכונה");
+            setConfirmPasswordError("סיסמה לא תואמת");
             return false
         } else {
             setConfirmPasswordError('')
@@ -43,12 +55,13 @@ const ChangePassword = ({navigation}) => {
 
     function handleSubmitPress(){
         console.log('hey');
-        if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword)){
+        if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)){
             dispatch(updatePassword(oldPassword,newPassword)).then((success)=>{
                 if(success) {
+                    alert('סיסמה שונתה בהצלחה!');
                     navigation.goBack();
                 } else {
-                    alert('סיסמה נוכחית שגויה')
+                    alert('סיסמה נוכחית שגויה');
                 }});
         }
     }
@@ -61,16 +74,16 @@ const ChangePassword = ({navigation}) => {
                     labelStyle={styles.label}
                     onChangeText={(password) => {
                         setOldPassword(password)
-                        // validatePassword(password)
+                        validateOldPassword(password)
                     }}
                     secureTextEntry={true}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
-                    errorMessage={passwordError}
+                    errorMessage={oldPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-
+                    placeholder="••••••••"
                 />
                 <Input
                     label='סיסמה חדשה'
@@ -79,7 +92,7 @@ const ChangePassword = ({navigation}) => {
                         setNewPassword(password)
                         validatePassword(password)
                     }}
-                    // placeholder="סיסמה"
+                    placeholder="••••••••"
                     secureTextEntry={true}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
@@ -87,7 +100,6 @@ const ChangePassword = ({navigation}) => {
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-
                 />
                 <Input
                     label='אימות סיסמה חדשה'
@@ -96,14 +108,13 @@ const ChangePassword = ({navigation}) => {
                         setConfirmPassword(confirmPassword)
                         validateConfirmPassword(confirmPassword)
                     }}
-                    // placeholder="אימות סיסמה"
+                    placeholder="••••••••"
                     secureTextEntry={true}
                     errorStyle={{ color: 'red' }}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-
                 />
                 <Button
                     title="שמור"
@@ -114,8 +125,6 @@ const ChangePassword = ({navigation}) => {
                     radius={8}
                 />
             </View>
-
-
     )
 }
 
@@ -125,7 +134,6 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         alignItems: 'center',
-        // justifyContent: 'center',
         backgroundColor: COLORS.white,
         paddingTop:30,
     },
@@ -144,19 +152,6 @@ const styles = StyleSheet.create({
     nextText: {
         fontWeight: 'bold',
         fontSize: 20
-    },
-    register: {
-        fontSize: 16,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-    },
-    registerLink: {
-        flexDirection: "row"
-    },
-    account: {
-        fontSize: 16,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
     },
     label:{
         fontFamily: 'Rubik-Regular',

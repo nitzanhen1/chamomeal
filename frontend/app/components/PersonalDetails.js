@@ -11,13 +11,13 @@ const PersonalDetails = ({navigation}) => {
     const {
         height,
         weight,
-        date_of_birth,
+        year_of_birth,
         gender} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const [newHeight, setHeight] = useState(height);
     const [newWeight, setWeight] = useState(weight);
     const [newGender, setGender] = useState(gender);
-    const [newBirthDate, setBirthDate] = useState(date_of_birth);
+    const [newBirthYear, setBirthYear] = useState(year_of_birth);
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -26,11 +26,11 @@ const PersonalDetails = ({navigation}) => {
     const [newHeightError, setHeightError] = useState('');
     const [newWeightError, setWeightError] = useState('');
     const [newGenderError, setGenderError] = useState('');
-    const [newBirthDateError, setBirthDateError] = useState('');
+    const [newBirthYearError, setBirthYearError] = useState('');
 
     const handleSubmit = () => {
         if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday() && validateGender()){
-            const newPersonalDetails = {newWeight, newHeight, newGender, newBirthDate};
+            const newPersonalDetails = {newWeight, newHeight, newGender, newBirthYear};
             dispatch(setPersonalDetails(newPersonalDetails))
             navigation.navigate('PhysicalActivity')
         }
@@ -39,7 +39,7 @@ const PersonalDetails = ({navigation}) => {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(false);
-        setBirthDate(currentDate);
+        setBirthYear(currentDate);
         setDateChanged(true);
     };
 
@@ -76,12 +76,25 @@ const PersonalDetails = ({navigation}) => {
     }
 
     function validateBirthday(){
-        return true
+        if (!newBirthYear) {
+            setBirthYearError('אנא הכנס שנת לידה');
+            return false
+        }else if (newBirthYear > (new Date(new Date().setFullYear(new Date().getFullYear() + -16)))){
+            setBirthYearError('עליך להיות מעל גיל 16 על מנת להשתמש באפליקציה');
+            return false
+        }else if (newBirthYear < (new Date(new Date().setFullYear(new Date().getFullYear() + -120)))){
+            setBirthYearError('אנא ודא שגילך קטן מ-120');
+            return false
+        }
+        else {
+            setBirthYearError('')
+            return true
+        }
         // if (!dateChanged) {
-        //     setBirthDateError('אנא בחר את תאריך הלידה שלך');
+        //     setBirthYearError('אנא בחר את תאריך הלידה שלך');
         //     return false
         // }else {
-        //     setBirthDateError('')
+        //     setBirthYearError('')
         //     return true
         // }
     }
@@ -144,9 +157,9 @@ const PersonalDetails = ({navigation}) => {
             {/*<TextInput*/}
             {/*    mode="flat"*/}
             {/*    label="תאריך לידה"*/}
-            {/*    value={!dateChanged ? '':newBirthDate.toISOString().substring(0, 10)}*/}
-            {/*    onChangeText={(newBirthDate) => {*/}
-            {/*        setBirthDate(newBirthDate.toISOString().substring(0, 10));*/}
+            {/*    value={!dateChanged ? '':newBirthYear.toISOString().substring(0, 10)}*/}
+            {/*    onChangeText={(newBirthYear) => {*/}
+            {/*        setBirthYear(newBirthYear.toISOString().substring(0, 10));*/}
             {/*        setDateChanged(true);*/}
             {/*    }}*/}
             {/*    selectionColor={COLORS.primary}*/}
@@ -158,13 +171,13 @@ const PersonalDetails = ({navigation}) => {
             {/*    editable={false}*/}
             {/*/>*/}
             {/*<HelperText type="error" visible={!dateChanged}>*/}
-            {/*    {newBirthDateError}*/}
+            {/*    {newBirthYearError}*/}
             {/*</HelperText>*/}
 
             {/*{show && (*/}
             {/*    <DateTimePicker*/}
             {/*        testID="dateTimePicker"*/}
-            {/*        value={newBirthDate}*/}
+            {/*        value={newBirthYear}*/}
             {/*        mode={mode}*/}
             {/*        is24Hour={true}*/}
             {/*        onChange={onChange}*/}
@@ -174,16 +187,21 @@ const PersonalDetails = ({navigation}) => {
 
             <TextInput
                 mode="flat"
-                label="תאריך לידה"
-                value={newBirthDate}
-                placeholder='yyyy-mm-dd'
-                onChangeText={newBirthDate => setBirthDate(newBirthDate)}
+                label="שנת לידה"
+                value={newBirthYear}
+                placeholder='yyyy'
+                onChangeText={(newBirthYear) => {
+                    setBirthYear(newBirthYear);
+                    validateBirthday(newBirthYear)}}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.grey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
             />
+            <HelperText type="error" visible={!newBirthYear}>
+                {newBirthYearError}
+            </HelperText>
 
             <RadioButton.Group onValueChange={newValue => setGender(newValue)} value={newGender}>
                 <View style={styles.genderContainer}>

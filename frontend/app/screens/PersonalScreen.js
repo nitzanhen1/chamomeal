@@ -1,17 +1,20 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getQuestionnaireDetails, getGlobalDetails, logout, register} from "../redux/actions";
+import {
+    getDailyMenu,
+    getQuestionnaireDetails,
+    getGlobalDetails,
+    logout,
+    register,
+    getUserDetails
+} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
 
 export default function PersonalScreen({navigation}) {
     const { first_name } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //         dispatch(getGlobalDetails()).then(); //TODO move to login
-    //     },[]);
 
     function logoutUser() {
         dispatch(logout()).then((success)=> {
@@ -25,33 +28,21 @@ export default function PersonalScreen({navigation}) {
     }
 
     async function updateQuestionnaire() {
-        console.log('b4 dis');
         await dispatch(getQuestionnaireDetails()).then();
-        console.log('b4 nav');
-
         navigation.navigate('QuestionnaireScreen');
-        console.log('after nav');
+    }
 
-        // dispatch(getQuestionnaireDetails()).then((success)=> {
-        //     if(success) {
-        //         navigation.navigate('QuestionnaireScreen')
-        //     } else {
-        //         alert('something went wrong')
-        //         navigation.navigate('QuestionnaireScreen')
-        //
-        //         // navigation.navigate('Login')
-        //     }
-        // });
-
+    async function updateUserDetails() {
+        await dispatch(getUserDetails()).then();
+        navigation.navigate('EditUserInfo');
     }
 
     return (
-    // <View style={styles.view}>
         <View style={styles.container}>
             <Text style={styles.helloText}>שלום {first_name}!</Text>
             <Button
                 title="עדכון פרטי חשבון"
-                onPress={() => navigation.navigate('EditUserInfo')}
+                onPress={() => updateUserDetails()}
                 color = {COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
@@ -86,37 +77,25 @@ export default function PersonalScreen({navigation}) {
                 buttonStyle={{height: 50}}
             />
         </View>
-    // </View>
   )
 }
 
 const styles = StyleSheet.create({
-    // view: {
-    //     flex: 1,
-    //     justifyContent: "center",
-    //     alignItems:  "center",
-    // },
     container: {
         direction: 'rtl',
         height: '100%',
         width: '100%',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        // backgroundColor: COLORS.white,
     },
     helloText:{
         fontSize: 25,
         textAlign: 'left',
         alignItems: 'center',
-        // backgroundColor: 'rgba(104,154,93,0.12)',
         width: '100%',
         height: 30,
         marginTop: 10,
         marginBottom: 15,
         paddingRight: 20,
-        // paddingTop: 4,
         fontFamily: 'Rubik-Bold',
-        // fontWeight: 700,
         letterSpacing: 1,
         color: COLORS.darkGrey
     },

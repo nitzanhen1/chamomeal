@@ -15,7 +15,7 @@ import {Feather} from "@expo/vector-icons";
 const Stack = createNativeStackNavigator();
 
 const QuestionnaireScreen = ({navigation}) => {
-    const { date_of_birth,
+    const { year_of_birth,
         height,
         weight,
         gender,
@@ -29,7 +29,7 @@ const QuestionnaireScreen = ({navigation}) => {
     const [step, setStep] = useState(1);
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(date_of_birth.substring(0, 10), height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
+        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
         navigation.navigate('BottomNavigator');
     }
 
@@ -39,7 +39,6 @@ const QuestionnaireScreen = ({navigation}) => {
                 { text: 'כן', onPress: () => navigation.goBack() },
                 {
                     text: 'לא',
-                    // onPress: () => console.log('No Pressed'),
                     style: 'cancel',
                 },
             ],
@@ -60,12 +59,12 @@ const QuestionnaireScreen = ({navigation}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:true
+                        headerShown:true,
                     }}>
                     <Stack.Screen name="PersonalDetails" component={PersonalDetails}
                                   options={{
                                       headerTitle:"פרופיל פיזיולוגי",
-                                      headerTitleAlign: "left",
+                                      headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
                                               fontFamily: 'Rubik-Bold',
@@ -80,7 +79,7 @@ const QuestionnaireScreen = ({navigation}) => {
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{
                                       headerTitle:"פעילות גופנית",
-                                      headerTitleAlign: "left",
+                                      headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
                                               fontFamily: 'Rubik-Bold',
@@ -94,7 +93,7 @@ const QuestionnaireScreen = ({navigation}) => {
                     <Stack.Screen name="FoodPreferences"
                                   options={{
                                       headerTitle:"העדפות תזונתיות",
-                                      headerTitleAlign: "left",
+                                      headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
                                               fontFamily: 'Rubik-Bold',
