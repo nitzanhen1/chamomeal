@@ -1,20 +1,14 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
-import COLORS from "../consts/colors";
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Ionicons} from "@expo/vector-icons";
+import MoreOptionsMenu from "./MoreOptionsMenu";
 
 const MealCard = ({recipe}) => {
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
 
-    const handleOpenFull = () => {
-        setFullVisible(true);
-    }
-
-    const handleCloseFull = () => {
-        setFullVisible(false);
-    }
+    const handleOpenFull = () => {setFullVisible(true);}
+    const handleCloseFull = () => {setFullVisible(false);}
 
     return (
         <View style={styles.container}>
@@ -29,11 +23,10 @@ const MealCard = ({recipe}) => {
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
-                        {/*<MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} />*/}
                     </View>
                 </View>
-                <TouchableOpacity style={styles.moreContainer} onPress={()=>alert()}>
-                    <Icon name="more-vert" size={25} style={styles.moreIcon} />
+                <TouchableOpacity>
+                    <MoreOptionsMenu/>
                 </TouchableOpacity>
             </TouchableOpacity>
         </View>
@@ -81,10 +74,6 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         alignSelf: "center"
     },
-    moreIcon: {
-        alignSelf: "flex-start",
-        paddingTop: 5,
-    },
     flowerContainer: {
         paddingHorizontal: 5,
         paddingVertical: 1,
@@ -105,12 +94,6 @@ const styles = StyleSheet.create({
         paddingTop: 3,
         marginRight:4,
     },
-    moreContainer: {
-        alignItems:"flex-start",
-    },
-    plusIcon: {
-        color: COLORS.lightGreen,
-    }
 });
 
 export default MealCard;
