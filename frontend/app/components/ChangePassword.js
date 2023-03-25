@@ -83,7 +83,7 @@ const ChangePassword = ({navigation}) => {
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-                    placeholder="••••••••"
+                    // placeholder="••••••••"
                 />
                 <Input
                     label='סיסמה חדשה'
@@ -92,7 +92,7 @@ const ChangePassword = ({navigation}) => {
                         setNewPassword(password)
                         validatePassword(password)
                     }}
-                    placeholder="••••••••"
+                    // placeholder="••••••••"
                     secureTextEntry={true}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
@@ -108,7 +108,7 @@ const ChangePassword = ({navigation}) => {
                         setConfirmPassword(confirmPassword)
                         validateConfirmPassword(confirmPassword)
                     }}
-                    placeholder="••••••••"
+                    // placeholder="••••••••"
                     secureTextEntry={true}
                     errorStyle={{ color: 'red' }}
                     errorMessage={confirmPasswordError}

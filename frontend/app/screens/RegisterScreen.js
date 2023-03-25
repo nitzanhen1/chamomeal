@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {register} from "../redux/actions";
@@ -109,7 +109,7 @@ const RegisterScreen = ({navigation}) => {
 
     return (
         <View style={styles.view}>
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <Input
                     onChangeText={(username) => {
                         setUsername(username);
@@ -200,7 +200,7 @@ const RegisterScreen = ({navigation}) => {
                     <Text style={styles.account}>יש לך משתמש? </Text>
                     <Text style={styles.register}>התחבר!</Text>
                 </TouchableOpacity>
-            </View>
+            </ScrollView>
 
 
         </View>
@@ -216,9 +216,10 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        // alignItems: 'center',
+        // justifyContent: 'center',
         backgroundColor: COLORS.white,
+        paddingTop: 30,
 
     },
     input:{

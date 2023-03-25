@@ -3,6 +3,7 @@ import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import MoreOptionsMenu from "./MoreOptionsMenu";
+import COLORS from "../consts/colors";
 
 const MealCard = ({recipe}) => {
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
@@ -23,6 +24,15 @@ const MealCard = ({recipe}) => {
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
+                        <View style={styles.icons}>
+                            <TouchableOpacity style={styles.upgrade} onPress={() => {console.log('A Pressed!')}}>
+                                <Image
+                                    style={{width: 26, height: 26,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
+                                    source={require('frontend/app/assets/earth-globe-12153.png')}
+                                />
+                                <Text style={styles.upgradeText}>שדרג!</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
                 <TouchableOpacity>
@@ -81,7 +91,7 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: 40,
+        width: '50%',
     },
     flowerIcon: {
         color:"black"
@@ -93,6 +103,21 @@ const styles = StyleSheet.create({
         color:"black",
         paddingTop: 3,
         marginRight:4,
+    },
+    icons:{
+        marginLeft: 10
+    },
+    upgrade:{
+        flexDirection: 'row',
+
+    },
+    upgradeText: {
+        color: COLORS.upgrade,
+        marginTop: 4,
+        fontSize: 15.5,
+        fontFamily: 'Rubik-Bold',
+        marginLeft: 5,
+        textDecorationLine: "underline",
     },
 });
 
