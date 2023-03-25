@@ -13,9 +13,11 @@ import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
-import {getUserDetails} from "./app/redux/actions";
-import {Ionicons} from "@expo/vector-icons";
+import EditUserInfo from "./app/components/EditUserInfo";
+import {getGlobalDetails} from "./app/redux/actions";
+import {Ionicons, Feather} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
+import ChangePassword from "./app/components/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +37,12 @@ export default function App() {
     if (!fontsLoaded) {
         return null;
     }
+    function returnButton(){
+        const navigation = useNavigation();
+        return (
+            <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => navigation.goBack()}/>
+        );
+    }
 
     function getFlowers(route) {
         const { score } = useSelector(state => state.mealReducer);
@@ -42,7 +50,7 @@ export default function App() {
         const navigation = useNavigation();
 
         useEffect(() => {
-            dispatch(getUserDetails()).then();
+            dispatch(getGlobalDetails()).then();
         }, []);
 
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';
@@ -109,6 +117,10 @@ export default function App() {
                         <Stack.Screen name="BottomNavigator" component={BottomNavigator}
                                       options={({ route }) => ({
                                                     headerTitle: getHeaderTitle(route),
+                                          headerTitleStyle: {
+                                              fontSize: 24,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
                                                     headerStyle: { backgroundColor : COLORS.primary},
                                                     headerLeft: () => getFlowers(route),
                                       })}
@@ -122,6 +134,28 @@ export default function App() {
                                           headerTintColor: COLORS.grey
                                       }}/>
                         <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen} options={{headerShown:false}}/>
+                        <Stack.Screen name="EditUserInfo" component={EditUserInfo}
+                                      options={{
+                                          headerShown:true,
+                                          headerTitle:'עדכון פרטי משתמש',
+                                          headerRight: () => (returnButton()
+                                          ),
+                                          headerTitleStyle: {
+                                              fontSize: 21,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
+                                      }}/>
+                        <Stack.Screen name="ChangePassword" component={ChangePassword}
+                                      options={{
+                                          headerShown:true,
+                                          headerTitle:'עדכון סיסמה',
+                                          headerRight: () => (returnButton()
+                                          ),
+                                          headerTitleStyle: {
+                                              fontSize: 21,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
+                                      }}/>
                     </Stack.Navigator>
                 </SafeAreaView>
             </NavigationContainer>

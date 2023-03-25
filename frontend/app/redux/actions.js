@@ -2,12 +2,13 @@ import axios from "axios";
 
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
+export const GET_GLOBAL_DETAILS = 'GET_GLOBAL_DETAILS';
+export const GET_Q_DETAILS = 'GET_Q_DETAILS';
 export const GET_USER_DETAILS = 'GET_USER_DETAILS';
 export const SET_FOOD_PREFERENCE = 'SET_FOOD_PREFERENCE';
 export const SET_ACTIVITY_PREFERENCE = 'SET_ACTIVITY_PREFERENCE';
 export const SET_PERSONAL_DETAILS = 'SET_PERSONAL_DETAILS';
 export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
-export const GET_USER_PREFERENCES = 'GET_USER_PREFERENCES';
 export const UPDATE_BADGES = 'UPDATE_BADGES';
 export const SET_EARNED = 'SET_EARNED';
 export const LOGOUT = 'LOGOUT';
@@ -133,15 +134,15 @@ export const logout = () => {
     }
 }
 
-export const getUserDetails = () => {
+export const getGlobalDetails = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/user/getUserDetails`);
+            const response = await axios.get(`${API_URL}/user/getGlobalDetails`);
             const data = response.data;
 
             dispatch({
-                type: GET_USER_DETAILS,
-                user_name: data['name'],
+                type: GET_GLOBAL_DETAILS,
+                first_name: data['first_name'],
                 score: data['total_score'],
                 badges: data['badges'],
                 EER: data['EER'],
@@ -152,13 +153,57 @@ export const getUserDetails = () => {
     }
 }
 
-export const updateUserPreferences = (date_of_birth, height, weight, gender, physical_activity, vegan, vegetarian, without_lactose, gluten_free, kosher) => {
+export const getUserDetails = () => {
+    try{
+        return async dispatch =>{
+            const response = await axios.get(`${API_URL}/user/getUserDetails`);
+            const data = response.data;
+
+            dispatch({
+                type: GET_USER_DETAILS,
+                first_name: data['first_name'],
+                last_name: data['last_name'],
+                email: data['email'],
+            });
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
+export const getQuestionnaireDetails = () => {
+    try{
+        return async dispatch =>{
+
+            const response = await axios.get(`${API_URL}/user/getPreferences`);
+            const data = response.data;
+            dispatch({
+                type: GET_Q_DETAILS,
+                gender: data['gender'].toString(),
+                year_of_birth: data['year_of_birth'].toString(),
+                height: data['height'].toString(),
+                weight: data['weight'].toString(),
+                physical_activity: data['physical_activity'],
+                kosher: data['kosher'],
+                vegetarian: data['vegetarian'],
+                vegan: data['vegan'],
+                gluten_free: data['gluten_free'],
+                without_lactose: data['without_lactose'],
+            });
+        }
+    }catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const updateUserPreferences = (year_of_birth, height, weight, gender, physical_activity, vegan, vegetarian, without_lactose, gluten_free, kosher) => {
     try{
         return async dispatch =>{
             const response = await axios.post(`${API_URL}/user/updatePreferences`,
                 {
                     gender: gender,
-                    date_of_birth: date_of_birth,
+                    year_of_birth: year_of_birth,
                     height: height,
                     weight:weight,
                     kosher:kosher,
@@ -173,6 +218,46 @@ export const updateUserPreferences = (date_of_birth, height, weight, gender, phy
                 type: UPDATE_USER_PREFERENCES,
                 // preferences: data
             });
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+export const updatePassword = (old_pass, new_pass) => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/user/resetPassword`,
+                    {
+                        old_pass: old_pass,
+                        new_pass: new_pass,
+                    });
+                if(response.status==201){
+                    return true;}
+            }catch (error){
+                return false;
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateUserDetails = (first_name, last_name, email) => {
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/user/updateUserDetails`,
+                    {
+                        first_name: first_name,
+                        last_name: last_name,
+                        email: email,
+                    });
+                if(response.status==201){
+                    return true;}
+            }catch (error){
+                return false;
+            }
         }
     }catch (error) {
         console.log(error);
@@ -207,7 +292,7 @@ export const setPersonalDetails = (newPersonalDetails) =>{
             type: SET_PERSONAL_DETAILS,
             height: newPersonalDetails.newHeight,
             weight: newPersonalDetails.newWeight,
-            date_of_birth: newPersonalDetails.newBirthDate,
+            year_of_birth: newPersonalDetails.newBirthYear,
             gender: newPersonalDetails.newGender,
         });
     }
