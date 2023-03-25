@@ -1,17 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, Button, TouchableOpacity, Animated} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
-import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
-import {addToFavorites} from "../redux/actions";
-import {useDispatch} from "react-redux";
+import HeartIcon from "./HeartIcon";
 
-const PreviewCard = ({props}) => {
+const PreviewCard = ({recipe}) => {
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
-    const [recipe, setRecipe] = React.useState(props);
-    const [favorite, setFavorite] = React.useState(recipe.isFavorite ? 'heart' : 'heart-outline')
-    const dispatch = useDispatch();
-
     const handleOpenFull = () => {
         setFullVisible(true);
     }
@@ -19,20 +13,6 @@ const PreviewCard = ({props}) => {
     const handleCloseFull = () => {
         setFullVisible(false);
     }
-
-    const handleIconPress = async () => {
-        let recipeUpdated = recipe;
-        recipeUpdated.isFavorite = !recipe.isFavorite;
-        setFavorite(recipeUpdated.isFavorite ? 'heart' : 'heart-outline')
-        setRecipe(recipeUpdated)
-        dispatch(addToFavorites(recipe.recipe_id, recipeUpdated.isFavorite )).then(success=>{
-            if (!success){
-                recipeUpdated.isFavorite = !recipe.isFavorite;
-                setFavorite(recipeUpdated.isFavorite ? 'heart' : 'heart-outline')
-                setRecipe(recipeUpdated)
-            }
-        });
-    };
 
     return (
         <View style={styles.container}>
@@ -49,9 +29,7 @@ const PreviewCard = ({props}) => {
                         <Text style={styles.flowerText}>{recipe.score}</Text>
                     </View>
                 </View>
-                <TouchableOpacity  style={styles.heartContainer} onPress={handleIconPress}>
-                        <Iconn style={styles.heartIcon} name={favorite} size={32} color="#ff6666" />
-                </TouchableOpacity>
+                <HeartIcon recipe={recipe}/>
             </TouchableOpacity>
         </View>
     );
@@ -118,15 +96,7 @@ const styles = StyleSheet.create({
         color:"black",
         paddingTop: 3,
         marginRight:4,
-    },
-    heartIcon: {
-        alignSelf: "flex-start",
-        paddingTop: 10,
-        paddingLeft: 10,
-    },
-    heartContainer: {
-        alignItems:"flex-start",
-    },
+    }
 });
 
 export default PreviewCard;

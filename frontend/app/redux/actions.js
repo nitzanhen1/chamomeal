@@ -11,6 +11,9 @@ export const GET_USER_PREFERENCES = 'GET_USER_PREFERENCES';
 export const UPDATE_BADGES = 'UPDATE_BADGES';
 export const SET_EARNED = 'SET_EARNED';
 export const LOGOUT = 'LOGOUT';
+export const GET_FAVORITES = 'GET_FAVORITES';
+export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
+export const SET_FAVORITE_TO_RECIPES = 'SET_FAVORITE_TO_RECIPES';
 
 const API_URL = 'http://10.0.2.2:3000';
 // const API_URL = 'http://132.73.84.195:443';
@@ -228,23 +231,57 @@ export const getFavorites = () =>{
         return async dispatch =>{
             const response = await axios.get(`${API_URL}/recipes/getFavorites`);
             const data = response.data;
-        return data;
+            dispatch({
+                type: GET_FAVORITES,
+                favorites: data,
+            });
         }
     }catch (error) {
         console.log(error);
     }
 }
-export const addToFavorites = (recipe_id, isFavorite) =>{
+
+
+export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
     try{
         return async dispatch =>{
+            let recipe_id = recipe["recipe_id"]
+            let isFavorite = recipe["isFavorite"]
             const response = await axios.post(`${API_URL}/recipes/addToFavorites`,
                 {
                     recipe_id : recipe_id,
                     is_favorite: isFavorite
                 });
             if(response.status==201){
+                if(meals){
+                    for(let i=0; i<meals.length; i++){
+                        if(meals[i]["mealData"]["recipe_id"]==recipe_id){
+                            meals[i]["mealData"]["isFavorite"] = isFavorite;
+                        }
+                    }
+                }
+                if(searchResults){
+                    for(let i=0; i<searchResults.length; i++){
+                        if(searchResults[i]["recipe_id"]==recipe_id){
+                            searchResults[i]["isFavorite"] = isFavorite;
+                        }
+                    }
+                }
+                if(isFavorite){
+                    favorites.unshift(recipe);
+                }
+                else{
+                    favorites = favorites.filter(item => item["recipe_id"] !== recipe_id)
+                }
+                dispatch({
+                    type: SET_FAVORITE_TO_RECIPES,
+                    meals: meals,
+                    searchResults: searchResults,
+                    favorites: favorites
+                });
                 return true;
             }
+            return false;
         }
     }catch (error) {
         console.log(error);
@@ -263,7 +300,10 @@ export const search = (searchQuery,onlyIngredientsFilter,includePrefsFilter,meal
                         mealTypeFilter:mealTypeFilter
                     }});
             const data = response.data;
-            return data;
+            dispatch({
+                type: GET_SEARCH_RESULTS,
+                searchResults: data,
+            });
         }
     }catch (error) {
         console.log(error);

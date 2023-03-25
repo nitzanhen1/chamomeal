@@ -1,12 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PreviewCard from "../components/PreviewCard";
 import { RadioButton, Searchbar} from 'react-native-paper';
 import { Button } from 'react-native-paper';
-
 import COLORS from "../consts/colors";
-import {getFavorites, search} from "../redux/actions";
+import {search} from "../redux/actions";
 
 export default function SearchScreen() {
 
@@ -15,15 +14,13 @@ export default function SearchScreen() {
     const [onlyIngredientsFilter, setOnlyIngredientsFilter] = React.useState("false");
     const [includePrefsFilter, setIncludePrefsFilter] = React.useState("true");
     const [mealTypeFilter, setMealTypeFilter] = React.useState('none');
-    const [searchResults, setSearchResults] = useState([]);
+    const { searchResults} = useSelector(state => state.mealReducer);
 
 
     const onChangeSearch = query => setSearchQuery(query);
 
     function searchRecipes() {
-        dispatch(search(searchQuery,onlyIngredientsFilter,includePrefsFilter,mealTypeFilter)).then((searchResults)=>{
-            setSearchResults(searchResults)
-        });
+        dispatch(search(searchQuery,onlyIngredientsFilter,includePrefsFilter,mealTypeFilter)).then();
     }
 
     return (
@@ -83,7 +80,7 @@ export default function SearchScreen() {
             <ScrollView style={styles.inputsContainer}>
                 {searchResults.map(meal=>
                     <View key={meal.recipe_id}>
-                        <PreviewCard props={meal} />
+                        <PreviewCard recipe={meal} />
                     </View>
                 )}
             </ScrollView>

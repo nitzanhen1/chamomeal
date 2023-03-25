@@ -1,28 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
-import {useDispatch} from "react-redux";
+import React, {useEffect} from 'react';
+import {StyleSheet, View, ScrollView} from 'react-native';
+import {useDispatch, useSelector} from "react-redux";
 import {getFavorites} from "../redux/actions";
 import PreviewCard from "../components/PreviewCard";
 
 export default function FavoriteScreen() {
 
+    const {favorites} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const [favoriteMeals, setFavoriteMeals] = useState([]);
-    const mountedRef = useRef()
-    dispatch(getFavorites()).then((favoriteMeals)=>{setFavoriteMeals(favoriteMeals)});
 
-    useEffect(() => {
-        if (mountedRef.current){
-            dispatch(getFavorites()).then((favoriteMeals)=>{
-                setFavoriteMeals(favoriteMeals)
-        })};
-    }, [favoriteMeals]);
+    useEffect(() =>{
+        dispatch(getFavorites()).then();
+    }, []);
 
     return (
         <ScrollView style={styles.inputsContainer}>
-            {favoriteMeals.map(meal=>
+            {favorites.map(meal=>
                 <View key={meal.recipe_id}>
-                    <PreviewCard props={meal} />
+                    <PreviewCard recipe={meal} />
                 </View>
             )}
         </ScrollView>

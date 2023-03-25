@@ -7,7 +7,10 @@ import {
     SET_PERSONAL_DETAILS,
     UPDATE_USER_PREFERENCES,
     GET_USER_PREFERENCES,
-    LOGOUT, UPDATE_BADGES, SET_EARNED
+    LOGOUT, UPDATE_BADGES, SET_EARNED,
+    GET_FAVORITES,
+    GET_SEARCH_RESULTS,
+    SET_FAVORITE_TO_RECIPES,
 } from './actions';
 
 const initialState = {
@@ -32,7 +35,9 @@ const initialState = {
     vegetarian: false,
     without_lactose: false,
     gluten_free: false,
-    kosher: false
+    kosher: false,
+    favorites: [],
+    searchResults: [],
 }
 
 function mealReducer(state = initialState, action) {
@@ -60,6 +65,12 @@ function mealReducer(state = initialState, action) {
             return { ...state, date_of_birth: action.date_of_birth, height:action.height, weight: action.weight, gender: action.gender};
         case UPDATE_USER_PREFERENCES:
             return state;
+        case GET_FAVORITES:
+            return { ...state, favorites: action.favorites};
+        case GET_SEARCH_RESULTS:
+            return { ...state, searchResults: action.searchResults};
+        case SET_FAVORITE_TO_RECIPES:
+            return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
         default:
             return state;
     }
