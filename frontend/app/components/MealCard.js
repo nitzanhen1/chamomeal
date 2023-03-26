@@ -51,8 +51,6 @@ const MealCard = ({recipe, meal_type}) => {
                                 <Text style={styles.upgradeText}>שדרג!</Text>
                             </TouchableOpacity>
                         </View>
-                        {/*/!*FIXME: maybe delete this but notice onPress*!/*/}
-                        {/*<MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} onPress={handleOpenSustainableModal} />*/}
                     </View>
                 </View>
                 <TouchableOpacity>
