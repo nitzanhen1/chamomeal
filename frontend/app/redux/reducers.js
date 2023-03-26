@@ -1,5 +1,6 @@
 import {
     GET_DAILY_MENU,
+    SET_DAILY_MENU,
     MARK_AS_EATEN,
     GET_USER_DETAILS,
     SET_FOOD_PREFERENCE,
@@ -48,6 +49,8 @@ function mealReducer(state = initialState, action) {
             return;
         case GET_DAILY_MENU:
             return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories };
+        case SET_DAILY_MENU:
+            return { ...state, meals: action.meals};
         case MARK_AS_EATEN:
             return { ...state, consumed_calories: action.consumed_calories, score: action.score };
         case UPDATE_BADGES:

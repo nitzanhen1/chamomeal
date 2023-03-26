@@ -1,10 +1,15 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
+import {replaceRecipeById} from "../redux/actions";
+import {useDispatch, useSelector} from "react-redux";
 
-const PreviewCard = ({recipe}) => {
+const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handleCloseSustainableModal}) => {
+
+    const dispatch = useDispatch();
+    const {date, meals} = useSelector(state => state.mealReducer);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -12,6 +17,11 @@ const PreviewCard = ({recipe}) => {
 
     const handleCloseFull = () => {
         setFullVisible(false);
+    }
+
+    const handleChooseButton = () => {
+        dispatch(replaceRecipeById(recipe["recipe_id"], date, meal_type, meals, recipe)).then(
+            handleCloseSustainableModal());
     }
 
     return (
@@ -29,7 +39,10 @@ const PreviewCard = ({recipe}) => {
                         <Text style={styles.flowerText}>{recipe.score}</Text>
                     </View>
                 </View>
-                <HeartIcon recipe={recipe}/>
+                {needHeartIcon && <HeartIcon recipe={recipe}/>}
+                <View style={styles.chooseButton}>
+                    {needChooseButton && <Button onPress={handleChooseButton} title="בחר" color="#234567" />}
+                </View>
             </TouchableOpacity>
         </View>
     );
@@ -96,6 +109,10 @@ const styles = StyleSheet.create({
         color:"black",
         paddingTop: 3,
         marginRight:4,
+    },
+    chooseButton:{
+        marginRight:10,
+        height:"50%"
     }
 });
 

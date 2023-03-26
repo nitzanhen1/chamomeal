@@ -52,7 +52,7 @@ router.post("/replaceRecipeByRandom", async (req, res, next) =>{
     }
 });
 
-router.get("/getSustainableRecipes", async (req, res, next) =>{
+router.post("/getSustainableRecipes", async (req, res, next) =>{
     try{
         const user_id = req.user_id;
         const {recipe_id, meal_type, meal_calories, meal_score} = req.body;

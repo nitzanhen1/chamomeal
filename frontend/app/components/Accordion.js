@@ -44,7 +44,7 @@ export default class Accordion extends Component{
                                 </TouchableOpacity>
                             </View>
 
-                            <MealCard recipe={this.props.mealData} />
+                            <MealCard recipe={this.props.mealData} meal_type={this.state.meal_type[this.props.title]} />
                         </View>
                     </View>
                 }

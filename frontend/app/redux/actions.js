@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const GET_DAILY_MENU = 'GET_DAILY_MENU';
+export const SET_DAILY_MENU = 'SET_DAILY_MENU';
 export const MARK_AS_EATEN = 'MARK_AS_EATEN';
 export const GET_USER_DETAILS = 'GET_USER_DETAILS';
 export const SET_FOOD_PREFERENCE = 'SET_FOOD_PREFERENCE';
@@ -309,4 +310,52 @@ export const search = (searchQuery,onlyIngredientsFilter,includePrefsFilter,meal
         console.log(error);
     }
 }
+
+export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_score) =>{
+    try{
+        return async dispatch =>{ //TODO: replace to get not post
+            const response = await axios.post(`${API_URL}/recipes/getSustainableRecipes`,
+                {
+                    recipe_id: recipe_id,
+                    meal_type: meal_type,
+                    meal_calories: meal_calories,
+                    meal_score: meal_score
+                });
+            const data = response.data;
+            return data;
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
+export const replaceRecipeById = (recipe_id, date, meal_type, meals, recipe) =>{
+    try{
+        return async dispatch =>{
+            const date_str = date.toISOString().substring(0, 10);
+            let type_index = {"breakfast":0 ,"lunch": 1, "dinner":2 };
+            let newDailyMeal = meals;
+            newDailyMeal[type_index[meal_type]]["mealData"] = recipe;
+            dispatch({
+                type: SET_DAILY_MENU,
+                meals: newDailyMeal
+            });
+            const response = await axios.post(`${API_URL}/recipes/replaceRecipeById`,
+                {
+                    recipe_id: recipe_id,
+                    date: date_str,
+                    meal_type: meal_type
+                });
+            if(response.status!=201) {
+                dispatch({
+                    type: SET_DAILY_MENU,
+                    meals: meals
+                });
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
 

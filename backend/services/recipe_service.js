@@ -129,7 +129,7 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
 async function replaceRecipeById(user_id, recipe_id, date, meal_type) {
     try {
         await DButils.execQuery(`update MealPlanHistory set ${meal_type}='${recipe_id}' where user_id = '${user_id}' and menu_date = '${date}'`);
-        return getDailyMenu(user_id, date)
+        return await getDailyMenu(user_id, date)
     }
     catch (err){
         throw err;
@@ -145,7 +145,7 @@ async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_c
         do {
             random_recipe_id = recipes_ids[Math.floor(Math.random() * recipes_ids.length)];
         } while (recipe_id == random_recipe_id);
-        return replaceRecipeById(user_id, random_recipe_id, date, meal_type);
+        return await replaceRecipeById(user_id, random_recipe_id, date, meal_type);
     }
     catch (err){
         throw err;
@@ -162,13 +162,14 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
         do {
             random_index = Math.floor(Math.random() * recipes_ids.length);
             random_recipe_id = recipes_ids[random_index];
-            const elementsBefore = recipes_ids.slice(0, random_index)
-            const elementsAfter = recipes_ids.slice(random_index+1);
-            recipes_ids = elementsBefore.concat(elementsAfter);
+            // const elementsBefore = recipes_ids.slice(0, random_index)
+            // const elementsAfter = recipes_ids.slice(random_index+1);
+            // recipes_ids = elementsBefore.concat(elementsAfter);
+            recipes_ids = recipes_ids.filter(item => item["recipe_id"] !== random_recipe_id);
             if (recipe_id != random_recipe_id){
                 sustainable_recipes_ids.push(random_recipe_id);
             }
-        } while (sustainable_recipes.length < 3);
+        } while (sustainable_recipes_ids.length < 3);
         let sustainable_recipes =  await getRecipesByIdFromDB(sustainable_recipes_ids)
         sustainable_recipes = await addIsFavorite(user_id, sustainable_recipes);
         return sustainable_recipes;
@@ -178,11 +179,11 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
     }
 }
 
-async function getRecipesIdsArrayByFilters(meal_type, calories, preferences){
+async function getRecipesIdsArrayByFilters(meal_type, meal_calories, preferences){
     let threshold = 50;
     let recipes_ids_dict = [];
     do{
-        recipes_ids_dict = await DButils.execQuery(`select recipe_id from Recipes where ${meal_type}=1 and calories between ${calories - threshold} and ${calories + threshold} and ${preferences}`);
+        recipes_ids_dict = await DButils.execQuery(`select recipe_id from Recipes where ${meal_type}=1 and calories between ${meal_calories - threshold} and ${meal_calories + threshold} and ${preferences}`);
         threshold+=20;
     } while(recipes_ids_dict.length<4)
     return recipes_ids_dict.map(element => element['recipe_id'])

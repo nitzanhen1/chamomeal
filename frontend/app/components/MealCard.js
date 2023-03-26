@@ -1,12 +1,18 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, Button, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 import COLORS from "../consts/colors";
+import { getSustainableRecipes} from "../redux/actions";
+import {useDispatch} from "react-redux";
+import SustainableModal from "./SustainableModal";
 
-const MealCard = ({recipe}) => {
+const MealCard = ({recipe, meal_type}) => {
+    const dispatch = useDispatch();
+    const [sustainableRecipes, setSustainableRecipes] = React.useState([]);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
+    const [visibleSustainableModal, setVisibleSustainableModal] = React.useState(false);
 
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -15,6 +21,17 @@ const MealCard = ({recipe}) => {
     const handleCloseFull = () => {
         setFullVisible(false);
     }
+
+    const handleCloseSustainableModal = () => {
+        setVisibleSustainableModal(false);
+    }
+    const handleOpenSustainableModal = () => {
+        dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.calories, recipe.score)).then(sustainableRecipes =>
+            setSustainableRecipes(sustainableRecipes));
+        setVisibleSustainableModal(true);
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -25,11 +42,12 @@ const MealCard = ({recipe}) => {
                             <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
+                            {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal} handleCloseSustainableModal={handleCloseSustainableModal} recipes={sustainableRecipes}  meal_type={meal_type}/>}
                         </View>
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
-                        {/*<MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} />*/}
+                        <MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} onPress={handleOpenSustainableModal} />
                     </View>
                 </View>
                 <TouchableOpacity style={styles.moreContainer} onPress={()=>alert()}>
