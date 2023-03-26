@@ -6,6 +6,7 @@ import MoreOptionsMenu from "./MoreOptionsMenu";
 import { getSustainableRecipes} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import SustainableModal from "./SustainableModal";
+import COLORS from "../consts/colors";
 
 const MealCard = ({recipe, meal_type}) => {
     const dispatch = useDispatch();
@@ -41,8 +42,17 @@ const MealCard = ({recipe, meal_type}) => {
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
-                        {/*FIXME: maybe delete this but notice onPress*/}
-                        <MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} onPress={handleOpenSustainableModal} />
+                        <View style={styles.icons}>
+                            <TouchableOpacity style={styles.upgrade}  onPress={handleOpenSustainableModal}>
+                                <Image
+                                    style={{width: 26, height: 26,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
+                                    source={require('frontend/app/assets/earth-globe-12153.png')}
+                                />
+                                <Text style={styles.upgradeText}>שדרג!</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {/*/!*FIXME: maybe delete this but notice onPress*!/*/}
+                        {/*<MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} onPress={handleOpenSustainableModal} />*/}
                     </View>
                 </View>
                 <TouchableOpacity>
@@ -101,7 +111,7 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: 40,
+        width: '50%',
     },
     flowerIcon: {
         color:"black"
@@ -113,6 +123,21 @@ const styles = StyleSheet.create({
         color:"black",
         paddingTop: 3,
         marginRight:4,
+    },
+    icons:{
+        marginLeft: 10
+    },
+    upgrade:{
+        flexDirection: 'row',
+
+    },
+    upgradeText: {
+        color: COLORS.upgrade,
+        marginTop: 4,
+        fontSize: 15.5,
+        fontFamily: 'Rubik-Bold',
+        marginLeft: 5,
+        textDecorationLine: "underline",
     },
 });
 

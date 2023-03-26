@@ -35,14 +35,14 @@ export default class Accordion extends Component{
                     this.state.expanded &&
                     <View style={{}}>
                         <View style={styles.fullWidthButton}>
-                            <View style={styles.icons}>
-                                <TouchableOpacity onPress={() => {console.log('A Pressed!')}}>
-                                    <Image
-                                        style={{width: 28, height: 28,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
-                                        source={require('frontend/app/assets/earth-globe-12153.png')}
-                                    />
-                                </TouchableOpacity>
-                            </View>
+                            {/*<View style={styles.icons}>*/}
+                            {/*    <TouchableOpacity onPress={() => {console.log('A Pressed!')}}>*/}
+                            {/*        <Image*/}
+                            {/*            style={{width: 28, height: 28,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}*/}
+                            {/*            source={require('frontend/app/assets/earth-globe-12153.png')}*/}
+                            {/*        />*/}
+                            {/*    </TouchableOpacity>*/}
+                            {/*</View>*/}
 
                             <MealCard recipe={this.props.mealData} meal_type={this.state.meal_type[this.props.title]} />
                         </View>

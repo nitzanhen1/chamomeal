@@ -15,6 +15,7 @@ const COLORS = {
     title: '#273a25',
     meal: '#ffc14f',
     row: 'rgba(122,204,110,0.54)',
+    upgrade: '#2d7a9a',
   };
   
   export default COLORS;

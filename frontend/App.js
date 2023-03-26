@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, Text, View, SafeAreaView, StatusBar, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, StatusBar, Image, TouchableOpacity, Alert} from 'react-native';
 import BottomNavigator from './app/components/BottomNavigator';
 import COLORS from './app/consts/colors';
 import {NavigationContainer, getFocusedRouteNameFromRoute, useNavigation} from '@react-navigation/native';
@@ -37,10 +37,21 @@ export default function App() {
     if (!fontsLoaded) {
         return null;
     }
+
     function returnButton(){
         const navigation = useNavigation();
         return (
-            <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => navigation.goBack()}/>
+            <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => {
+                Alert.alert('אתה בתוך שברצונך לצאת? שינויים שנעשו לא יישמרו', null,
+                    [
+                        { text: 'כן', onPress: () => navigation.goBack() },
+                        {
+                            text: 'לא',
+                            style: 'cancel',
+                        },
+                    ],
+                    { cancelable: true });
+            }}/>
         );
     }
 

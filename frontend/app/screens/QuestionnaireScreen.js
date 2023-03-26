@@ -43,7 +43,7 @@ const QuestionnaireScreen = ({navigation}) => {
                 },
             ],
             { cancelable: true });
-        dispatch(setEarned(false));
+        // dispatch(setEarned(false));
     }
 
     function returnButton(){
