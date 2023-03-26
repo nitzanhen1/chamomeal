@@ -1,5 +1,6 @@
 import {
     GET_DAILY_MENU,
+    SET_DAILY_MENU,
     MARK_AS_EATEN,
     GET_GLOBAL_DETAILS,
     GET_Q_DETAILS,
@@ -7,7 +8,10 @@ import {
     SET_ACTIVITY_PREFERENCE,
     SET_PERSONAL_DETAILS,
     UPDATE_USER_PREFERENCES,
-    LOGOUT, UPDATE_BADGES, SET_EARNED, GET_USER_DETAILS
+    LOGOUT, UPDATE_BADGES, SET_EARNED, GET_USER_DETAILS,
+    GET_FAVORITES,
+    GET_SEARCH_RESULTS,
+    SET_FAVORITE_TO_RECIPES,
 } from './actions';
 
 const initialState = {
@@ -25,7 +29,6 @@ const initialState = {
         {title: 'ארוחת צהריים', mealData: {}},
         {title: 'ארוחת ערב',mealData: {}}],
     date: new Date(),
-    // year_of_birth: new Date(new Date().setFullYear(new Date().getFullYear() + -16)),
     year_of_birth: 0,
     height: 0,
     weight: 0,
@@ -35,7 +38,9 @@ const initialState = {
     vegetarian: false,
     without_lactose: false,
     gluten_free: false,
-    kosher: false
+    kosher: false,
+    favorites: [],
+    searchResults: [],
 }
 
 function mealReducer(state = initialState, action) {
@@ -49,6 +54,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, first_name: action.first_name, last_name: action.last_name, email: action.email};
         case GET_DAILY_MENU:
             return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories };
+        case SET_DAILY_MENU:
+            return { ...state, meals: action.meals};
         case MARK_AS_EATEN:
             return { ...state, consumed_calories: action.consumed_calories, score: action.score };
         case UPDATE_BADGES:
@@ -66,6 +73,12 @@ function mealReducer(state = initialState, action) {
             return { ...state, year_of_birth: action.year_of_birth, height:action.height, weight: action.weight, gender: action.gender};
         case UPDATE_USER_PREFERENCES:
             return state;
+        case GET_FAVORITES:
+            return { ...state, favorites: action.favorites};
+        case GET_SEARCH_RESULTS:
+            return { ...state, searchResults: action.searchResults};
+        case SET_FAVORITE_TO_RECIPES:
+            return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
         default:
             return state;
     }

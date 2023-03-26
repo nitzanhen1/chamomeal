@@ -3,7 +3,8 @@ import {Divider} from 'react-native-elements';
 import COLORS from "../consts/colors";
 import { Ionicons, AntDesign, SimpleLineIcons} from '@expo/vector-icons';
 import colors from "../consts/colors";
-import {useCallback} from "react";
+import React, {useCallback} from "react";
+import HeartIcon from "./HeartIcon";
 
 
 const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
@@ -27,7 +28,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.imgContainer}>
                         <Image source={{uri: recipe.image}} style={styles.recipeImage}/>
-                        <TouchableOpacity onPress={handleCloseFull} style={{ position: 'absolute', top: 10, right: 10 }} onPress={handleCloseFull}>
+                        <TouchableOpacity onPress={handleCloseFull} style={{ position: 'absolute', top: 10, right: 10 }}>
                             <AntDesign  name="closecircleo" size={25} style={styles.exitIcon} />
                         </TouchableOpacity>
                     </View>
@@ -40,7 +41,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                 <Ionicons name="flower-outline" size={25} style={styles.flowersIcon}/>
                                 <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
                             </View>
-                            <Ionicons  name="heart-outline" size={30} style={styles.heartIcon}/>
+                            <HeartIcon recipe={recipe}/>
                         </View>
                         <View style={styles.detailsContainer}>
                             <View style={styles.details}>
@@ -199,9 +200,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 17,
         color: COLORS.dark,
-    },
-    heartIcon: {
-
     },
     detailsContainer: {
         flexDirection: 'row',

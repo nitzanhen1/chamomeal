@@ -9,10 +9,10 @@ router.use(async function (req, res, next) {
 router.get("/", async (req, res, next) =>{
     try{
         const user_id = req.user_id;
-        const {query, onlyIngredientsFilter, includePrefsFilter, mealTypeFilter} = req.query;
+        const {query,onlyIngredientsFilter,includePrefsFilter,mealTypeFilter} = req.query;
         const includePrefs = (includePrefsFilter!=null) ?  (includePrefsFilter === 'true') : false;
         const onlyIngredients = (onlyIngredientsFilter!=null) ?  (onlyIngredientsFilter === 'true') : false;
-        const recipes = await search_service.search(user_id, query, onlyIngredients, mealTypeFilter, includePrefs)
+        const recipes = await search_service.search(user_id, query, onlyIngredients, includePrefs, mealTypeFilter)
         res.status(200).send(recipes);
     }catch(error){
         next(error);
