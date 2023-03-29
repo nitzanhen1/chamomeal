@@ -54,7 +54,7 @@ const MealCard = ({recipe, meal_type}) => {
                     </View>
                 </View>
                 <TouchableOpacity>
-                    <MoreOptionsMenu/>
+                    <MoreOptionsMenu recipe={recipe} meal_type={meal_type}/>
                 </TouchableOpacity>
             </TouchableOpacity>
         </View>

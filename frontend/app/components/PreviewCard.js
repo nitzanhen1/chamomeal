@@ -3,13 +3,13 @@ import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
-import {replaceRecipeById} from "../redux/actions";
+import {replaceRecipe} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 
-const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handleCloseSustainableModal}) => {
+const PreviewCard = ({recipe, meal_type, needHeartIcon, needChooseButton, handleCloseSustainableModal}) => {
 
     const dispatch = useDispatch();
-    const {date, meals} = useSelector(state => state.mealReducer);
+    const {date} = useSelector(state => state.mealReducer);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -20,7 +20,7 @@ const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handle
     }
 
     const handleChooseButton = () => {
-        dispatch(replaceRecipeById(recipe["recipe_id"], date, meal_type, meals, recipe)).then(
+        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type, recipe["calories"] )).then(
             handleCloseSustainableModal());
     }
 

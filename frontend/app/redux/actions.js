@@ -413,27 +413,28 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
     }
 }
 
-export const replaceRecipeById = (recipe_id, date, meal_type, meals, recipe) =>{
+export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calories) =>{
     try{
         return async dispatch =>{
             const date_str = date.toISOString().substring(0, 10);
-            let type_index = {"breakfast":0 ,"lunch": 1, "dinner":2 };
-            let newDailyMeal = meals;
-            newDailyMeal[type_index[meal_type]]["mealData"] = recipe;
-            dispatch({
-                type: SET_DAILY_MENU,
-                meals: newDailyMeal
-            });
-            const response = await axios.post(`${API_URL}/recipes/replaceRecipeById`,
+            const response = await axios.post(`${API_URL}/recipes/${api_replace}`,
                 {
                     recipe_id: recipe_id,
                     date: date_str,
-                    meal_type: meal_type
+                    meal_type: meal_type,
+                    meal_calories: meal_calories
                 });
             if(response.status!=201) {
+                const data = response.data;
+                let mealsData = [
+                    {title: 'ארוחת בוקר', mealData:data['breakfast']},
+                    {title: 'ארוחת צהריים', mealData: data['lunch']},
+                    {title: 'ארוחת ערב',mealData:data['dinner']}]
                 dispatch({
-                    type: SET_DAILY_MENU,
-                    meals: meals
+                    type: GET_DAILY_MENU,
+                    meals: mealsData,
+                    consumed_calories: data['consumed_calories'],
+                    total_calories: data['total_calories'],
                 });
             }
         }
