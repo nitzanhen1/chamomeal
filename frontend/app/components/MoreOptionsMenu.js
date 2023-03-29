@@ -7,13 +7,14 @@ import {
     MenuTrigger,
 } from "react-native-popup-menu";
 import { FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import {addToFavorites, replaceRecipe} from "../redux/actions";
+import {addToFavorites, replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
-
+import {useNavigation} from "@react-navigation/native";
 const OptionsMenu = ({recipe, meal_type}) => {
 
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const {date} = useSelector(state => state.mealReducer);
     const [favIcon, setFavIcon] = React.useState(recipe.isFavorite ? 'cards-heart' : 'cards-heart-outline');
     const [favText, setFavText] = React.useState(recipe.isFavorite ? 'הסרה מהמועדפים' : 'הוספה למועדפים');
@@ -38,10 +39,13 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
 
     const handleReplaceBySearch = () => {
+        dispatch(setHeartAndChoose(meal_type, false, true));
+        navigation.navigate("Search");
     }
 
     const handleReplaceByFavorite = () => {
-
+        dispatch(setHeartAndChoose(meal_type, false, true));
+        navigation.navigate('Favorites');
     }
 
 

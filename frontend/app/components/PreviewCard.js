@@ -3,13 +3,16 @@ import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
-import {replaceRecipe} from "../redux/actions";
+import {replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
+import COLORS from "../consts/colors";
 
-const PreviewCard = ({recipe, meal_type, needHeartIcon, needChooseButton, handleCloseSustainableModal}) => {
+const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
 
     const dispatch = useDispatch();
-    const {date} = useSelector(state => state.mealReducer);
+    const navigation = useNavigation();
+    const {date, heartIcon, chooseButton, meal_type} = useSelector(state => state.mealReducer);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -20,8 +23,14 @@ const PreviewCard = ({recipe, meal_type, needHeartIcon, needChooseButton, handle
     }
 
     const handleChooseButton = () => {
-        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type, recipe["calories"] )).then(
-            handleCloseSustainableModal());
+        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type, recipe["calories"])).then()
+            if(sustainable) {
+                handleCloseSustainableModal();
+            }
+            else{
+                dispatch(setHeartAndChoose("",true, false));
+                navigation.navigate("Meal Planner");
+            }
     }
 
     return (
@@ -39,9 +48,9 @@ const PreviewCard = ({recipe, meal_type, needHeartIcon, needChooseButton, handle
                         <Text style={styles.flowerText}>{recipe.score}</Text>
                     </View>
                 </View>
-                {needHeartIcon && <HeartIcon recipe={recipe}/>}
+                {heartIcon && <HeartIcon recipe={recipe}/>}
                 <View style={styles.chooseButton}>
-                    {needChooseButton && <Button onPress={handleChooseButton} title="בחר" color="#234567" />}
+                    {chooseButton && <Button onPress={handleChooseButton} title="בחר" color={COLORS.upgrade} />}
                 </View>
             </TouchableOpacity>
         </View>

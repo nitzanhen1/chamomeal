@@ -80,7 +80,7 @@ export default function SearchScreen() {
             <ScrollView style={styles.inputsContainer}>
                 {searchResults.map(meal=>
                     <View key={meal.recipe_id}>
-                        <PreviewCard recipe={meal} needHeartIcon={true} needChooseButton={false} />
+                        <PreviewCard recipe={meal} sustainable={false}/>
                     </View>
                 )}
             </ScrollView>

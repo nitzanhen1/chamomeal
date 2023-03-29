@@ -12,6 +12,7 @@ import {
     GET_FAVORITES,
     GET_SEARCH_RESULTS,
     SET_FAVORITE_TO_RECIPES,
+    SET_HEART_AND_CHOOSE,
 } from './actions';
 
 const initialState = {
@@ -41,6 +42,9 @@ const initialState = {
     kosher: false,
     favorites: [],
     searchResults: [],
+    heartIcon: true,
+    chooseButton: false,
+    meal_type:"",
 }
 
 function mealReducer(state = initialState, action) {
@@ -79,6 +83,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, searchResults: action.searchResults};
         case SET_FAVORITE_TO_RECIPES:
             return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
+        case SET_HEART_AND_CHOOSE:
+            return { ...state, meal_type:action.meal_type, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
         default:
             return state;
     }

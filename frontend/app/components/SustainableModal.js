@@ -5,7 +5,7 @@ import PreviewCard from "./PreviewCard";
 import {AntDesign} from "@expo/vector-icons";
 
 
-const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal, recipes, meal_type}) => {
+const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal, recipes}) => {
 
     return (
         <Modal
@@ -24,7 +24,7 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                     <ScrollView style={styles.information}>
                         {recipes.map(recipe=>
                             <View key={recipe.recipe_id}>
-                                <PreviewCard recipe={recipe} meal_type={meal_type}  needHeartIcon={false} needChooseButton={true} handleCloseSustainableModal={handleCloseSustainableModal}/>
+                                <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal}/>
                             </View>
                         )}
                     </ScrollView>

@@ -1,9 +1,9 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
+import {Ionicons} from "@expo/vector-icons";
 import MoreOptionsMenu from "./MoreOptionsMenu";
-import { getSustainableRecipes} from "../redux/actions";
+import {getSustainableRecipes, setHeartAndChoose} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import SustainableModal from "./SustainableModal";
 import COLORS from "../consts/colors";
@@ -18,9 +18,11 @@ const MealCard = ({recipe, meal_type}) => {
     const handleCloseFull = () => {setFullVisible(false);}
 
     const handleCloseSustainableModal = () => {
+        dispatch(setHeartAndChoose("", true, false));
         setVisibleSustainableModal(false);
     }
     const handleOpenSustainableModal = () => {
+        dispatch(setHeartAndChoose(meal_type, false, true));
         dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.calories, recipe.score)).then(sustainableRecipes =>
             setSustainableRecipes(sustainableRecipes));
         setVisibleSustainableModal(true);
@@ -37,7 +39,7 @@ const MealCard = ({recipe, meal_type}) => {
                             <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
-                            {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal} handleCloseSustainableModal={handleCloseSustainableModal} recipes={sustainableRecipes}  meal_type={meal_type}/>}
+                            {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal} handleCloseSustainableModal={handleCloseSustainableModal} recipes={sustainableRecipes}/>}
                         </View>
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
