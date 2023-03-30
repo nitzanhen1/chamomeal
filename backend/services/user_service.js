@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 
 
 async function userMiddleware(req, res, next) {
+    console.log("in middle 2")
     if (req.session && req.session.user_id) {
         DButils.execQuery("SELECT user_id FROM users").then((users) => {
             if (users.find((x) => x.user_id === req.session.user_id)) {
@@ -12,9 +13,7 @@ async function userMiddleware(req, res, next) {
             }
         }).catch(err => next(err));
     } else {
-        req.user_id = 1; //TODO: delete!!
-        next(); //TODO: delete!!
-        //  res.status(419).send({message: "Session expired, please login again", success: false});
+         res.status(419).send({message: "Session expired, please login again", success: false});
     }
 }
 
