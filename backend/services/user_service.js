@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 
 
 async function userMiddleware(req, res, next) {
-    console.log("in middle 2")
     if (req.session && req.session.user_id) {
         DButils.execQuery("SELECT user_id FROM users").then((users) => {
             if (users.find((x) => x.user_id === req.session.user_id)) {
