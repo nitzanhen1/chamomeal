@@ -2,12 +2,10 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView, LayoutAnimation} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import PreviewCard from "../components/PreviewCard";
-import {RadioButton, Searchbar} from 'react-native-paper';
+import {Searchbar} from 'react-native-paper';
 import {Button, CheckBox, Divider} from '@rneui/themed';
-// import { Button } from 'react-native-paper';
 import COLORS from "../consts/colors";
-import {getDailyMenu, getFavorites, getGlobalDetails, getQuestionnaireDetails, search} from "../redux/actions";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { search} from "../redux/actions";
 
 export default function SearchScreen() {
 
@@ -15,14 +13,7 @@ export default function SearchScreen() {
 
     const [expanded, setExpanded] = React.useState(false);
     const [searchQuery, setSearchQuery] = React.useState('');
-    const {
-        searchResults,
-        vegan,
-        vegetarian,
-        without_lactose,
-        gluten_free,
-        kosher
-    } = useSelector(state => state.mealReducer);
+    const {searchResults, vegan, vegetarian, without_lactose, gluten_free, kosher} = useSelector(state => state.mealReducer);
 
     const [ingredientsCheck, setIngredientsCheck] = React.useState(false);
     const [lactoseCheck, setLactoseCheck] = React.useState(without_lactose);
@@ -50,7 +41,7 @@ export default function SearchScreen() {
 
     function searchRecipes() {
         dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
-            kosherCheck, breakfastCheck, dinnerCheck)).then();
+            kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then();
     }
 
     function toggleExpand() {
