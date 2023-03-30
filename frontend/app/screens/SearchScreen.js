@@ -1,29 +1,44 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView, LayoutAnimation} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import PreviewCard from "../components/PreviewCard";
 import {RadioButton, Searchbar} from 'react-native-paper';
-import {Button} from '@rneui/themed';
+import {Button, CheckBox, Divider} from '@rneui/themed';
 // import { Button } from 'react-native-paper';
 import COLORS from "../consts/colors";
-import {search} from "../redux/actions";
+import {getDailyMenu, getFavorites, getGlobalDetails, getQuestionnaireDetails, search} from "../redux/actions";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function SearchScreen() {
 
     const dispatch = useDispatch();
+
     const [expanded, setExpanded] = React.useState(false);
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [onlyIngredientsFilter, setOnlyIngredientsFilter] = React.useState("false");
-    const [includePrefsFilter, setIncludePrefsFilter] = React.useState("true");
-    const [mealTypeFilter, setMealTypeFilter] = React.useState('none');
-    const {searchResults} = useSelector(state => state.mealReducer);
+    const {
+        searchResults,
+        vegan,
+        vegetarian,
+        without_lactose,
+        gluten_free,
+        kosher
+    } = useSelector(state => state.mealReducer);
 
+    const [ingredientsCheck, setIngredientsCheck] = React.useState(false);
+    const [lactoseCheck, setLactoseCheck] = React.useState(without_lactose);
+    const [glutenCheck, setGlutenCheck] = React.useState(gluten_free);
+    const [veganCheck, setVeganCheck] = React.useState(vegan);
+    const [vegetarianCheck, setVegetarianCheck] = React.useState(vegetarian);
+    const [kosherCheck, setKosherCheck] = React.useState(kosher);
+    const [breakfastCheck, setBreakfastCheck] = React.useState(true);
+    const [lunchCheck, setLunchCheck] = React.useState(true);
+    const [dinnerCheck, setDinnerCheck] = React.useState(true);
 
     const onChangeSearch = query => setSearchQuery(query);
 
     function searchRecipes() {
-        dispatch(search(searchQuery, onlyIngredientsFilter, includePrefsFilter, mealTypeFilter)).then();
+        dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
+            kosherCheck, breakfastCheck, dinnerCheck)).then();
     }
 
     function toggleExpand() {
@@ -61,61 +76,102 @@ export default function SearchScreen() {
             {
                 expanded &&
                 <View>
-                    <RadioButton.Group onValueChange={newValue => setOnlyIngredientsFilter(newValue)}
-                                       value={onlyIngredientsFilter}>
-                        <View style={styles.filterContainer}>
-                            <Text style={styles.filterTitle}>חיפוש לפי</Text>
-                            <View style={styles.filterOptions}>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="false"></RadioButton>
-                                    <Text style={styles.optionText}>מתכונים ומרכיבים</Text>
-                                </View>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="true"></RadioButton>
-                                    <Text style={styles.optionText}>מרכיבים בלבד</Text>
-                                </View>
-                            </View>
+
+                    <View style={styles.filterContainer}>
+                        <Text style={styles.filterTitle}>העדפות</Text>
+                        <View style={styles.filterOptions}>
+                            {/*<View style={styles.radioButtonContainer}>*/}
+                            <CheckBox
+                                checked={veganCheck}
+                                title='צמחוני'
+                                onPress={() => setVeganCheck(!veganCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            <CheckBox
+                                checked={vegetarianCheck}
+                                title='טבעוני'
+                                onPress={() => setVegetarianCheck(!vegetarianCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            <CheckBox
+                                checked={lactoseCheck}
+                                title='ללא לקטוז'
+                                onPress={() => setLactoseCheck(!lactoseCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            <CheckBox
+                                checked={glutenCheck}
+                                title='ללא גלוטן'
+                                onPress={() => setGlutenCheck(!glutenCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            <CheckBox
+                                checked={kosherCheck}
+                                title='כשר'
+                                onPress={() => setKosherCheck(!kosherCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
                         </View>
-                    </RadioButton.Group>
-                    <RadioButton.Group onValueChange={newValue => setIncludePrefsFilter(newValue)}
-                                       value={includePrefsFilter}>
-                        <View style={styles.filterContainer}>
-                            <Text style={styles.filterTitle}>העדפות</Text>
-                            <View style={styles.filterOptions}>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="true"></RadioButton>
-                                    <Text style={styles.optionText}>לפי העדפות</Text>
-                                </View>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="false"></RadioButton>
-                                    <Text style={styles.optionText}>לא לפי העדפות</Text>
-                                </View>
-                            </View>
+                    </View>
+                    <Divider width={2} color={COLORS.lightGrey} style={styles.divider}/>
+                    <View style={styles.filterContainer}>
+                        <Text style={styles.filterTitle}>סוג ארוחה</Text>
+                        <View style={styles.filterOptions}>
+                            {/*<View style={styles.radioButtonContainer}>*/}
+                            <CheckBox
+                                checked={breakfastCheck}
+                                title='בוקר'
+                                onPress={() => setBreakfastCheck(!breakfastCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            <CheckBox
+                                checked={lunchCheck}
+                                title='צהריים'
+                                onPress={() => setLunchCheck(!lunchCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            <CheckBox
+                                checked={dinnerCheck}
+                                title='ערב'
+                                onPress={() => setDinnerCheck(!dinnerCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
                         </View>
-                    </RadioButton.Group>
-                    <RadioButton.Group onValueChange={newValue => setMealTypeFilter(newValue)} value={mealTypeFilter}>
-                        <View style={styles.filterContainer}>
-                            <Text style={styles.filterTitle}>סוג ארוחה</Text>
-                            <View style={styles.filterOptions}>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="none"></RadioButton>
-                                    <Text style={styles.optionText}>הכל</Text>
-                                </View>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="breakfast"></RadioButton>
-                                    <Text style={styles.optionText}>ארוחת בוקר</Text>
-                                </View>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="lunch"></RadioButton>
-                                    <Text style={styles.optionText}>ארוחת צהריים</Text>
-                                </View>
-                                <View style={styles.radioButtonContainer}>
-                                    <RadioButton color={COLORS.lightGreen} value="dinner"></RadioButton>
-                                    <Text style={styles.optionText}>ארוחת ערב</Text>
-                                </View>
-                            </View>
+                    </View>
+                    <Divider width={2} color={COLORS.lightGrey} style={styles.divider}/>
+
+                    <View style={styles.filterContainer}>
+                        <Text style={styles.filterTitle}>חיפוש לפי</Text>
+                        <View style={styles.filterOptions}>
+                            {/*<View style={styles.radioButtonContainer}>*/}
+                            <CheckBox
+                                checked={ingredientsCheck}
+                                title='מרכיבים בלבד'
+                                onPress={() => setIngredientsCheck(!ingredientsCheck)}
+                                containerStyle={styles.radioButtonContainer}
+                                textStyle={styles.optionText}
+                                checkedColor={COLORS.lightGreen}
+                            />
+                            {/*</View>*/}
                         </View>
-                    </RadioButton.Group>
+                    </View>
+
                 </View>
             }
             <ScrollView style={styles.inputsContainer}>
@@ -138,7 +194,7 @@ const styles = StyleSheet.create({
         direction: 'rtl',
         height: '100%'
     },
-    inputsContainer:{
+    inputsContainer: {
         marginHorizontal: 7
     },
     searchContainer: {
@@ -174,25 +230,35 @@ const styles = StyleSheet.create({
     filterContainer: {
         flexDirection: 'column',
         marginHorizontal: 5,
+        // backgroundColor: COLORS.light,
+        marginBottom: 3,
     },
     filterTitle: {
         fontFamily: 'Rubik-Regular',
-        fontSize: 15,
+        fontSize: 16,
         color: COLORS.dark,
         marginHorizontal: 12,
+        marginTop: 3
     },
     filterOptions: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         marginTop: 5,
         justifyContent: 'space-evenly'
     },
     radioButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        borderRadius: 10,
+        marginTop:1
+        // backgroundColor: COLORS.
     },
     optionText: {
         fontFamily: 'Rubik-Regular',
         fontSize: 14,
         color: COLORS.darkGrey,
     },
+    divider: {
+        marginHorizontal: 10,
+        marginVertical:2
+    }
 });

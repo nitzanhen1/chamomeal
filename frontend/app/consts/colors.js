@@ -7,6 +7,7 @@ const COLORS = {
     darkGreen: '#4f6e45',
     light: '#E5E5E5',
     grey: '#908e8c',
+    lightGrey: '#c4c4c4',
     darkGrey: '#706a6a',
     divider: '#b0b0ad',
     carbs: '#ffd94f',
