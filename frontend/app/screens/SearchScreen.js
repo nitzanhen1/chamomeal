@@ -36,6 +36,18 @@ export default function SearchScreen() {
 
     const onChangeSearch = query => setSearchQuery(query);
 
+    useEffect(() => {
+        setLactoseCheck(without_lactose);
+        setGlutenCheck(gluten_free);
+        setVeganCheck(vegan);
+        setVegetarianCheck(vegetarian);
+        setKosherCheck(kosher);
+    }, [vegan,
+        vegetarian,
+        without_lactose,
+        gluten_free,
+        kosher]);
+
     function searchRecipes() {
         dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
             kosherCheck, breakfastCheck, dinnerCheck)).then();
@@ -195,7 +207,7 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     inputsContainer: {
-        marginHorizontal: 7
+        paddingHorizontal: 10
     },
     searchContainer: {
         borderRadius: 50,
@@ -215,7 +227,7 @@ const styles = StyleSheet.create({
     },
     searchButton: {
         flex: 1,
-        backgroundColor: COLORS.primary,
+        backgroundColor: COLORS.lightGreen,
         borderRadius: 40,
         height: 42,
         marginLeft: 5

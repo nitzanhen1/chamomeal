@@ -86,6 +86,11 @@ async function getGlobalDetails(user_id) {
         first_name: user['first_name'],
         total_score: user['score'],
         EER: user['EER'],
+        kosher: user['kosher'],
+        vegetarian: user['vegetarian'],
+        vegan: user['vegan'],
+        gluten_free: user['gluten_free'],
+        without_lactose: user['without_lactose']
     }
     let badges = await getBadgesFromDB(user_id);
     user_details['badges'] = Object.values(badges)

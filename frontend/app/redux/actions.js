@@ -150,6 +150,11 @@ export const getGlobalDetails = () => {
                 score: data['total_score'],
                 badges: data['badges'],
                 EER: data['EER'],
+                kosher: data['kosher'],
+                vegetarian: data['vegetarian'],
+                vegan: data['vegan'],
+                gluten_free: data['gluten_free'],
+                without_lactose: data['without_lactose']
             });
         }
     }catch (error) {
