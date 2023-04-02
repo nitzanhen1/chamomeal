@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Text, ScrollView, LayoutAnimation} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, LayoutAnimation, Keyboard} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import PreviewCard from "../components/PreviewCard";
 import {Searchbar} from 'react-native-paper';
@@ -40,6 +40,9 @@ export default function SearchScreen() {
         kosher]);
 
     function searchRecipes() {
+        Keyboard.dismiss()
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setExpanded(false);
         dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
             kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then();
     }
