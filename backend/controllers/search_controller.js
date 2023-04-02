@@ -9,10 +9,12 @@ router.use(async function (req, res, next) {
 router.get("/", async (req, res, next) =>{
     try{
         const user_id = req.user_id;
-        const {query,onlyIngredientsFilter,includePrefsFilter,mealTypeFilter} = req.query;
-        const includePrefs = (includePrefsFilter!=null) ?  (includePrefsFilter === 'true') : false;
-        const onlyIngredients = (onlyIngredientsFilter!=null) ?  (onlyIngredientsFilter === 'true') : false;
-        const recipes = await search_service.search(user_id, query, onlyIngredients, includePrefs, mealTypeFilter)
+        let {searchQuery, onlyIngredients, without_lactose, gluten_free, vegan, vegetarian, kosher, breakfast, lunch, dinner} = req.query;
+        onlyIngredients =  (onlyIngredients == 'true');
+        breakfast = (breakfast == 'true');
+        lunch = (lunch == 'true');
+        dinner = (dinner == 'true');
+        const recipes = await search_service.search(user_id, searchQuery, onlyIngredients, without_lactose, gluten_free, vegan, vegetarian, kosher, breakfast, lunch, dinner)
         res.status(200).send(recipes);
     }catch(error){
         next(error);

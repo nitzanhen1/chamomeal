@@ -5,6 +5,7 @@ import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
 import {replaceRecipeById} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
+import COLORS from "../consts/colors";
 
 const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handleCloseSustainableModal}) => {
 
@@ -37,9 +38,10 @@ const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handle
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
+                        {needHeartIcon && <HeartIcon style={styles.heartIcon} recipe={recipe}/>}
+
                     </View>
                 </View>
-                {needHeartIcon && <HeartIcon recipe={recipe}/>}
                 <View style={styles.chooseButton}>
                     {needChooseButton && <Button onPress={handleChooseButton} title="בחר" color="#234567" />}
                 </View>
@@ -97,7 +99,8 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: 40,
+        width: '100%',
+        // backgroundColor: COLORS.grey
     },
     flowerIcon: {
         color:"black"
@@ -113,6 +116,8 @@ const styles = StyleSheet.create({
     chooseButton:{
         marginRight:10,
         height:"50%"
+    },
+    heartIcon:{
     }
 });
 

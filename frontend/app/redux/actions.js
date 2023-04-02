@@ -150,6 +150,11 @@ export const getGlobalDetails = () => {
                 score: data['total_score'],
                 badges: data['badges'],
                 EER: data['EER'],
+                kosher: data['kosher'],
+                vegetarian: data['vegetarian'],
+                vegan: data['vegan'],
+                gluten_free: data['gluten_free'],
+                without_lactose: data['without_lactose']
             });
         }
     }catch (error) {
@@ -373,16 +378,22 @@ export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
     }
 }
 
-export const search = (searchQuery,onlyIngredientsFilter,includePrefsFilter,mealTypeFilter) =>{
+export const search = (searchQuery, onlyIngredients, without_lactose, gluten_free, vegan, vegetarian, kosher, breakfast, lunch, dinner) =>{
     try{
         return async dispatch =>{
             const response = await axios.get(`${API_URL}/search`,
                 {
                     params: {
-                        query: searchQuery,
-                        onlyIngredientsFilter: onlyIngredientsFilter,
-                        includePrefsFilter:includePrefsFilter,
-                        mealTypeFilter:mealTypeFilter
+                        searchQuery: searchQuery,
+                        onlyIngredients: onlyIngredients,
+                        without_lactose: without_lactose,
+                        gluten_free: gluten_free,
+                        vegan: vegan,
+                        vegetarian: vegetarian,
+                        kosher: kosher,
+                        breakfast: breakfast,
+                        lunch: lunch,
+                        dinner: dinner
                     }});
             const data = response.data;
             dispatch({
@@ -397,7 +408,7 @@ export const search = (searchQuery,onlyIngredientsFilter,includePrefsFilter,meal
 
 export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_score) =>{
     try{
-        return async dispatch =>{ //TODO: replace to get not post
+        return async dispatch =>{
             const response = await axios.post(`${API_URL}/recipes/getSustainableRecipes`,
                 {
                     recipe_id: recipe_id,
