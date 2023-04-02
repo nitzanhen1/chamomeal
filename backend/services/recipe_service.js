@@ -105,8 +105,6 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
             new_consumed_calories -= meal_calories;
             new_score -= meal_score;
         }
-        await DButils.execQuery(`update MealPlanHistory set ${meal_type_eaten}='${Number(eaten)}', consumed_calories='${new_consumed_calories}' where user_id='${user_id}' and menu_date='${date}'`);
-        await DButils.execQuery(`update Users set score='${new_score}' where user_id='${user_id}'`);
 
         let updated_values = {
             "new_consumed_calories": new_consumed_calories,
@@ -119,6 +117,9 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
                 updated_values["earned"] = result[2] //true\false
             }
         })
+
+        await DButils.execQuery(`update MealPlanHistory set ${meal_type_eaten}='${Number(eaten)}', consumed_calories='${new_consumed_calories}' where user_id='${user_id}' and menu_date='${date}'`);
+        await DButils.execQuery(`update Users set score='${new_score}' where user_id='${user_id}'`);
 
         return updated_values;
     } else {
