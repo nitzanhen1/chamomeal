@@ -16,6 +16,7 @@ export const LOGOUT = 'LOGOUT';
 export const GET_FAVORITES = 'GET_FAVORITES';
 export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
 export const SET_FAVORITE_TO_RECIPES = 'SET_FAVORITE_TO_RECIPES';
+export const SET_HEART_AND_CHOOSE = 'SET_HEART_AND_CHOOSE';
 
 const API_URL = 'http://10.0.2.2:3000'; //localhost
 // const API_URL = 'http://132.73.84.195:443'; //remote backend
@@ -424,33 +425,46 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
     }
 }
 
-export const replaceRecipeById = (recipe_id, date, meal_type, meals, recipe) =>{
+export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calories) =>{
     try{
         return async dispatch =>{
             const date_str = date.toISOString().substring(0, 10);
-            let type_index = {"breakfast":0 ,"lunch": 1, "dinner":2 };
-            let newDailyMeal = meals;
-            newDailyMeal[type_index[meal_type]]["mealData"] = recipe;
-            dispatch({
-                type: SET_DAILY_MENU,
-                meals: newDailyMeal
-            });
-            const response = await axios.post(`${API_URL}/recipes/replaceRecipeById`,
+            const response = await axios.post(`${API_URL}/recipes/${api_replace}`,
                 {
                     recipe_id: recipe_id,
                     date: date_str,
-                    meal_type: meal_type
+                    meal_type: meal_type,
+                    meal_calories: meal_calories
                 });
-            if(response.status!=201) {
+            if(response.status==201) {
+                const data = response.data;
+                let mealsData = [
+                    {title: 'ארוחת בוקר', mealData:data['breakfast']},
+                    {title: 'ארוחת צהריים', mealData: data['lunch']},
+                    {title: 'ארוחת ערב',mealData:data['dinner']}];
                 dispatch({
-                    type: SET_DAILY_MENU,
-                    meals: meals
+                    type: GET_DAILY_MENU,
+                    meals: mealsData,
+                    consumed_calories: data['consumed_calories'],
+                    total_calories: data['total_calories'],
                 });
             }
         }
     }catch (error) {
         console.log(error);
     }
+}
+
+
+export const setHeartAndChoose = (meal_type, heartIcon, chooseButton) =>{
+        return async dispatch =>{
+                dispatch({
+                    type: SET_HEART_AND_CHOOSE,
+                    meal_type: meal_type,
+                    heartIcon: heartIcon,
+                    chooseButton: chooseButton
+                });
+            }
 }
 
 

@@ -4,7 +4,6 @@ var express = require("express");
 var path = require("path");
 // var logger = require("morgan");
 const session = require("client-sessions");
-const DButils = require("./data/db_utils");
 const cors = require('cors')
 
 const app = express();
@@ -57,23 +56,6 @@ const recipes = require("./controllers/recipe_controller");
 const auth = require("./controllers/auth_controller");
 const search = require("./controllers/search_controller");
 
-
-//#region cookie middleware
-app.use(function (req, res, next) {
-    if (req.session && req.session.user_id) {
-        DButils.execQuery("SELECT user_id FROM Users")
-            .then((users) => {
-                if (users.find((x) => x.user_id === req.session.user_id)) {
-                    req.user_id = req.session.user_id;
-                }
-                next();
-            })
-            .catch((error) => next());
-    } else {
-        next();
-    }
-});
-//#endregion
 
 // ----> For cheking that our server is alive
 app.get("/alive", (req, res) => res.send("I'm alive"));

@@ -162,7 +162,6 @@ export default function SearchScreen() {
                     <View style={styles.filterContainer}>
                         <Text style={styles.filterTitle}>חיפוש לפי</Text>
                         <View style={styles.filterOptions}>
-                            {/*<View style={styles.radioButtonContainer}>*/}
                             <CheckBox
                                 checked={ingredientsCheck}
                                 title='מרכיבים בלבד'
@@ -171,16 +170,14 @@ export default function SearchScreen() {
                                 textStyle={styles.optionText}
                                 checkedColor={COLORS.lightGreen}
                             />
-                            {/*</View>*/}
                         </View>
                     </View>
-
                 </View>
             }
             <ScrollView style={styles.inputsContainer}>
                 {searchResults.map(meal =>
                     <View key={meal.recipe_id}>
-                        <PreviewCard recipe={meal} needHeartIcon={true} needChooseButton={false}/>
+                        <PreviewCard recipe={meal} sustainable={false}/>
                     </View>
                 )}
             </ScrollView>

@@ -3,14 +3,16 @@ import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
-import {replaceRecipeById} from "../redux/actions";
+import {replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
 import COLORS from "../consts/colors";
 
-const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handleCloseSustainableModal}) => {
+const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
 
     const dispatch = useDispatch();
-    const {date, meals} = useSelector(state => state.mealReducer);
+    const navigation = useNavigation();
+    const {date, heartIcon, chooseButton, meal_type} = useSelector(state => state.mealReducer);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -21,8 +23,14 @@ const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handle
     }
 
     const handleChooseButton = () => {
-        dispatch(replaceRecipeById(recipe["recipe_id"], date, meal_type, meals, recipe)).then(
-            handleCloseSustainableModal());
+        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type, recipe["calories"])).then()
+            if(sustainable) {
+                handleCloseSustainableModal();
+            }
+            else{
+                dispatch(setHeartAndChoose("",true, false));
+                navigation.navigate("Meal Planner");
+            }
     }
 
     return (
@@ -38,12 +46,12 @@ const PreviewCard = ({recipe, needHeartIcon, needChooseButton, meal_type, handle
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
-                        {needHeartIcon && <HeartIcon style={styles.heartIcon} recipe={recipe}/>}
-
+                        {heartIcon && <HeartIcon recipe={recipe}/>}
                     </View>
                 </View>
+                {/*{heartIcon && <HeartIcon recipe={recipe}/>}*/}
                 <View style={styles.chooseButton}>
-                    {needChooseButton && <Button onPress={handleChooseButton} title="בחר" color="#234567" />}
+                    {chooseButton && <Button onPress={handleChooseButton} title="בחר" color={COLORS.upgrade} />}
                 </View>
             </TouchableOpacity>
         </View>
@@ -116,8 +124,6 @@ const styles = StyleSheet.create({
     chooseButton:{
         marginRight:10,
         height:"50%"
-    },
-    heartIcon:{
     }
 });
 

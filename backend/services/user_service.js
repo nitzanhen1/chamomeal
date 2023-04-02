@@ -12,9 +12,7 @@ async function userMiddleware(req, res, next) {
             }
         }).catch(err => next(err));
     } else {
-        req.user_id = 1; //TODO: delete!!
-        next(); //TODO: delete!!
-        //  res.status(419).send({message: "Session expired, please login again", success: false});
+         res.status(419).send({message: "Session expired, please login again", success: false});
     }
 }
 

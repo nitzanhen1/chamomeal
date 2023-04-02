@@ -20,7 +20,7 @@ async function getDailyMenu(user_id, date) {
             breakfast: recipes[0],
             lunch: recipes[1],
             dinner: recipes[2],
-            consumed_calories: dailyMenu['consumed_calories'],
+            consumed_calories: (recipes[0].eaten ? recipes[0].calories : 0) + (recipes[1].eaten ? recipes[1].calories : 0)+(recipes[2].eaten ? recipes[2].calories : 0),
             total_calories: recipes[0].calories+recipes[1].calories+recipes[2].calories
     }
 }
@@ -162,10 +162,10 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
         do {
             random_index = Math.floor(Math.random() * recipes_ids.length);
             random_recipe_id = recipes_ids[random_index];
-            // const elementsBefore = recipes_ids.slice(0, random_index)
-            // const elementsAfter = recipes_ids.slice(random_index+1);
-            // recipes_ids = elementsBefore.concat(elementsAfter);
-            recipes_ids = recipes_ids.filter(item => item["recipe_id"] !== random_recipe_id);
+            const elementsBefore = recipes_ids.slice(0, random_index)
+            const elementsAfter = recipes_ids.slice(random_index+1);
+            recipes_ids = elementsBefore.concat(elementsAfter);
+            // recipes_ids = recipes_ids.filter(item => item["recipe_id"] !== random_recipe_id);
             if (recipe_id != random_recipe_id){
                 sustainable_recipes_ids.push(random_recipe_id);
             }
