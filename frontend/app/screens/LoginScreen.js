@@ -46,15 +46,18 @@ const LoginScreen = ({navigation}) => {
     async function handleSubmitPress(){
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
-                dispatch(login(username,userPassword)).then((success)=>{
-                if(success==null) {
+                dispatch(login(username,userPassword)).then((status)=>{
+                if(status==404) {
                     alert('שם משתמש או סיסמה אינם נכונים')
                 }
-                else if(!success){
+                else if(status==202){
                     navigation.navigate('QuestionnaireScreen');
                 }
-                else{
+                else if(status==200){
                     navigation.navigate('BottomNavigator');
+                }
+                else{
+                    alert('אוי לא משהו קרה! נסה שוב')
                 }
                 });
             }catch (error){
@@ -77,7 +80,7 @@ const LoginScreen = ({navigation}) => {
                         validateUsername(username)
                         setUsername(username)
                     }}
-                    placeholder='שם משתמש'
+                    placeholder='שם משתמש / אימייל'
                     errorStyle={{ color: 'red' }}
                     errorMessage={usernameError}
                     autoCapitalize='none'

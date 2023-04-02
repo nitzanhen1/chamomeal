@@ -45,7 +45,7 @@ const MealCard = ({recipe, meal_type}) => {
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
                         <View style={styles.icons}>
-                            <TouchableOpacity style={styles.upgrade}  onPress={handleOpenSustainableModal}>
+                            <TouchableOpacity disabled={recipe.eaten ? true : false} style={recipe.eaten ? styles.upgradeDisable : styles.upgrade}  onPress={handleOpenSustainableModal}>
                                 <Image
                                     style={{width: 26, height: 26,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
                                     source={require('frontend/app/assets/earth-globe-12153.png')}
@@ -129,7 +129,10 @@ const styles = StyleSheet.create({
     },
     upgrade:{
         flexDirection: 'row',
-
+    },
+    upgradeDisable:{
+        flexDirection: 'row',
+        opacity: 0.2
     },
     upgradeText: {
         color: COLORS.upgrade,
