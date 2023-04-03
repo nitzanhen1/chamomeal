@@ -3,13 +3,8 @@ const user_service = require("./user_service");
 
 async function getDailyMenu(user_id, date) {
     let dailyMenu = await getDailyMenuFromDB(user_id, date)
-    if (dailyMenu == null) {
-        let today = new Date().toISOString().slice(0, 10).replace('T', ' ')
-        if(new Date(today)>new Date(date)){
-            return {};
-        }
+    if (dailyMenu == null)
         dailyMenu = await generateDailyMenu(user_id, date);
-    }
     const recipes_id_array = [dailyMenu['breakfast'], dailyMenu['lunch'], dailyMenu['dinner']];
     let recipes = await getRecipesByIdFromDB(recipes_id_array);
     recipes = await addIsFavorite(user_id, recipes)
@@ -21,7 +16,9 @@ async function getDailyMenu(user_id, date) {
             lunch: recipes[1],
             dinner: recipes[2],
             consumed_calories: (recipes[0].eaten ? recipes[0].calories : 0) + (recipes[1].eaten ? recipes[1].calories : 0)+(recipes[2].eaten ? recipes[2].calories : 0),
-            total_calories: recipes[0].calories+recipes[1].calories+recipes[2].calories
+            total_calories: recipes[0].calories+recipes[1].calories+recipes[2].calories,
+            badges: dailyMenu['badges'],
+            earned: dailyMenu['earned'],
     }
 }
 
@@ -54,6 +51,13 @@ async function generateDailyMenu(user_id, date) {
             dinner_eaten: false,
             consumed_calories: 0,
         }
+        login_score = prefs['login_score'] +1
+        await user_service.checkLoginBadges(user_id, login_score).then(async (result) => {
+            if (result[0] == true) {
+                generatedMenu["badges"] = Object.values(result[1]) //badges
+                generatedMenu["earned"] = result[2] //true\false
+            }
+        })
         await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}','${date}', '${random_breakfast_id}', '${random_lunch_id}', '${random_dinner_id}', 0, 0, 0, 0)`);
         return generatedMenu;
     }
@@ -111,7 +115,7 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
             "new_score": new_score,
         }
 
-        await user_service.checkBadges(user_id, new_score).then(async (result) => {
+        await user_service.checkEatenBadges(user_id, new_score).then(async (result) => {
             if (result[0] == true) {
                 updated_values["badges"] = Object.values(result[1]) //badges
                 updated_values["earned"] = result[2] //true\false

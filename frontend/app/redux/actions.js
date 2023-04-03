@@ -37,6 +37,13 @@ export const getDailyMenu = (date) => {
                 consumed_calories: data['consumed_calories'],
                 total_calories: data['total_calories'],
             });
+            if (data['badges'] != null) {
+                dispatch({
+                    type: UPDATE_BADGES,
+                    badges: data['badges'],
+                    earned: data['earned'],
+                });
+            }
         }
     }catch (error) {
         console.log(error);

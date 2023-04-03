@@ -17,7 +17,7 @@ async function userMiddleware(req, res, next) {
 }
 
 async function getPreferences(user_id) {
-    const cols = "gender, year_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER"
+    const cols = "gender, year_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER, login_score"
     const preferences = await getUserFromDB(user_id, cols);
     return preferences;
 }
@@ -95,30 +95,54 @@ async function getGlobalDetails(user_id) {
     return user_details
 }
 
-
-async function checkBadges(user_id, new_score) {
+async function checkBadges(user_id, new_score, score_key, char_type) {
+    console.log(new_score)
     let badges = await getBadgesFromDB(user_id)
-    let score_key = [10, 20, 50, 100, 200, 350, 500, 750, 1000]
     for (let i = 0; i < score_key.length - 1; i++) {
-        let col1 = score_key[i] + 'p'
+        let col = score_key[i] + char_type
+        console.log(col)
         if (new_score >= score_key[i]) {
-            if (badges[col1] == false) { //earned new badge
-                await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
-                badges[col1] = 1
+            if (badges[col] == false) { //earned new badge
+                console.log('earned')
+                await DButils.execQuery(`update badges set ${col}= 1 where user_id='${user_id}'`);
+                badges[col] = 1
                 let earned = true //notify frontend to alert user
                 return [true, badges, earned];
             }
         } else {
-            if (badges[col1] == true) {
-                await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
-                badges[col1] = 0
+            if (badges[col] == true) { //TODO test if other badges type enter this condition
+                console.log('lost', char_type) //should be always 'p'
+                await DButils.execQuery(`update badges set ${col}= 0 where user_id='${user_id}'`);
+                badges[col] = 0
                 let earned = false //badge lost no need to notify user
                 return [true, badges, earned];
             } else { // no change needed
+                console.log('no change')
                 return false;
             }
         }
     }
+}
+
+async function checkEatenBadges(user_id, eaten_score) {
+    let score_key = [10, 50, 100, 200, 500, 1000]
+    let char_type = 'p'
+    return checkBadges(user_id, eaten_score, score_key, char_type)
+}
+
+async function checkLoginBadges(user_id, login_score) {
+    await DButils.execQuery(`update Users set login_score =${login_score} where user_id = ${user_id}`);
+    let score_key = [2, 4, 7, 10, 14, 20]
+    let char_type = 'l'
+    return checkBadges(user_id, login_score, score_key, char_type)
+}
+
+async function checkReplaceBadges(user_id, replace_score) {
+    // TODO think how to get the replace score?
+    await DButils.execQuery(`update Users set replace_score =${replace_score} where user_id = ${user_id}`);
+    let score_key = [5, 15, 30, 50, 80, 120]
+    let char_type = 'c'
+    return checkBadges(user_id, replace_score, score_key, char_type)
 }
 
 async function getBadgesFromDB(user_id, cols = "*") {
@@ -175,5 +199,7 @@ exports.getUserFromDB = getUserFromDB
 exports.getGlobalDetails = getGlobalDetails
 exports.getUserDetails = getUserDetails
 exports.getPreferences = getPreferences
-exports.checkBadges = checkBadges;
+exports.checkEatenBadges = checkEatenBadges;
+exports.checkLoginBadges = checkLoginBadges;
+exports.checkReplaceBadges = checkReplaceBadges;
 exports.resetPassword = resetPassword;
