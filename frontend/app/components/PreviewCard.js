@@ -43,11 +43,15 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
                         <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                         {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
                     </View>
-                    <View style={styles.flowerContainer}>
-                        <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
-                        <Text style={styles.flowerText}>{recipe.score}</Text>
-                        {heartIcon && <HeartIcon recipe={recipe}/>}
+                    <View style={{flexDirection:'row', justifyContent: "space-between"}}>
+                        <View style={styles.flowerContainer}>
+                            <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
+                            <Text style={styles.flowerText}>{recipe.score}</Text>
+                        </View>
+                        {heartIcon && <HeartIcon style={styles.heart} recipe={recipe}/>}
+
                     </View>
+
                 </View>
                 {/*{heartIcon && <HeartIcon recipe={recipe}/>}*/}
                 <View style={styles.chooseButton}>
@@ -107,8 +111,6 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: '100%',
-        // backgroundColor: COLORS.grey
     },
     flowerIcon: {
         color:"black"
@@ -124,6 +126,10 @@ const styles = StyleSheet.create({
     chooseButton:{
         marginRight:10,
         height:"50%"
+    },
+    heart:{
+        alignSelf: "flex-start",
+        flex:1,
     }
 });
 

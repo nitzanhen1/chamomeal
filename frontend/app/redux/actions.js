@@ -401,6 +401,7 @@ export const search = (searchQuery, onlyIngredients, without_lactose, gluten_fre
                 type: GET_SEARCH_RESULTS,
                 searchResults: data,
             });
+            return data;
         }
     }catch (error) {
         console.log(error);

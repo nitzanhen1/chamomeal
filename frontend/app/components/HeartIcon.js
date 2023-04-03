@@ -33,15 +33,10 @@ const HeartIcon = ({recipe}) => {
 
 const styles = StyleSheet.create({
     heartIcon: {
-        // alignSelf: "flex-end",
-        // paddingTop: 10,
-        // paddingLeft: 10,
     },
     heartContainer: {
-        // backgroundColor: COLORS.lightGreen,
-        width: '73%',
-        bottom: 5
-        // alignItems:"",
+        bottom: 5,
+        right: 5,
     }
 });
 export default HeartIcon;
