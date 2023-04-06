@@ -85,7 +85,7 @@ export const register = (username, first_name, last_name, password, email) => {
                         password: password,
                         email: email,
                     });
-                return response.status==201;
+                return response.status;
             }catch (error){
                 if(error.response) {
                     return error.response.status;

@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux";
 import {login} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
+import {useFocusEffect} from "@react-navigation/native";
 
 
 const LoginScreen = ({navigation}) => {
@@ -66,6 +67,18 @@ const LoginScreen = ({navigation}) => {
         }
     }
 
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                setUsername('');
+                setUserPassword('');
+                setUsernameError('');
+                setPasswordError('');
+            };
+        }, [])
+    );
+
+
     return (
         <View style={styles.view}>
             <View style={styles.container}>
@@ -76,6 +89,7 @@ const LoginScreen = ({navigation}) => {
                     />
                 </View>
                 <Input
+                    value={username}
                     onChangeText={(username) => {
                         validateUsername(username)
                         setUsername(username)
@@ -88,6 +102,7 @@ const LoginScreen = ({navigation}) => {
                     inputContainerStyle={styles.input}
                 />
                 <Input
+                    value={userPassword}
                     onChangeText={(UserPassword) => {
                         setUserPassword(UserPassword)
                         validatePassword(UserPassword)

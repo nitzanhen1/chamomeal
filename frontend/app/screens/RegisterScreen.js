@@ -194,7 +194,6 @@ const RegisterScreen = ({navigation}) => {
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-
                 />
                 <Button
                     title="הירשם"
