@@ -58,21 +58,21 @@ const OptionsMenu = ({recipe, meal_type}) => {
                         <MaterialCommunityIcons name={favIcon} size={24} color="black" />
                     </MenuOption>
                     <MenuOption
-                        disabled={recipe.eaten ? true : false}
+                        disabled={!!recipe.eaten}
                         onSelect={handleReplaceByRandom}
                         customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
                         <Text>תפתיעו אותי</Text>
                         <FontAwesome name="random" size={24} color="black" />
                     </MenuOption>
                     <MenuOption
-                        disabled={recipe.eaten ? true : false}
+                        disabled={!!recipe.eaten}
                         onSelect={handleReplaceBySearch}
                         customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
                         <Text>חפש מתכון אחר</Text>
                         <MaterialCommunityIcons name="find-replace" size={24} color="black" />
                     </MenuOption>
                     <MenuOption
-                        disabled={recipe.eaten ? true : false}
+                        disabled={!!recipe.eaten}
                         onSelect={handleReplaceByFavorite}
                         customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
                         <Text>החלף מהמועדפים</Text>
