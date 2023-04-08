@@ -41,7 +41,7 @@ const MealCard = ({recipe, meal_type}) => {
                 <View style={styles.cardContent}>
                         <View style={styles.cardTextContent}>
                             <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
-                            <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
+                            <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות" + " | " + recipe.GHG_per_unit + " GHG"}</Text>
                             {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
                             {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal} handleCloseSustainableModal={handleCloseSustainableModal} getMoreSustainableRecipes={getMoreSustainableRecipes} recipes={sustainableRecipes}/>}
                         </View>
@@ -49,7 +49,7 @@ const MealCard = ({recipe, meal_type}) => {
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
                         <View style={styles.icons}>
-                            <TouchableOpacity disabled={recipe.eaten ? true : false} style={recipe.eaten ? styles.upgradeDisable : styles.upgrade}  onPress={handleOpenSustainableModal}>
+                            <TouchableOpacity disabled={!!recipe.eaten} style={recipe.eaten ? styles.upgradeDisable : styles.upgrade}  onPress={handleOpenSustainableModal}>
                                 <Image
                                     style={{width: 26, height: 26,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
                                     source={require('frontend/app/assets/earth-globe-12153.png')}

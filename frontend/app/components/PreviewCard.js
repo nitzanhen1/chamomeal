@@ -40,7 +40,7 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
                 <View style={styles.cardContent}>
                     <View style={styles.cardTextContent}>
                         <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
-                        <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
+                        <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות" + " | " + recipe.GHG_per_unit.toFixed(3) + " GHG"}</Text>
                         {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
                     </View>
                     <View style={styles.flowerContainer}>
