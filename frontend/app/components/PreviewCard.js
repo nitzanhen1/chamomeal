@@ -1,12 +1,14 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
 import {replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 import COLORS from "../consts/colors";
+import {Button} from '@rneui/themed';
+
 
 const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
 
@@ -49,14 +51,21 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
                             <Text style={styles.flowerText}>{recipe.score}</Text>
                         </View>
                         {heartIcon && <HeartIcon style={styles.heart} recipe={recipe}/>}
-
+                        <View style={styles.chooseButton}>
+                            {chooseButton &&
+                                <Button
+                                onPress={handleChooseButton}
+                                title="בחר"
+                                color={COLORS.upgradeButton}
+                                size="sm"
+                                containerStyle={styles.button}
+                                titleStyle={styles.buttonText}
+                                />}
+                        </View>
                     </View>
 
                 </View>
-                {/*{heartIcon && <HeartIcon recipe={recipe}/>}*/}
-                <View style={styles.chooseButton}>
-                    {chooseButton && <Button onPress={handleChooseButton} title="בחר" color={COLORS.upgrade} />}
-                </View>
+
             </TouchableOpacity>
         </View>
     );
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: 10,
+        marginVertical: 7,
     },
     card: {
         height: 130,
@@ -125,11 +134,26 @@ const styles = StyleSheet.create({
     },
     chooseButton:{
         marginRight:10,
-        height:"50%"
+        bottom:7,
     },
     heart:{
         alignSelf: "flex-start",
         flex:1,
+    },
+    button:{
+        // flex: 1,
+        borderRadius: 5,
+        height: 32,
+        marginLeft: 5,
+        textAlignVertical: "center",
+        borderBottomLeftRadius: 8, // apply the bottom radius to the scroll view
+        borderBottomRightRadius: 8,
+    },
+    buttonText:{
+        fontFamily: 'Rubik-Bold',
+        fontSize: 16,
+        paddingHorizontal: 4,
+
     }
 });
 
