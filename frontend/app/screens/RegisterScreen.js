@@ -98,12 +98,20 @@ const RegisterScreen = ({navigation}) => {
     function handleSubmitPress(){
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
         validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
-            dispatch(register(username,firstName,lastName,password,email)).then((success)=>{
-                if(success) {
+            dispatch(register(username,firstName,lastName,password,email)).then((status)=>{
+                if(status==201) {
                     navigation.navigate('Login')
-                } else {
-                    alert('שם משתמש קיים')
-                }});
+                } else if (status==409) {
+                    alert('שם המשתמש כבר קיים במערכת')
+                }
+                else if(status==412){
+                    alert('האימייל כבר קיים במערכת')
+                }
+                else {
+                    alert('אוי לא משהו קרה! נסה שוב')
+                }
+
+            });
         }
     }
 
@@ -186,7 +194,6 @@ const RegisterScreen = ({navigation}) => {
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-
                 />
                 <Button
                     title="הירשם"

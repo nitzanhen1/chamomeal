@@ -37,4 +37,14 @@ router.post("/logout", function (req, res) {
     res.status(200).send({ message: "successful logout", success: true});
 });
 
+router.post('/forgotPassword', async (req, res, next) => {
+    try {
+    const { email } = req.body;
+    await auth_service.forgotPassword(email);
+    res.status(200).send({ message: "successful sent verification code to email", success: true});
+    }catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;

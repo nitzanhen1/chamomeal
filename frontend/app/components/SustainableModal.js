@@ -2,10 +2,10 @@ import React from 'react';
 import {Modal, StyleSheet, View, ScrollView, TouchableOpacity, Text} from "react-native";
 import COLORS from "../consts/colors";
 import PreviewCard from "./PreviewCard";
-import {AntDesign} from "@expo/vector-icons";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
 
 
-const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal, recipes}) => {
+const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal, getMoreSustainableRecipes, recipes}) => {
 
     return (
         <Modal
@@ -19,8 +19,9 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                         <TouchableOpacity onPress={handleCloseSustainableModal} style={{ position: 'absolute', top: 10, right: 10 }}>
                             <AntDesign  name="closecircleo" size={25} style={styles.exitIcon} />
                         </TouchableOpacity>
-                        <Text style={styles.textHeader}>בחר ארוחה טובה יותר לסביבה</Text>
-                    </View>
+                        <Ionicons style={styles.iconMore} name="sync-circle-outline" onPress={getMoreSustainableRecipes}/>
+                        <Text style={styles.textHeader}>ארוחות מקיימות לסביבה</Text>
+                        </View>
                     <ScrollView style={styles.information}>
                         {recipes.map(recipe=>
                             <View key={recipe.recipe_id}>
@@ -60,6 +61,11 @@ const styles = StyleSheet.create({
     },
     textHeader: {
         fontSize: 20,
+        position: 'absolute',
+        top: 10, left: 50
+    },
+    iconMore: {
+        fontSize: 30,
         position: 'absolute',
         top: 10, left: 10
     }
