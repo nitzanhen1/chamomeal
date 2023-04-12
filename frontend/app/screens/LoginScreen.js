@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux";
 import {login} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
+import {useFocusEffect} from "@react-navigation/native";
 
 
 const LoginScreen = ({navigation}) => {
@@ -46,15 +47,18 @@ const LoginScreen = ({navigation}) => {
     async function handleSubmitPress(){
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
-                dispatch(login(username,userPassword)).then((success)=>{
-                if(success==null) {
+                dispatch(login(username,userPassword)).then((status)=>{
+                if(status==404) {
                     alert('שם משתמש או סיסמה אינם נכונים')
                 }
-                else if(!success){
+                else if(status==202){
                     navigation.navigate('QuestionnaireScreen');
                 }
-                else{
+                else if(status==200){
                     navigation.navigate('BottomNavigator');
+                }
+                else{
+                    alert('אוי לא משהו קרה! נסה שוב')
                 }
                 });
             }catch (error){
@@ -62,6 +66,18 @@ const LoginScreen = ({navigation}) => {
             }
         }
     }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                setUsername('');
+                setUserPassword('');
+                setUsernameError('');
+                setPasswordError('');
+            };
+        }, [])
+    );
+
 
     return (
         <View style={styles.view}>
@@ -73,11 +89,12 @@ const LoginScreen = ({navigation}) => {
                     />
                 </View>
                 <Input
+                    value={username}
                     onChangeText={(username) => {
                         validateUsername(username)
                         setUsername(username)
                     }}
-                    placeholder='שם משתמש'
+                    placeholder='שם משתמש / אימייל'
                     errorStyle={{ color: 'red' }}
                     errorMessage={usernameError}
                     autoCapitalize='none'
@@ -85,6 +102,7 @@ const LoginScreen = ({navigation}) => {
                     inputContainerStyle={styles.input}
                 />
                 <Input
+                    value={userPassword}
                     onChangeText={(UserPassword) => {
                         setUserPassword(UserPassword)
                         validatePassword(UserPassword)

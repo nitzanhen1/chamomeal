@@ -28,6 +28,10 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.imgContainer}>
                         <Image source={{uri: recipe.image}} style={styles.recipeImage}/>
+                        <View  style={styles.icons}>
+                            {recipe.sodium_bool === 1 && <Image style={styles.redIcon} source={require('../assets/icon_sodium.png')}/>}
+                            {recipe.saturated_fat_bool === 1 && <Image style={styles.redIcon} source={require('../assets/icon_saturated_fat.png')}/>}
+                        </View>
                         <TouchableOpacity onPress={handleCloseFull} style={{ position: 'absolute', top: 10, right: 10 }}>
                             <AntDesign  name="closecircleo" size={25} style={styles.exitIcon} />
                         </TouchableOpacity>
@@ -277,6 +281,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingVertical: 2
     },
+    redIcon: {
+        width: 50,
+        height: 50,
+    },
+    icons:{
+        position: 'absolute',
+        top: 10,
+        left: 10
+    }
 });
 
 export default FullRecipeCard

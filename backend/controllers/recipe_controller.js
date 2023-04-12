@@ -24,7 +24,7 @@ router.post("/markAsEaten", async (req, res, next) =>{
         const user_id = req.user_id;
         const {date, meal_type, eaten, meal_calories, meal_score} = req.body;
         const updated_values = await recipe_service.markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score);
-        res.status(201).send(updated_values);
+        res.status(202).send(updated_values);
     }catch(error){
         next(error);
     }
@@ -35,7 +35,7 @@ router.post("/replaceRecipeById", async (req, res, next) =>{
         const user_id = req.user_id;
         const {recipe_id, date, meal_type} = req.body;
         const newDailyMenu = await recipe_service.replaceRecipeById(user_id, recipe_id, date, meal_type)
-        res.status(201).send(newDailyMenu);
+        res.status(202).send(newDailyMenu);
     }catch(error){
         next(error);
     }
@@ -46,7 +46,7 @@ router.post("/replaceRecipeByRandom", async (req, res, next) =>{
         const user_id = req.user_id;
         const {recipe_id, date, meal_type, meal_calories} = req.body;
         const newDailyMenu = await recipe_service.replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_calories);
-        res.status(201).send(newDailyMenu);
+        res.status(202).send(newDailyMenu);
     }catch(error){
         next(error);
     }

@@ -92,14 +92,15 @@ export const register = (username, first_name, last_name, password, email) => {
                         password: password,
                         email: email,
                     });
-                if(response.status==201){
-                    return true;}
+                return response.status;
             }catch (error){
-                return false;
+                if(error.response) {
+                    return error.response.status;
+                }
             }
         }
     }catch (error) {
-        return false;
+        console.log(error)
     }
 }
 
@@ -112,18 +113,15 @@ export const login = (username, password) => {
                         username: username,
                         password: password,
                     });
-                if(response.status==200){
-                    return true;
-                }
-                else if(response.status==202){
-                    return false;
-                }
+                return response.status;
             }catch (error){
-                return null;
+                if(error.response) {
+                    return error.response.status;
+                }
             }
         }
     }catch (error) {
-        throw error;
+        console.log(error);
     }
 }
 export const logout = () => {
@@ -244,12 +242,12 @@ export const updatePassword = (old_pass, new_pass) => {
     try{
         return async dispatch =>{
             try {
-                const response = await axios.post(`${API_URL}/user/resetPassword`,
+                const response = await axios.post(`${API_URL}/user/updatePassword`,
                     {
                         old_pass: old_pass,
                         new_pass: new_pass,
                     });
-                if(response.status==201){
+                if(response.status==202){
                     return true;}
             }catch (error){
                 return false;
@@ -270,7 +268,7 @@ export const updateUserDetails = (first_name, last_name, email) => {
                         last_name: last_name,
                         email: email,
                     });
-                if(response.status==201){
+                if(response.status==202){
                     return true;}
             }catch (error){
                 return false;
@@ -443,7 +441,7 @@ export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calo
                     meal_type: meal_type,
                     meal_calories: meal_calories
                 });
-            if(response.status==201) {
+            if(response.status==202) {
                 const data = response.data;
                 let mealsData = [
                     {title: 'ארוחת בוקר', mealData:data['breakfast']},

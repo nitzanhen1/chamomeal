@@ -21,7 +21,7 @@ router.post("/updatePreferences", async (req, res, next) => {
         const user_id = req.user_id;
         const preferences = req.body;
         await user_service.updatePreferences(user_id, preferences)
-        res.status(201).send({ message: "user preferences updated successfully", success: true });
+        res.status(202).send({ message: "user preferences updated successfully", success: true });
     } catch (error) {
         next(error);
     }
@@ -37,12 +37,12 @@ router.get("/getPreferences", async (req, res, next) => {
     }
 })
 
-router.post("/resetPassword", async (req, res, next) => {
+router.post("/updatePassword", async (req, res, next) => {
     try {
         const user_id = req.user_id;
         let {old_pass, new_pass} = req.body
-        await user_service.resetPassword(user_id, old_pass, new_pass);
-        res.status(201).send({ message: "password updated successfully", success: true });
+        await user_service.updatePassword(user_id, old_pass, new_pass);
+        res.status(202).send({ message: "password updated successfully", success: true });
     } catch (error) {
         next(error);
     }
@@ -63,7 +63,7 @@ router.post("/updateUserDetails", async (req, res, next) => {
         const user_id = req.user_id;
         const details = req.body;
         await user_service.updateUserDetails(user_id, details)
-        res.status(201).send({ message: "user details updated successfully", success: true });
+        res.status(202).send({ message: "user details updated successfully", success: true });
     } catch (error) {
         next(error);
     }
