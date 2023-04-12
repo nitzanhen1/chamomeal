@@ -25,7 +25,7 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
     }
 
     const handleChooseButton = () => {
-        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type, recipe["calories"])).then()
+        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type)).then()
             if(sustainable) {
                 handleCloseSustainableModal();
             }

@@ -5,7 +5,8 @@ import PreviewCard from "../components/PreviewCard";
 import {Searchbar} from 'react-native-paper';
 import {Button, CheckBox, Divider} from '@rneui/themed';
 import COLORS from "../consts/colors";
-import {search} from "../redux/actions";
+import {search, setHeartAndChoose} from "../redux/actions";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function SearchScreen() {
 
@@ -69,6 +70,15 @@ export default function SearchScreen() {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(!expanded);
     }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                dispatch(setHeartAndChoose('', true, false));
+
+            };
+        }, [])
+    );
 
     return (
         <View style={styles.container}>

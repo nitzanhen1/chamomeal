@@ -431,7 +431,7 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
     }
 }
 
-export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calories) =>{
+export const replaceRecipe = (api_replace, recipe_id, date, meal_type) =>{
     try{
         return async dispatch =>{
             const date_str = date.toISOString().substring(0, 10);
@@ -440,7 +440,6 @@ export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calo
                     recipe_id: recipe_id,
                     date: date_str,
                     meal_type: meal_type,
-                    meal_calories: meal_calories
                 });
             if(response.status==202) {
                 const data = response.data;
