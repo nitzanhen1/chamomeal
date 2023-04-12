@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '900',
         fontFamily: 'Rubik-Regular',
+        paddingLeft: 7
     },
     cardSubtitle: {
         marginTop: 3,
@@ -137,8 +138,9 @@ const styles = StyleSheet.create({
         bottom:7,
     },
     heart:{
-        alignSelf: "flex-start",
-        flex:1,
+        // alignSelf: "flex-end",
+        // flex:1,
+
     },
     button:{
         // flex: 1,
