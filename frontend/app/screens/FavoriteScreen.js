@@ -1,11 +1,26 @@
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, ScrollView} from 'react-native';
+import {useDispatch, useSelector} from "react-redux";
+import {getFavorites} from "../redux/actions";
+import PreviewCard from "../components/PreviewCard";
 
 export default function FavoriteScreen() {
+
+    const {favorites} = useSelector(state => state.mealReducer);
+    const dispatch = useDispatch();
+
+    useEffect(() =>{
+        dispatch(getFavorites()).then();
+    }, []);
+
     return (
-        <View style={styles.view}>
-            <Text>EarthScreen</Text>
-        </View>
+        <ScrollView style={styles.inputsContainer}>
+            {favorites.map(meal=>
+                <View key={meal.recipe_id}>
+                    <PreviewCard recipe={meal} sustainable={false} />
+                </View>
+            )}
+        </ScrollView>
     )
 };
 const styles = StyleSheet.create({

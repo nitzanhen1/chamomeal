@@ -1,20 +1,34 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Ionicons} from "@expo/vector-icons";
+import MoreOptionsMenu from "./MoreOptionsMenu";
+import {getSustainableRecipes, setHeartAndChoose} from "../redux/actions";
+import {useDispatch} from "react-redux";
+import SustainableModal from "./SustainableModal";
 import COLORS from "../consts/colors";
 
-const MealCard = ({recipe}) => {
+const MealCard = ({recipe, meal_type}) => {
+    const dispatch = useDispatch();
+    const [sustainableRecipes, setSustainableRecipes] = React.useState([]);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
+    const [visibleSustainableModal, setVisibleSustainableModal] = React.useState(false);
 
-    const handleOpenFull = () => {
-        setFullVisible(true);
+    const handleOpenFull = () => {setFullVisible(true);}
+    const handleCloseFull = () => {setFullVisible(false);}
+
+    const handleCloseSustainableModal = () => {
+        dispatch(setHeartAndChoose("", true, false));
+        setVisibleSustainableModal(false);
+    }
+    const handleOpenSustainableModal = () => {
+        dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.calories, recipe.score)).then(sustainableRecipes =>
+            setSustainableRecipes(sustainableRecipes));
+        setVisibleSustainableModal(true);
     }
 
-    const handleCloseFull = () => {
-        setFullVisible(false);
-    }
+
 
     return (
         <View style={styles.container}>
@@ -25,15 +39,24 @@ const MealCard = ({recipe}) => {
                             <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
+                            {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal} handleCloseSustainableModal={handleCloseSustainableModal} recipes={sustainableRecipes}/>}
                         </View>
                     <View style={styles.flowerContainer}>
                         <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                         <Text style={styles.flowerText}>{recipe.score}</Text>
-                        {/*<MaterialCommunityIcons name="earth-plus" size={26} style={styles.plusIcon} />*/}
+                        <View style={styles.icons}>
+                            <TouchableOpacity style={styles.upgrade}  onPress={handleOpenSustainableModal}>
+                                <Image
+                                    style={{width: 26, height: 26,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
+                                    source={require('frontend/app/assets/earth-globe-12153.png')}
+                                />
+                                <Text style={styles.upgradeText}>שדרג!</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.moreContainer} onPress={()=>alert()}>
-                    <Icon name="more-vert" size={25} style={styles.moreIcon} />
+                <TouchableOpacity>
+                    <MoreOptionsMenu recipe={recipe} meal_type={meal_type}/>
                 </TouchableOpacity>
             </TouchableOpacity>
         </View>
@@ -81,10 +104,6 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         alignSelf: "center"
     },
-    moreIcon: {
-        alignSelf: "flex-start",
-        paddingTop: 5,
-    },
     flowerContainer: {
         paddingHorizontal: 5,
         paddingVertical: 1,
@@ -92,7 +111,7 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: 40,
+        width: '50%',
     },
     flowerIcon: {
         color:"black"
@@ -105,12 +124,21 @@ const styles = StyleSheet.create({
         paddingTop: 3,
         marginRight:4,
     },
-    moreContainer: {
-        alignItems:"flex-start",
+    icons:{
+        marginLeft: 10
     },
-    plusIcon: {
-        color: COLORS.lightGreen,
-    }
+    upgrade:{
+        flexDirection: 'row',
+
+    },
+    upgradeText: {
+        color: COLORS.upgrade,
+        marginTop: 4,
+        fontSize: 15.5,
+        fontFamily: 'Rubik-Bold',
+        marginLeft: 5,
+        textDecorationLine: "underline",
+    },
 });
 
 export default MealCard;

@@ -1,17 +1,24 @@
 import {
     GET_DAILY_MENU,
+    SET_DAILY_MENU,
     MARK_AS_EATEN,
-    GET_USER_DETAILS,
+    GET_GLOBAL_DETAILS,
+    GET_Q_DETAILS,
     SET_FOOD_PREFERENCE,
     SET_ACTIVITY_PREFERENCE,
     SET_PERSONAL_DETAILS,
     UPDATE_USER_PREFERENCES,
-    GET_USER_PREFERENCES,
-    LOGOUT, UPDATE_BADGES, SET_EARNED
+    LOGOUT, UPDATE_BADGES, SET_EARNED, GET_USER_DETAILS,
+    GET_FAVORITES,
+    GET_SEARCH_RESULTS,
+    SET_FAVORITE_TO_RECIPES,
+    SET_HEART_AND_CHOOSE,
 } from './actions';
 
 const initialState = {
-    user_name: "",
+    first_name: "",
+    last_name: "",
+    email: "",
     badges: [],
     earned: false,
     EER: 0,
@@ -23,7 +30,7 @@ const initialState = {
         {title: 'ארוחת צהריים', mealData: {}},
         {title: 'ארוחת ערב',mealData: {}}],
     date: new Date(),
-    date_of_birth: new Date(new Date().setFullYear(new Date().getFullYear() + -16)),
+    year_of_birth: 0,
     height: 0,
     weight: 0,
     gender: '',
@@ -32,17 +39,28 @@ const initialState = {
     vegetarian: false,
     without_lactose: false,
     gluten_free: false,
-    kosher: false
+    kosher: false,
+    favorites: [],
+    searchResults: [],
+    heartIcon: true,
+    chooseButton: false,
+    meal_type:"",
 }
 
 function mealReducer(state = initialState, action) {
     switch (action.type) {
+        case GET_GLOBAL_DETAILS:
+            return { ...state, first_name: action.first_name, score: action.score, badges: action.badges, EER: action.EER, vegan: action.vegan, vegetarian: action.vegetarian, without_lactose: action.without_lactose,
+                gluten_free: action.gluten_free, kosher: action.kosher}
+        case GET_Q_DETAILS:
+            return { ...state, gender: action.gender, year_of_birth: action.year_of_birth, height: action.height, weight: action.weight, physical_activity: action.physical_activity, vegan: action.vegan, vegetarian: action.vegetarian, without_lactose: action.without_lactose,
+                gluten_free: action.gluten_free, kosher: action.kosher}
         case GET_USER_DETAILS:
-            return { ...state, user_name: action.user_name, score: action.score, badges: action.badges, EER: action.EER}
-        case GET_USER_PREFERENCES:
-            return;
+            return { ...state, first_name: action.first_name, last_name: action.last_name, email: action.email};
         case GET_DAILY_MENU:
             return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories };
+        case SET_DAILY_MENU:
+            return { ...state, meals: action.meals};
         case MARK_AS_EATEN:
             return { ...state, consumed_calories: action.consumed_calories, score: action.score };
         case UPDATE_BADGES:
@@ -57,9 +75,17 @@ function mealReducer(state = initialState, action) {
         case SET_ACTIVITY_PREFERENCE:
             return { ...state, physical_activity: action.physical_activity};
         case SET_PERSONAL_DETAILS:
-            return { ...state, date_of_birth: action.date_of_birth, height:action.height, weight: action.weight, gender: action.gender};
+            return { ...state, year_of_birth: action.year_of_birth, height:action.height, weight: action.weight, gender: action.gender};
         case UPDATE_USER_PREFERENCES:
             return state;
+        case GET_FAVORITES:
+            return { ...state, favorites: action.favorites};
+        case GET_SEARCH_RESULTS:
+            return { ...state, searchResults: action.searchResults};
+        case SET_FAVORITE_TO_RECIPES:
+            return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
+        case SET_HEART_AND_CHOOSE:
+            return { ...state, meal_type:action.meal_type, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
         default:
             return state;
     }
