@@ -11,13 +11,13 @@ const PersonalDetails = ({navigation}) => {
     const {
         height,
         weight,
-        date_of_birth,
+        year_of_birth,
         gender} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const [newHeight, setHeight] = useState(height);
     const [newWeight, setWeight] = useState(weight);
     const [newGender, setGender] = useState(gender);
-    const [newBirthDate, setBirthDate] = useState(date_of_birth);
+    const [newBirthYear, setBirthYear] = useState(year_of_birth);
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -26,11 +26,11 @@ const PersonalDetails = ({navigation}) => {
     const [newHeightError, setHeightError] = useState('');
     const [newWeightError, setWeightError] = useState('');
     const [newGenderError, setGenderError] = useState('');
-    const [newBirthDateError, setBirthDateError] = useState('');
+    const [newBirthYearError, setBirthYearError] = useState('');
 
     const handleSubmit = () => {
         if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday() && validateGender()){
-            const newPersonalDetails = {newWeight, newHeight, newGender, newBirthDate};
+            const newPersonalDetails = {newWeight, newHeight, newGender, newBirthYear};
             dispatch(setPersonalDetails(newPersonalDetails))
             navigation.navigate('PhysicalActivity')
         }
@@ -39,7 +39,7 @@ const PersonalDetails = ({navigation}) => {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(false);
-        setBirthDate(currentDate);
+        setBirthYear(currentDate);
         setDateChanged(true);
     };
 
@@ -76,13 +76,27 @@ const PersonalDetails = ({navigation}) => {
     }
 
     function validateBirthday(){
-        if (!dateChanged) {
-            setBirthDateError('אנא בחר את תאריך הלידה שלך');
+        if (!newBirthYear) {
+            setBirthYearError('אנא הכנס שנת לידה');
             return false
-        }else {
-            setBirthDateError('')
+        }else if (newBirthYear > (new Date(new Date().setFullYear(new Date().getFullYear() + -16)))){
+            setBirthYearError('עליך להיות מעל גיל 16 על מנת להשתמש באפליקציה');
+            return false
+        }else if (newBirthYear < (new Date(new Date().setFullYear(new Date().getFullYear() + -120)))){
+            setBirthYearError('אנא ודא שגילך קטן מ-120');
+            return false
+        }
+        else {
+            setBirthYearError('')
             return true
         }
+        // if (!dateChanged) {
+        //     setBirthYearError('אנא בחר את תאריך הלידה שלך');
+        //     return false
+        // }else {
+        //     setBirthYearError('')
+        //     return true
+        // }
     }
 
     function validateGender(){
@@ -140,36 +154,54 @@ const PersonalDetails = ({navigation}) => {
                 {newWeightError}
             </HelperText>
 
+            {/*<TextInput*/}
+            {/*    mode="flat"*/}
+            {/*    label="תאריך לידה"*/}
+            {/*    value={!dateChanged ? '':newBirthYear.toISOString().substring(0, 10)}*/}
+            {/*    onChangeText={(newBirthYear) => {*/}
+            {/*        setBirthYear(newBirthYear.toISOString().substring(0, 10));*/}
+            {/*        setDateChanged(true);*/}
+            {/*    }}*/}
+            {/*    selectionColor={COLORS.primary}*/}
+            {/*    activeUnderlineColor={COLORS.primary}*/}
+            {/*    underlineColor={COLORS.darkGrey}*/}
+            {/*    style={styles.inputText}*/}
+            {/*    underlineStyle={styles.inputContainer}*/}
+            {/*    right={<TextInput.Icon icon="calendar" onPress={showDatepicker}/>}*/}
+            {/*    editable={false}*/}
+            {/*/>*/}
+            {/*<HelperText type="error" visible={!dateChanged}>*/}
+            {/*    {newBirthYearError}*/}
+            {/*</HelperText>*/}
+
+            {/*{show && (*/}
+            {/*    <DateTimePicker*/}
+            {/*        testID="dateTimePicker"*/}
+            {/*        value={newBirthYear}*/}
+            {/*        mode={mode}*/}
+            {/*        is24Hour={true}*/}
+            {/*        onChange={onChange}*/}
+            {/*        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + -16))}*/}
+            {/*    />*/}
+            {/*)}*/}
+
             <TextInput
                 mode="flat"
-                label="תאריך לידה"
-                value={!dateChanged ? '':newBirthDate.toISOString().substring(0, 10)}
-                onChangeText={(newBirthDate) => {
-                    setBirthDate(newBirthDate.toISOString().substring(0, 10));
-                    setDateChanged(true);
-                }}
+                label="שנת לידה"
+                value={newBirthYear}
+                placeholder='yyyy'
+                onChangeText={(newBirthYear) => {
+                    setBirthYear(newBirthYear);
+                    validateBirthday(newBirthYear)}}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
-                underlineColor={COLORS.darkGrey}
+                underlineColor={COLORS.grey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
-                right={<TextInput.Icon icon="calendar" onPress={showDatepicker}/>}
-                editable={false}
             />
-            <HelperText type="error" visible={!dateChanged}>
-                {newBirthDateError}
+            <HelperText type="error" visible={!newBirthYear}>
+                {newBirthYearError}
             </HelperText>
-
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={newBirthDate}
-                    mode={mode}
-                    is24Hour={true}
-                    onChange={onChange}
-                    maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + -16))}
-                />
-            )}
 
             <RadioButton.Group onValueChange={newValue => setGender(newValue)} value={newGender}>
                 <View style={styles.genderContainer}>

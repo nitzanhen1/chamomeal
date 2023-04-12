@@ -9,15 +9,14 @@ async function register(user_details) {
 
     // add the new user
     let hash_password = bcrypt.hashSync(user_details.password, parseInt(process.env.bcrypt_saltRounds));
-    await DButils.execQuery(
+    let result = await DButils.execQuery(
         `INSERT INTO Users (username, first_name, last_name, password, email, score)
          VALUES ('${user_details.username}', '${user_details.first_name}', '${user_details.last_name}', '${hash_password}', '${user_details.email}', 0)`
     );
-    let id = await DButils.execQuery(`SELECT user_id FROM Users WHERE username = '${user_details.username}'`);
-    console.log(id)
-    if (id){
+
+    if (result['insertId']){
         await DButils.execQuery(
-            `INSERT INTO badges (user_id) VALUES ('${id[0].user_id}')`
+            `INSERT INTO badges (user_id) VALUES ('${result['insertId']}')`
         );
     }
 }

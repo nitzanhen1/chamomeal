@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
 import React, {useState} from 'react'
 import PersonalDetails from "../components/PersonalDetails";
 import PhysicalActivity from "../components/PhysicalActivity";
@@ -6,14 +6,16 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {updateUserPreferences} from "../redux/actions";
+import {setEarned, updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {useNavigation} from "@react-navigation/native";
+import {Feather} from "@expo/vector-icons";
 
 
 const Stack = createNativeStackNavigator();
 
 const QuestionnaireScreen = ({navigation}) => {
-    const { date_of_birth,
+    const { year_of_birth,
         height,
         weight,
         gender,
@@ -27,8 +29,28 @@ const QuestionnaireScreen = ({navigation}) => {
     const [step, setStep] = useState(1);
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(date_of_birth.toISOString().substring(0, 10), height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
+        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
         navigation.navigate('BottomNavigator');
+    }
+
+    function handleBack(){
+        Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
+            [
+                { text: 'כן', onPress: () => navigation.goBack() },
+                {
+                    text: 'לא',
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: true });
+        // dispatch(setEarned(false));
+    }
+
+    function returnButton(){
+        const navigation = useNavigation();
+        return (
+            <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => handleBack()}/>
+        );
     }
 
     return (
@@ -37,12 +59,12 @@ const QuestionnaireScreen = ({navigation}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:true
+                        headerShown:true,
                     }}>
                     <Stack.Screen name="PersonalDetails" component={PersonalDetails}
                                   options={{
                                       headerTitle:"פרופיל פיזיולוגי",
-                                      headerTitleAlign: "left",
+                                      headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
                                               fontFamily: 'Rubik-Bold',
@@ -51,11 +73,13 @@ const QuestionnaireScreen = ({navigation}) => {
                                               color: COLORS.title,
                                           },
                                       headerBackVisible: false,
+                                      headerRight: () => (returnButton()
+                                      ),
                                   }}/>
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{
                                       headerTitle:"פעילות גופנית",
-                                      headerTitleAlign: "left",
+                                      headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
                                               fontFamily: 'Rubik-Bold',
@@ -69,7 +93,7 @@ const QuestionnaireScreen = ({navigation}) => {
                     <Stack.Screen name="FoodPreferences"
                                   options={{
                                       headerTitle:"העדפות תזונתיות",
-                                      headerTitleAlign: "left",
+                                      headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
                                               fontFamily: 'Rubik-Bold',
