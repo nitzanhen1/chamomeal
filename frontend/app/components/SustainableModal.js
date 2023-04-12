@@ -43,13 +43,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalContainer: {
-        width: '80%',
-        height: '62%',
-        backgroundColor: 'white',
+        width: '83%',
+        height: '63%',
+        backgroundColor: COLORS.light,
         borderRadius: 10,
+        // paddingHorizontal: 10
     },
     container:{
         flexDirection: "row",
+        borderRadius: 10,
+
     },
     exitIcon: {
         color: COLORS.darkGrey,
@@ -58,17 +61,29 @@ const styles = StyleSheet.create({
     },
     information: {
         marginTop: 40,
+        marginHorizontal:10,
+        // borderRadius: 10,
+        borderBottomLeftRadius: 10, // apply the bottom radius to the scroll view
+        borderBottomRightRadius: 10,
+        paddingBottom: 10,
+        flex: 1
     },
     textHeader: {
         fontSize: 20,
         position: 'absolute',
-        top: 10, left: 50
+        top: 10,
+        left: 50,
+        fontFamily: 'Rubik-Bold',
+        letterSpacing: 0.5,
+        color: COLORS.darkGrey
+
     },
     iconMore: {
-        fontSize: 30,
+    fontSize: 30,
         position: 'absolute',
         top: 10, left: 10
     }
+
 });
 
 export default SustainableModal;
