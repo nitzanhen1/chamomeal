@@ -439,10 +439,11 @@ export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calo
                     recipe_id: recipe_id,
                     date: date_str,
                     meal_type: meal_type,
-                    meal_calories: meal_calories
+                    meal_calories: meal_calories,
+                    replacement_score: replacement_score
                 });
             if(response.status==202) {
-                const data = response.data;
+                const data = response.data['dailyMenu'];
                 let mealsData = [
                     {title: 'ארוחת בוקר', mealData:data['breakfast']},
                     {title: 'ארוחת צהריים', mealData: data['lunch']},
@@ -453,6 +454,14 @@ export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calo
                     consumed_calories: data['consumed_calories'],
                     total_calories: data['total_calories'],
                 });
+                const badgesData = response.data;
+                if (badgesData['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: badgesData['badges'],
+                        earned: badgesData['earned'],
+                    });
+                }
             }
         }
     }catch (error) {
@@ -461,11 +470,12 @@ export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calo
 }
 
 
-export const setHeartAndChoose = (meal_type, heartIcon, chooseButton) =>{
+export const setHeartAndChoose = (meal_type, meal_score, heartIcon, chooseButton) =>{
         return async dispatch =>{
                 dispatch({
                     type: SET_HEART_AND_CHOOSE,
                     meal_type: meal_type,
+                    meal_score: meal_score,
                     heartIcon: heartIcon,
                     chooseButton: chooseButton
                 });

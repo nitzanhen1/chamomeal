@@ -45,6 +45,7 @@ const initialState = {
     heartIcon: true,
     chooseButton: false,
     meal_type:"",
+    meal_score:0,
 }
 
 function mealReducer(state = initialState, action) {
@@ -85,7 +86,7 @@ function mealReducer(state = initialState, action) {
         case SET_FAVORITE_TO_RECIPES:
             return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
         case SET_HEART_AND_CHOOSE:
-            return { ...state, meal_type:action.meal_type, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
+            return { ...state, meal_type: action.meal_type, meal_score: action.meal_score, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
         default:
             return state;
     }

@@ -34,12 +34,12 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
 
     const handleReplaceBySearch = () => {
-        dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(setHeartAndChoose(meal_type, recipe["score"], false, true));
         navigation.navigate("Search");
     }
 
     const handleReplaceByFavorite = () => {
-        dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(setHeartAndChoose(meal_type, recipe["score"], false, true));
         navigation.navigate('Favorites');
     }
 

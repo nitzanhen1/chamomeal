@@ -33,8 +33,9 @@ router.post("/markAsEaten", async (req, res, next) =>{
 router.post("/replaceRecipeById", async (req, res, next) =>{
     try{
         const user_id = req.user_id;
-        const {recipe_id, date, meal_type} = req.body;
-        const newDailyMenu = await recipe_service.replaceRecipeById(user_id, recipe_id, date, meal_type)
+        const {recipe_id, date, meal_type, replacement_score} = req.body;
+        // replacement score is the diff between old and new recipe
+        const newDailyMenu = await recipe_service.replaceRecipeById(user_id, recipe_id, date, meal_type, replacement_score)
         res.status(202).send(newDailyMenu);
     }catch(error){
         next(error);

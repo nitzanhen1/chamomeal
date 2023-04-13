@@ -12,7 +12,7 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const {date, heartIcon, chooseButton, meal_type} = useSelector(state => state.mealReducer);
+    const {date, heartIcon, chooseButton, meal_type, meal_score} = useSelector(state => state.mealReducer);
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const handleOpenFull = () => {
         setFullVisible(true);
@@ -28,7 +28,7 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
                 handleCloseSustainableModal();
             }
             else{
-                dispatch(setHeartAndChoose("",true, false));
+                dispatch(setHeartAndChoose("",replacementDiff, true, false));
                 navigation.navigate("Meal Planner");
             }
     }
