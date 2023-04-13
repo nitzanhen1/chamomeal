@@ -430,7 +430,7 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
     }
 }
 
-export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calories) =>{
+export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calories, replacement_score) =>{
     try{
         return async dispatch =>{
             const date_str = date.toISOString().substring(0, 10);
