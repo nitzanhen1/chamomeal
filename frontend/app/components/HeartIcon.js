@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
     },
     heartContainer: {
         bottom: 5,
-        // right: 5,
-        left: 60
+        paddingLeft: 150,
     }
 });
 export default HeartIcon;
