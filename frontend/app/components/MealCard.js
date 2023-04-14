@@ -18,11 +18,11 @@ const MealCard = ({recipe, meal_type}) => {
     const handleCloseFull = () => {setFullVisible(false);}
 
     const handleCloseSustainableModal = () => {
-        dispatch(setHeartAndChoose("", true, false));
+        dispatch(setHeartAndChoose("", recipe["score"], true, false));
         setVisibleSustainableModal(false);
     }
     const handleOpenSustainableModal = async () => {
-        dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(setHeartAndChoose(meal_type, recipe["score"], false, true));
         await getMoreSustainableRecipes();
         setVisibleSustainableModal(true);
     }

@@ -131,10 +131,21 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
     }
 }
 
-async function replaceRecipeById(user_id, recipe_id, date, meal_type) {
+async function replaceRecipeById(user_id, recipe_id, date, meal_type, replacement_score) {
     try {
         await DButils.execQuery(`update MealPlanHistory set ${meal_type}='${recipe_id}' where user_id = '${user_id}' and menu_date = '${date}'`);
-        return await getDailyMenu(user_id, date)
+        let updatedValues = {}
+        if (replacement_score >0){
+            await user_service.checkReplaceBadges(user_id, replacement_score).then(async (result) => {
+                if (result[0] == true) {
+                    updatedValues["badges"] = Object.values(result[1]) //badges
+                    updatedValues["earned"] = result[2] //true\false
+                }
+            })
+        }
+        let dailyMenu = await getDailyMenu(user_id, date)
+        updatedValues["dailyMenu"] = dailyMenu
+        return updatedValues
     }
     catch (err){
         throw err;

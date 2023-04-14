@@ -30,16 +30,16 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
 
     const handleReplaceByRandom = () => {
-        dispatch(replaceRecipe("replaceRecipeByRandom", recipe["recipe_id"], date, meal_type, recipe["calories"])).then();
+        dispatch(replaceRecipe("replaceRecipeByRandom", recipe["recipe_id"], date, meal_type, recipe["calories"], recipe["score"])).then();
     }
 
     const handleReplaceBySearch = () => {
-        dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(setHeartAndChoose(meal_type, recipe["score"], false, true));
         navigation.navigate("Search");
     }
 
     const handleReplaceByFavorite = () => {
-        dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(setHeartAndChoose(meal_type, recipe["score"], false, true));
         navigation.navigate('Favorites');
     }
 
