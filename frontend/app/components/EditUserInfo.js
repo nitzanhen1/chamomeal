@@ -1,8 +1,7 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, Alert} from 'react-native'
 import React, {useState} from 'react'
-// import {Input} from "react-native-elements";
 import { Input } from '@rneui/themed';
-import {register, updateUserDetails} from "../redux/actions";
+import { updateUserDetails} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
@@ -64,10 +63,14 @@ const EditUserInfo = ({navigation}) => {
         if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)){
             dispatch(updateUserDetails(firstName,lastName,Email)).then((success)=>{
                 if(success) {
-                    alert('הפרטים עודכנו בהצלחה!');
+                    Alert.alert('הפרטים עודכנו בהצלחה!', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                     navigation.goBack();
                 } else {
-                    alert('עדכון הפרטים נכשל');
+                    Alert.alert('עדכון הפרטים נכשל', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }});
         }
     }

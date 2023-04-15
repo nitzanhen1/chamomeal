@@ -129,7 +129,7 @@ export const logout = () => {
         return async dispatch =>{
             try {
                 const response = await axios.post(`${API_URL}/auth/logout`);
-                if(response.status==200){
+                if(response.status===200){
                     dispatch({
                         type: LOGOUT,
                     });
@@ -247,7 +247,7 @@ export const updatePassword = (old_pass, new_pass) => {
                         old_pass: old_pass,
                         new_pass: new_pass,
                     });
-                if(response.status==202){
+                if(response.status===202){
                     return true;}
             }catch (error){
                 return false;
@@ -431,7 +431,7 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
     }
 }
 
-export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calories, replacement_score) =>{
+export const replaceRecipe = (api_replace, recipe_id, date, meal_type, replacement_score) =>{
     try{
         return async dispatch =>{
             const date_str = date.toISOString().substring(0, 10);
@@ -440,10 +440,9 @@ export const replaceRecipe = (api_replace, recipe_id, date, meal_type, meal_calo
                     recipe_id: recipe_id,
                     date: date_str,
                     meal_type: meal_type,
-                    meal_calories: meal_calories,
                     replacement_score: replacement_score
                 });
-            if(response.status==202) {
+            if(response.status===202) {
                 const data = response.data['dailyMenu'];
                 let mealsData = [
                     {title: 'ארוחת בוקר', mealData:data['breakfast']},
@@ -481,6 +480,75 @@ export const setHeartAndChoose = (meal_type, meal_score, heartIcon, chooseButton
                     chooseButton: chooseButton
                 });
             }
+}
+
+export const resetSearch = () =>{
+        return async dispatch =>{
+            dispatch({
+                type: GET_SEARCH_RESULTS,
+                searchResults: [],
+            });
+            }
+}
+
+export const forgotPassword = (email) =>{
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/forgotPassword`,
+                    {
+                        email: email
+                    });
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+export const verifyResetPasswordCode = (email, code) =>{
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/verifyResetPasswordCode`,
+                    {
+                        email: email,
+                        code: code
+                    });
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
+
+export const resetPassword = (email, newPassword) =>{
+    try{
+        return async dispatch =>{
+            try {
+                const response = await axios.post(`${API_URL}/auth/resetPassword`,
+                    {
+                        email: email,
+                        newPassword: newPassword
+                    });
+                if(response.status===202){
+                    return true;}
+            }catch (error){
+                return false;
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
 }
 
 

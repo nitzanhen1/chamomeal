@@ -51,7 +51,7 @@ async function calculateEER(gender, year_of_birth, height, weight, physical_acti
     } else {
         EER = 662 - (9.53 * age) + PA_level * (15.91 * weight + 539.6 * height_in_m)
     }
-    return EER;
+    return Math.ceil(EER);
 }
 
 async function calculatePALevel(age, gender, physical_activity) {

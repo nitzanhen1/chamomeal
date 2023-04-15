@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, Text, View, SafeAreaView, StatusBar, Image, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, SafeAreaView, StatusBar, TouchableOpacity, Alert} from 'react-native';
 import BottomNavigator from './app/components/BottomNavigator';
 import COLORS from './app/consts/colors';
 import {NavigationContainer, getFocusedRouteNameFromRoute, useNavigation} from '@react-navigation/native';
@@ -18,6 +18,7 @@ import {getGlobalDetails} from "./app/redux/actions";
 import {Ionicons, Feather} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import ChangePassword from "./app/components/ChangePassword";
+import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -143,6 +144,17 @@ export default function App() {
                                           headerTitleAlign: "left",
                                           headerStyle: { backgroundColor : COLORS.white},
                                           headerTintColor: COLORS.grey
+                                      }}/>
+                        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}
+                                      options={{
+                                          headerTitle:'איפוס סיסמה',
+                                          headerShown:true,
+                                          headerRight: () => (returnButton()
+                                          ),
+                                          headerTitleStyle: {
+                                              fontSize: 21,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
                                       }}/>
                         <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen} options={{headerShown:false}}/>
                         <Stack.Screen name="EditUserInfo" component={EditUserInfo}

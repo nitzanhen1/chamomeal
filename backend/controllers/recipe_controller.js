@@ -45,8 +45,8 @@ router.post("/replaceRecipeById", async (req, res, next) =>{
 router.post("/replaceRecipeByRandom", async (req, res, next) =>{
     try{
         const user_id = req.user_id;
-        const {recipe_id, date, meal_type, meal_calories} = req.body;
-        const newDailyMenu = await recipe_service.replaceRecipeByRandom(user_id, recipe_id, date, meal_type, meal_calories);
+        const {recipe_id, date, meal_type} = req.body;
+        const newDailyMenu = await recipe_service.replaceRecipeByRandom(user_id, recipe_id, date, meal_type);
         res.status(202).send(newDailyMenu);
     }catch(error){
         next(error);
