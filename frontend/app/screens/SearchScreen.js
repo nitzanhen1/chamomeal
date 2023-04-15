@@ -94,6 +94,7 @@ export default function SearchScreen() {
                     buttonStyle={styles.filterButton}
                 />
                 <Searchbar
+                    onSubmitEditing={searchRecipes}
                     onChangeText={onChangeSearch}
                     value={searchQuery}
                     style={styles.searchContainer}
