@@ -533,7 +533,6 @@ export const resetPassword = (email, newPassword) =>{
                 if(response.status===202){
                     return true;}
             }catch (error){
-                console.log(error)
                 return false;
             }
         }

@@ -28,7 +28,6 @@ const ForgotEnterEmail = ({navigation}) => {
 
     const handleSubmit = () => {
         if (validateEmail(Email)){
-            navigation.navigate('EnterCode',{email: Email});
             dispatch(forgotPassword(Email)).then((status)=>{
                 if(status===404) {
                     alert('אימייל לא קיים')
