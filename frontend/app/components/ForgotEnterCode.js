@@ -1,4 +1,4 @@
-import {View, StyleSheet } from 'react-native'
+import {View, StyleSheet, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {useDispatch} from "react-redux";
@@ -17,16 +17,22 @@ const ForgotEnterCode = ({navigation, route}) => {
     const handleSubmit = () => {
             dispatch(verifyResetPasswordCode(Email, code)).then((status)=>{
                 if(status===401) {
-                    alert('הקוד אינו תקף יותר');
+                    Alert.alert('הקוד אינו תקף יותר', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
                 }
                 else if(status===408){
-                    alert('הקוד שהוזן אינו נכון')
+                    Alert.alert('הקוד שהוזן אינו נכון', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 else if(status===200){
                     navigation.navigate('EnterNewPassword', {email: Email});
                 }
                 else{
-                    alert('אוי לא משהו קרה! נסה שוב')
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
             });
     };

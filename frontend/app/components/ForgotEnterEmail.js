@@ -1,4 +1,4 @@
-import {View, StyleSheet } from 'react-native'
+import {View, StyleSheet, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {forgotPassword} from "../redux/actions";
@@ -30,16 +30,22 @@ const ForgotEnterEmail = ({navigation}) => {
         if (validateEmail(Email)){
             dispatch(forgotPassword(Email)).then((status)=>{
                 if(status===404) {
-                    alert('אימייל לא קיים')
+                    Alert.alert('אימייל לא קיים', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 else if(status===400){
-                    alert('אימייל לא נשלח');
+                    Alert.alert('אימייל לא נשלח', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 else if(status===200){
                     navigation.navigate('EnterCode',{email: Email});
                 }
                 else{
-                    alert('אוי לא משהו קרה! נסה שוב')
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
             });
         }

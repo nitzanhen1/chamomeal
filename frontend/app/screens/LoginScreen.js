@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native'
 import React, {useState} from 'react'
 import { Input } from 'react-native-elements';
 import {useDispatch} from "react-redux";
@@ -53,7 +53,9 @@ const LoginScreen = ({navigation}) => {
             try{
                 dispatch(login(username,userPassword)).then((status)=>{
                 if(status===404) {
-                    alert('שם משתמש או סיסמה אינם נכונים')
+                    Alert.alert('שם משתמש או סיסמה אינם נכונים', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 else if(status===202){
                     navigation.navigate('QuestionnaireScreen');
@@ -62,7 +64,9 @@ const LoginScreen = ({navigation}) => {
                     navigation.navigate('BottomNavigator');
                 }
                 else{
-                    alert('אוי לא משהו קרה! נסה שוב')
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 });
             }catch (error){

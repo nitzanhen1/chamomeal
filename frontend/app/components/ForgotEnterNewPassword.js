@@ -1,4 +1,4 @@
-import {View, StyleSheet } from 'react-native'
+import {View, StyleSheet, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {useDispatch} from "react-redux";
@@ -46,10 +46,14 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
         if (validateNewPassword(newPassword) && validateConfirmPassword(confirmPassword)){
             dispatch(resetPassword(Email, newPassword)).then((success)=>{
                 if(success) {
-                    alert('סיסמה שונתה בהצלחה!');
+                    Alert.alert('סיסמה שונתה בהצלחה!', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                     navigation.navigate("Login");
                 } else {
-                    alert('משהו השתבש, נסה שוב');
+                    Alert.alert('משהו השתבש, נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }});
         }
     };
