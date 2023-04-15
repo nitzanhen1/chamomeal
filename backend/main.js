@@ -5,6 +5,7 @@ var path = require("path");
 // var logger = require("morgan");
 const session = require("client-sessions");
 const cors = require('cors')
+const logger = require("./logger")
 
 const app = express();
 // app.use(logger("dev")); //logger
