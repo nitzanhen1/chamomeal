@@ -20,6 +20,10 @@ const LoginScreen = ({navigation}) => {
         navigation.navigate('RegisterScreen');
     }
 
+    function navToForgotPassword(){
+        navigation.navigate('ForgotPasswordScreen');
+    }
+
     function validateUsername(username){
         if (!username) {
             setUsernameError('נדרש שם משתמש');
@@ -48,13 +52,13 @@ const LoginScreen = ({navigation}) => {
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
                 dispatch(login(username,userPassword)).then((status)=>{
-                if(status==404) {
+                if(status===404) {
                     alert('שם משתמש או סיסמה אינם נכונים')
                 }
-                else if(status==202){
+                else if(status===202){
                     navigation.navigate('QuestionnaireScreen');
                 }
-                else if(status==200){
+                else if(status===200){
                     navigation.navigate('BottomNavigator');
                 }
                 else{
@@ -128,6 +132,9 @@ const LoginScreen = ({navigation}) => {
                 <TouchableOpacity onPress={navToRegister} style={styles.registerLink}>
                     <Text style={styles.account}>אין לך משתמש? </Text>
                     <Text style={styles.register}>הירשם עכשיו!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={navToForgotPassword} style={styles.registerLink}>
+                    <Text style={styles.account}>שכחתי סיסמה</Text>
                 </TouchableOpacity>
             </View>
         </View>
