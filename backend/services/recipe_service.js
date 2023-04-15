@@ -36,9 +36,9 @@ async function generateDailyMenu(user_id, date) {
         let dinner_recipes_ids = await getRecipesIdsArrayByFilters("dinner", dinner_calories, prefs_query);
         let random_breakfast_id, random_lunch_id, random_dinner_id;
         do {
-            random_breakfast_id = breakfast_recipes_ids[Math.floor(Math.random() * breakfast_recipes_ids.length)];
-            random_lunch_id = lunch_recipes_ids[Math.floor(Math.random() * lunch_recipes_ids.length)];
-            random_dinner_id = dinner_recipes_ids[Math.floor(Math.random() * dinner_recipes_ids.length)];
+            random_breakfast_id = (breakfast_recipes_ids.length>0) ? breakfast_recipes_ids[Math.floor(Math.random() * breakfast_recipes_ids.length)] : 1967;
+            random_lunch_id = (lunch_recipes_ids.length>0) ? lunch_recipes_ids[Math.floor(Math.random() * lunch_recipes_ids.length)] : 991;
+            random_dinner_id = (dinner_recipes_ids.length>0) ? dinner_recipes_ids[Math.floor(Math.random() * dinner_recipes_ids.length)] : 871;
         } while (random_breakfast_id == random_lunch_id || random_breakfast_id == random_dinner_id || random_lunch_id == random_dinner_id);
         let generatedMenu = {
             user_id: user_id,
@@ -144,15 +144,13 @@ async function replaceRecipeById(user_id, recipe_id, date, meal_type) {
 async function replaceRecipeByRandom(user_id, recipe_id, date, meal_type) {
     try {
         const prefs = await user_service.getPreferences(user_id)
-        let prefs_query = `kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
+        let prefs_query = `recipe_id<>${recipe_id} and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
         const EER = prefs['EER']
         let percentage =  (meal_type=='lunch' ? 38 : 28);
         let calories = ((Math.floor(Math.random() * ((percentage+4) - percentage + 1)) + percentage) / 100) * EER;
         let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, calories, prefs_query);
         let random_recipe_id;
-        do {
-            random_recipe_id = recipes_ids[Math.floor(Math.random() * recipes_ids.length)];
-        } while (recipe_id == random_recipe_id);
+        random_recipe_id = (recipes_ids.length>0) ? recipes_ids[Math.floor(Math.random() * recipes_ids.length)] : 991;
         return await replaceRecipeById(user_id, random_recipe_id, date, meal_type);
     }
     catch (err){
@@ -163,21 +161,22 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
     try {
         let gt = ((meal_score==10) ? ">=" : ">")
         const prefs = await user_service.getPreferences(user_id)
-        let prefs_query = `score ${gt} ${meal_score} and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
+        let prefs_query = `recipe_id<>${recipe_id} and score ${gt} ${meal_score} and kosher>=${prefs['kosher']} and vegetarian>=${prefs['vegetarian']} and vegan>=${prefs['vegan']} and gluten_free>=${prefs['gluten_free']} and without_lactose>=${prefs['without_lactose']}`
         let recipes_ids = await getRecipesIdsArrayByFilters(meal_type, meal_calories, prefs_query);
+        if(recipes_ids.length==0){
+            return [];}
         let random_recipe_id, random_index;
         let sustainable_recipes_ids = [];
-        do {
-            random_index = Math.floor(Math.random() * recipes_ids.length);
-            random_recipe_id = recipes_ids[random_index];
-            const elementsBefore = recipes_ids.slice(0, random_index)
-            const elementsAfter = recipes_ids.slice(random_index+1);
-            recipes_ids = elementsBefore.concat(elementsAfter);
-            // recipes_ids = recipes_ids.filter(item => item["recipe_id"] !== random_recipe_id);
-            if (recipe_id != random_recipe_id){
+        for(let i=0 ; i<3 ; i++){
+            if(recipes_ids.length>0) {
+                random_index = Math.floor(Math.random() * recipes_ids.length);
+                random_recipe_id = recipes_ids[random_index];
+                const elementsBefore = recipes_ids.slice(0, random_index)
+                const elementsAfter = recipes_ids.slice(random_index + 1);
+                recipes_ids = elementsBefore.concat(elementsAfter);
                 sustainable_recipes_ids.push(random_recipe_id);
             }
-        } while (sustainable_recipes_ids.length < 3);
+        }
         let sustainable_recipes =  await getRecipesByIdFromDB(sustainable_recipes_ids)
         sustainable_recipes.sort(function (a,b){return b["score"] - a["score"]});
         sustainable_recipes = await addIsFavorite(user_id, sustainable_recipes);
@@ -190,11 +189,14 @@ async function getSustainableRecipes(user_id, recipe_id, meal_type, meal_calorie
 
 async function getRecipesIdsArrayByFilters(meal_type, meal_calories, preferences){
     let threshold = 50;
+    let loop = 0;
     let recipes_ids_dict = [];
     do{
         recipes_ids_dict = await DButils.execQuery(`select recipe_id from Recipes where ${meal_type}=1 and calories between ${meal_calories - threshold} and ${meal_calories} and ${preferences}`);
         threshold+=20;
-    } while(recipes_ids_dict.length<4)
+        loop+=1;
+    } while(recipes_ids_dict.length<4 && loop < 10)
+    if (recipes_ids_dict.length<4 && loop >= 10){return [];}
     return recipes_ids_dict.map(element => element['recipe_id'])
 }
 

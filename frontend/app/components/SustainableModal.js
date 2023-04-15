@@ -28,6 +28,7 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                                 <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal}/>
                             </View>
                         )}
+                        {recipes.length==0 && <Text style={styles.helloText}>אין תוצאות</Text>}
                     </ScrollView>
                 </View>
             </View>
@@ -82,7 +83,20 @@ const styles = StyleSheet.create({
     fontSize: 30,
         position: 'absolute',
         top: 10, left: 10
-    }
+    },
+    helloText: {
+        fontSize: 20,
+        textAlign: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: 30,
+        marginTop: 20,
+        marginBottom: 15,
+        paddingRight: 20,
+        fontFamily: 'Rubik-Bold',
+        letterSpacing: 1,
+        color: COLORS.darkGrey
+    },
 
 });
 

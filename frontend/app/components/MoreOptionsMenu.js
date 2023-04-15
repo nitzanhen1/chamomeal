@@ -2,7 +2,7 @@ import { StyleSheet, Text} from "react-native";
 import React from "react";
 import {Menu, MenuOption, MenuOptions, MenuTrigger} from "react-native-popup-menu";
 import { FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import {addToFavorites, replaceRecipe, setHeartAndChoose} from "../redux/actions";
+import {addToFavorites, replaceRecipe, resetSearch, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 const OptionsMenu = ({recipe, meal_type}) => {
@@ -35,6 +35,7 @@ const OptionsMenu = ({recipe, meal_type}) => {
 
     const handleReplaceBySearch = () => {
         dispatch(setHeartAndChoose(meal_type, false, true));
+        dispatch(resetSearch());
         navigation.navigate("Search");
     }
 
@@ -42,7 +43,6 @@ const OptionsMenu = ({recipe, meal_type}) => {
         dispatch(setHeartAndChoose(meal_type, false, true));
         navigation.navigate('Favorites');
     }
-
 
     return (
             <Menu>

@@ -18,7 +18,7 @@ const COLORS = {
     row: 'rgba(122,204,110,0.54)',
     upgrade: '#2d7a9a',
     upgradeButton: '#4a915e',
-    heart: '#e51616'
+    heart: '#fa5a5a'
   };
   
   export default COLORS;

@@ -54,7 +54,6 @@ const ChangePassword = ({navigation}) => {
     }
 
     function handleSubmitPress(){
-        console.log('hey');
         if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)){
             dispatch(updatePassword(oldPassword,newPassword)).then((success)=>{
                 if(success) {
