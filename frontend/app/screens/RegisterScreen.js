@@ -256,7 +256,8 @@ const styles = StyleSheet.create({
         textDecorationStyle: "solid",
     },
     registerLink: {
-        flexDirection: "row"
+        flexDirection: "row",
+        alignSelf: "center"
     },
     account: {
         fontSize: 16,
