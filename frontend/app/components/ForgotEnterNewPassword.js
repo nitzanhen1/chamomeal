@@ -49,7 +49,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
                     alert('סיסמה שונתה בהצלחה!');
                     navigation.navigate("Login");
                 } else {
-                    alert('סיסמה נוכחית שגויה');
+                    alert('משהו השתבש, נסה שוב');
                 }});
         }
     };
