@@ -58,7 +58,7 @@ const LoginScreen = ({navigation}) => {
                         { cancelable: true });
                 }
                 else if(status===202){
-                    navigation.navigate('QuestionnaireScreen');
+                    navigation.navigate('QuestionnaireScreen', { prevRouteName: 'LoginScreen' });
                 }
                 else if(status===200){
                     navigation.navigate('LoadingScreen');

@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
-import {register} from "../redux/actions";
+import {login, register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
@@ -95,12 +95,28 @@ const RegisterScreen = ({navigation}) => {
             return true
         }
     }
+
     function handleSubmitPress(){
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
         validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
             dispatch(register(username,firstName,lastName,password,email)).then((status)=>{
                 if(status===201) {
-                    navigation.navigate('Login')
+                    try{
+                        dispatch(login(username,password)).then((status)=>{
+                            if(status===202){
+                                navigation.navigate('QuestionnaireScreen', { prevRouteName: 'RegisterScreen' });
+                            }
+                            else if(status===200){
+                                navigation.navigate('LoadingScreen');
+                            }
+                            else{
+                                navigation.navigate('Login');
+
+                            }
+                        });
+                    }catch (error){
+                        console.log(error)
+                    }
                 } else if (status===409) {
                     Alert.alert('שם המשתמש כבר קיים במערכת', null,
                         [{text: 'אוקיי', style: 'cancel'}],

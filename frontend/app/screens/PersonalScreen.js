@@ -28,7 +28,7 @@ export default function PersonalScreen({navigation}) {
 
     async function updateQuestionnaire() {
         await dispatch(getQuestionnaireDetails()).then();
-        navigation.navigate('QuestionnaireScreen');
+        navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
     }
 
     async function updateUserDetails() {
