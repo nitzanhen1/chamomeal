@@ -3,16 +3,15 @@ import React, {useEffect} from 'react'
 import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getGlobalDetails} from "../redux/actions";
+import {getDailyMenu} from "../redux/actions";
 import {MenuProvider} from "react-native-popup-menu";
 
 export default function PlannerScreen() {
-    const { meals, consumed_calories, date, total_calories, EER} = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, date, EER} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getDailyMenu(date)).then();
-        dispatch(getGlobalDetails()).then(); //TODO move to login
     }, []);
 
     let day = date.getDate();

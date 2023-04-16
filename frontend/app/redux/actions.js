@@ -147,21 +147,28 @@ export const logout = () => {
 export const getGlobalDetails = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/user/getGlobalDetails`);
-            const data = response.data;
+            try {
+                const response = await axios.get(`${API_URL}/user/getGlobalDetails`);
+                const data = response.data;
 
-            dispatch({
-                type: GET_GLOBAL_DETAILS,
-                first_name: data['first_name'],
-                score: data['total_score'],
-                badges: data['badges'],
-                EER: data['EER'],
-                kosher: data['kosher'],
-                vegetarian: data['vegetarian'],
-                vegan: data['vegan'],
-                gluten_free: data['gluten_free'],
-                without_lactose: data['without_lactose']
-            });
+                dispatch({
+                    type: GET_GLOBAL_DETAILS,
+                    first_name: data['first_name'],
+                    score: data['total_score'],
+                    badges: data['badges'],
+                    EER: data['EER'],
+                    kosher: data['kosher'],
+                    vegetarian: data['vegetarian'],
+                    vegan: data['vegan'],
+                    gluten_free: data['gluten_free'],
+                    without_lactose: data['without_lactose']
+                });
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
+            }
         }
     }catch (error) {
         console.log(error);
@@ -268,7 +275,7 @@ export const updateUserDetails = (first_name, last_name, email) => {
                         last_name: last_name,
                         email: email,
                     });
-                if(response.status==202){
+                if(response.status===202){
                     return true;}
             }catch (error){
                 return false;
@@ -348,7 +355,7 @@ export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
                     recipe_id : recipe_id,
                     is_favorite: isFavorite
                 });
-            if(response.status==201){
+            if(response.status===201){
                 if(meals){
                     for(let i=0; i<meals.length; i++){
                         if(meals[i]["mealData"]["recipe_id"]==recipe_id){

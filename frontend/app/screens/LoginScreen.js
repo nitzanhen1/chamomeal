@@ -61,7 +61,7 @@ const LoginScreen = ({navigation}) => {
                     navigation.navigate('QuestionnaireScreen');
                 }
                 else if(status===200){
-                    navigation.navigate('BottomNavigator');
+                    navigation.navigate('LoadingScreen');
                 }
                 else{
                     Alert.alert('אוי לא משהו קרה! נסה שוב', null,
@@ -161,17 +161,6 @@ const styles = StyleSheet.create({
     },
     title:{
         bottom: 50
-    },
-    logoChamo: {
-        fontSize: 50,
-        fontWeight: '900',
-        color: COLORS.lightGreen
-    },
-    logoMeal: {
-        fontSize: 50,
-        fontWeight: '900',
-        letterSpacing: 13,
-        color: COLORS.meal
     },
     input:{
         borderBottomColor: COLORS.lightGreen
