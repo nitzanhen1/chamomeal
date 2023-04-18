@@ -13,6 +13,7 @@ import {
     GET_SEARCH_RESULTS,
     SET_FAVORITE_TO_RECIPES,
     SET_HEART_AND_CHOOSE,
+    SET_DATE,
 } from './actions';
 
 const initialState = {
@@ -87,6 +88,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
         case SET_HEART_AND_CHOOSE:
             return { ...state, meal_type: action.meal_type, meal_score: action.meal_score, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
+        case SET_DATE:
+            return { ...state, date: new Date()};
         default:
             return state;
     }

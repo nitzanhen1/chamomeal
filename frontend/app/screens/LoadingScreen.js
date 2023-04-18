@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View, Text, Image, ImageBackground} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getGlobalDetails} from "../redux/actions";
+import {getDailyMenu, getGlobalDetails, SET_DATE} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -27,6 +27,7 @@ export default function LoadingScreen({navigation}) {
     async function handleGetGlobalDetails(){
         dispatch(getGlobalDetails()).then(status => {
             if(status===200){
+                dispatch({type: SET_DATE});
                 dispatch(getDailyMenu(date)).then(() => {
                     navigation.navigate('BottomNavigator');
                 });

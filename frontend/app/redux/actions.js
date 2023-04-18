@@ -17,6 +17,7 @@ export const GET_FAVORITES = 'GET_FAVORITES';
 export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
 export const SET_FAVORITE_TO_RECIPES = 'SET_FAVORITE_TO_RECIPES';
 export const SET_HEART_AND_CHOOSE = 'SET_HEART_AND_CHOOSE';
+export const SET_DATE = 'SET_DATE';
 
 const API_URL = 'http://10.0.2.2:3000'; //localhost
 // const API_URL = 'http://132.73.84.195:443'; //remote backend
