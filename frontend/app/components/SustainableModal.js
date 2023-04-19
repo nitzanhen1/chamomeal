@@ -80,9 +80,10 @@ const styles = StyleSheet.create({
 
     },
     iconMore: {
-    fontSize: 30,
+        fontSize: 30,
         position: 'absolute',
-        top: 10, left: 10
+        top: 6,
+        left: 8
     },
     helloText: {
         fontSize: 20,

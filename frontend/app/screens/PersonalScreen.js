@@ -1,5 +1,14 @@
-import {View, Text, StyleSheet, Alert} from 'react-native'
-import React from 'react'
+import {
+    View,
+    Text,
+    StyleSheet,
+    Alert,
+    Modal,
+    TouchableOpacity,
+    ScrollView,
+    TouchableWithoutFeedback
+} from 'react-native'
+import React, {useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {
     getQuestionnaireDetails,
@@ -12,6 +21,8 @@ import { Button} from '@rneui/themed';
 export default function PersonalScreen({navigation}) {
     const { first_name } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
+    const [modalVisible, setModalVisible] = useState(false);
+
 
     function logoutUser() {
         dispatch(logout()).then((success)=> {
@@ -75,6 +86,45 @@ export default function PersonalScreen({navigation}) {
                 radius={8}
                 buttonStyle={{height: 50}}
             />
+            <Button
+                title="תנאי שימוש"
+                onPress={() => setModalVisible(true)}
+                color = {COLORS.lightGreen}
+                containerStyle={styles.nextButton}
+                titleStyle={styles.nextText}
+                radius={8}
+                buttonStyle={{height: 50}}
+            />
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {setModalVisible(false)}}
+            >
+                <TouchableOpacity
+                    style={styles.container}
+                    activeOpacity={1}
+                    onPressOut={() => {setModalVisible(false)}}
+                >
+                    <ScrollView
+                        directionalLockEnabled={true}
+                        contentContainerStyle={styles.modalBackGround}
+                    >
+                        <TouchableWithoutFeedback>
+                            <View style={styles.modalView}>
+                                <Text style={styles.modalTitle}>תנאי שימוש</Text>
+
+                                <Text style={styles.modalText} >אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, אתה מסכים לשחרר אותנו מכל אחריות הקשורה לשימוש בה.</Text>
+                                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                    <Text style={styles.modalButton}>סגור</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                </TouchableOpacity>
+            </Modal>
+
         </View>
   )
 }
@@ -107,5 +157,43 @@ const styles = StyleSheet.create({
     nextText: {
         fontFamily: 'Rubik-Bold',
         fontSize: 22
+    },
+    modalBackGround: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 30,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalText: {
+        fontFamily: 'Rubik-Regular',
+        marginVertical: 10,
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    modalTitle: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 16,
+        color: COLORS.primary
+
+    },
+    modalButton: {
+        fontFamily: 'Rubik-Bold',
+
+        color: COLORS.primary,
     },
 })
