@@ -18,7 +18,8 @@ const COLORS = {
     row: 'rgba(122,204,110,0.54)',
     upgrade: '#2d7a9a',
     upgradeButton: '#4a915e',
-    heart: '#fa5a5a'
+    heart: '#fa5a5a',
+    subtitles: 'rgba(159,176,159,0.36)',
   };
   
   export default COLORS;
