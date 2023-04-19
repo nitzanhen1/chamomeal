@@ -4,7 +4,6 @@ import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE} from "../redux/actions";
-import {MenuProvider} from "react-native-popup-menu";
 import { useIsFocused } from "@react-navigation/native";
 
 export default function PlannerScreen() {
@@ -34,7 +33,6 @@ export default function PlannerScreen() {
         <View style={styles.container}>
             <Text style={styles.textDate}>{dateToShow}</Text>
             <Text style={styles.textCals}>צרכת {consumed_calories} קלוריות מתוך {EER} הכמות המומלצת</Text>
-            <MenuProvider>
                 <ScrollView style={styles.inputsContainer}>
                     {meals.map(meal => (
                         <View key={meal.title}>
@@ -47,7 +45,6 @@ export default function PlannerScreen() {
                         </View>
                     ))}
                 </ScrollView>
-            </MenuProvider>
         </View>
     )
 }

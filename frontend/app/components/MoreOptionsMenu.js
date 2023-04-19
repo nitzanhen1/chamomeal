@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     menuStyle:{
         optionsContainer: {
             borderRadius: 10,
-            marginTop: -45,
-            marginRight: 30,
+            marginTop: 20,
+            marginRight: 20,
             width:"40%"
         }
     },
