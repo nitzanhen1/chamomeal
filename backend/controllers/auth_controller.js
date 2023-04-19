@@ -49,45 +49,47 @@ router.post("/logout", function (req, res) {
 });
 
 router.post('/forgotPassword', async (req, res, next) => {
-    //TODO log
-    // logger.http({label: 'POST /forgotPassword', message:'request', user_id: 0, controller: 'auth', meta:{email: req.body.email}})
+    logger.http({label: 'POST /forgotPassword', message:'request', user_id: 0, controller: 'auth', meta:{email: req.body.email}})
     try {
         const { email } = req.body;
         let success = await auth_service.forgotPassword(email);
         if(success) {
             res.status(200).send({message: "successfully sent verification code to email", success: true});
-            // logger.http({label: 'POST /forgotPassword', message:'success', user_id: 0, controller: 'auth', meta:{ status: 200, body: 'successful sent verification code to email', email: email }});
+            logger.http({label: 'POST /forgotPassword', message:'success', user_id: 0, controller: 'auth', meta:{ status: 200, body: 'successful sent verification code to email', email: email }});
         }else{
             res.status(400).send({message: "failed to send an email", success: false});
-            //TODO log
+            logger.http({label: 'POST /forgotPassword', message:'success', user_id: 0, controller: 'auth', meta:{ status: 400, body: 'failed to send an email', email: email }});
         }
     }catch (error) {
-        // logger.http({label: 'POST /forgotPassword', message:'error', user_id: 0, controller: 'auth', meta:{ error: error, email: req.body.email }});
+        logger.http({label: 'POST /forgotPassword', message:'error', user_id: 0, controller: 'auth', meta:{ error: error, email: req.body.email }});
         next(error);
     }
 });
 
 router.post('/verifyResetPasswordCode', async (req, res, next) => {
-    //TODO log
+    logger.http({label: 'POST /verifyResetPasswordCode', message:'request', user_id: 0, controller: 'auth', meta:{email: req.body.email}})
     try {
         const { email, code } = req.body;
         let success = await auth_service.verifyResetPasswordCode(email, code);
         if(success) {
             res.status(200).send({message: "verification code is correct", success: true});
+            logger.http({label: 'POST /verifyResetPasswordCode', message:'success', user_id: 0, controller: 'auth', meta:{ status: 200, body: 'verification code is correct', email: email }});
         }
     }catch (error) {
+        logger.http({label: 'POST /verifyResetPasswordCode', message:'error', user_id: 0, controller: 'auth', meta:{ error: error, email: req.body.email }});
         next(error);
     }
 });
 
 router.post('/resetPassword', async (req, res, next) => {
-    //TODO log
+    logger.http({label: 'POST /resetPassword', message:'request', user_id: 0, controller: 'auth', meta:{email: req.body.email}})
     try {
         const { email, newPassword } = req.body;
         await auth_service.resetPassword(email, newPassword);
         res.status(202).send({ message: "password updated successfully", success: true });
+        logger.http({label: 'POST /resetPassword', message:'success', user_id: 0, controller: 'auth', meta:{ status: 202, body: 'password updated successfully', email: email }});
     }catch (error) {
-        // logger.http({label: 'POST /forgotPassword', message:'error', user_id: 0, controller: 'auth', meta:{ error: error, email: req.body.email }});
+        logger.http({label: 'POST /resetPassword', message:'error', user_id: 0, controller: 'auth', meta:{ error: error, email: req.body.email }});
         next(error);
     }
 });

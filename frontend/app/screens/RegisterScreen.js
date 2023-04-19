@@ -106,7 +106,7 @@ const RegisterScreen = ({navigation}) => {
                             { text: 'אישור', onPress: console.log('OK') },
 
                         ],
-                        { cancelable: true });
+                        { cancelable: false });
 
                     try{
                         dispatch(login(username,password)).then((status)=>{

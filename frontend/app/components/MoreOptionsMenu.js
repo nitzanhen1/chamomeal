@@ -30,7 +30,7 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
 
     const handleReplaceByRandom = () => {
-        dispatch(replaceRecipe("replaceRecipeByRandom", recipe["recipe_id"], date, meal_type, recipe["score"])).then();
+        dispatch(replaceRecipe("replaceRecipeByRandom",'random', recipe["recipe_id"], date, meal_type, recipe["score"])).then();
     }
 
     const handleReplaceBySearch = () => {

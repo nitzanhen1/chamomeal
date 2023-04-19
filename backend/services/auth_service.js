@@ -65,7 +65,7 @@ async function generateResetPasswordCode(email) {
 
 async function sendResetPasswordEmail(first_name, email, verificationCode){
     //TODO a fist_name
-    logger.info({label: 'send password', message:`send email to ${email}` , user_id: 0})
+    logger.info({label: 'send password', message:`send email to ${email}` , user_id: 0, meta:{ first_name: first_name}})
     const msg = {
         to: email,
         from: 'chamomeal.office@gmail.com',
@@ -94,10 +94,11 @@ async function sendResetPasswordEmail(first_name, email, verificationCode){
     try {
         let success = await sgMail.send(msg);
         if(success){
-            console.log('Email sent: ' + success);
+            logger.info({label: 'email sent', message:`email sent to ${email}` , user_id: 0, meta:{ first_name: first_name}})
             return true;
         }
     }catch (error) {
+        logger.info({label: 'email error', message:`email not sent to ${email}` , user_id: 0, meta:{ error: error, first_name: first_name}})
         console.log(error);
         return false;
     }
