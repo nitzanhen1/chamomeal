@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 import COLORS from "../consts/colors";
 import {Button} from '@rneui/themed';
+import InfoPopUp from "./InfoPopUp";
 
 
 const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
@@ -43,13 +44,33 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
                 <View style={styles.cardContent}>
                     <View style={styles.cardTextContent}>
                         <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
-                        <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות" + " | " + recipe.GHG_per_unit.toFixed(3) + " GHG"}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
+                            <Text style={styles.cardSubtitle}>·</Text>
+                            {sustainable && <Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                            {(!sustainable) && <InfoPopUp
+                                icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                                explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
+                                right={false}
+                            />}
+                        </View>
                         {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
                     </View>
                     <View style={styles.bottomContainer}>
                         <View style={styles.flowerContainer}>
-                            <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
-                            <Text style={styles.flowerText}>{recipe.score}</Text>
+                            {sustainable &&
+                                <View style={{flexDirection: 'row'}}>
+                                    <Ionicons name="flower-outline" size={22} style={{color:"black"}}/>
+                                    <Text style={styles.flowerText}>{recipe.score}</Text>
+                                </View>}
+                            {(!sustainable) && <InfoPopUp
+                                icon={<View style={{flexDirection: 'row'}}>
+                                    <Ionicons name="flower-outline" size={22} style={{color:"black"}}/>
+                                    <Text style={styles.flowerText}>{recipe.score}</Text>
+                                </View>}
+                                explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
+                                right={true}
+                            />}
                         </View>
                         {heartIcon && <HeartIcon recipe={recipe}/>}
                         <View style={styles.chooseButton}>
@@ -101,10 +122,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '900',
         fontFamily: 'Rubik-Regular',
-        paddingLeft: 7
+        paddingLeft: 7,
+        marginBottom: 5,
     },
     cardSubtitle: {
-        marginTop: 3,
+        marginBottom: 5,
+        marginRight: 7,
         fontSize: 15,
         fontFamily: 'Rubik-Regular',
     },

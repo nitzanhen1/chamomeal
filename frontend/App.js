@@ -20,6 +20,7 @@ import * as SplashScreen from "expo-splash-screen";
 import ChangePassword from "./app/components/ChangePassword";
 import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
 import LoadingScreen from "./app/screens/LoadingScreen";
+import {MenuProvider} from "react-native-popup-menu";
 
 const Stack = createNativeStackNavigator();
 
@@ -110,6 +111,7 @@ export default function App() {
         <Provider store={Store}>
             <NavigationContainer>
                 <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+                    <MenuProvider>
                     <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
                     <Stack.Navigator
                         initialRouteName="LoadingScreen"
@@ -182,6 +184,7 @@ export default function App() {
                                           },
                                       }}/>
                     </Stack.Navigator>
+                    </MenuProvider>
                 </SafeAreaView>
             </NavigationContainer>
         </Provider>

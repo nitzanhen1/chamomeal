@@ -5,6 +5,7 @@ import { Ionicons, AntDesign, SimpleLineIcons} from '@expo/vector-icons';
 import colors from "../consts/colors";
 import React, {useCallback} from "react";
 import HeartIcon from "./HeartIcon";
+import InfoPopUp from "./InfoPopUp";
 
 
 const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
@@ -45,6 +46,11 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                 <Ionicons name="flower-outline" size={25} style={styles.flowersIcon}/>
                                 <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
                             </View>
+                            <Text style={styles.flowerText}>·</Text>
+                            <InfoPopUp
+                                icon={<Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                                explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
+                            />
                             <HeartIcon recipe={recipe}/>
                         </View>
                         <View style={styles.detailsContainer}>
@@ -192,7 +198,6 @@ const styles = StyleSheet.create({
     flowersContainer: {
         flexDirection: 'row',
         marginTop: 6,
-        justifyContent: "space-between",
     },
     flowersIcon: {
         color: COLORS.dark
