@@ -18,6 +18,7 @@ const PersonalDetails = ({navigation}) => {
     const [newWeight, setWeight] = useState(weight);
     const [newGender, setGender] = useState(gender);
     const [newBirthYear, setBirthYear] = useState(year_of_birth);
+    const [showBDayError, setShowBDayError] = useState(false);
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -76,18 +77,22 @@ const PersonalDetails = ({navigation}) => {
     }
 
     function validateBirthday(){
-        if (!newBirthYear) {
+        if (newBirthYear == "") {
             setBirthYearError('אנא הכנס שנת לידה');
+            setShowBDayError(true);
             return false
-        }else if (newBirthYear > (new Date(new Date().setFullYear(new Date().getFullYear() + -16)))){
+        }else if (newBirthYear > (new Date().getFullYear() + -16)){
             setBirthYearError('עליך להיות מעל גיל 16 על מנת להשתמש באפליקציה');
+            setShowBDayError(true);
             return false
-        }else if (newBirthYear < (new Date(new Date().setFullYear(new Date().getFullYear() + -120)))){
+        }else if (newBirthYear < (new Date().getFullYear() + -120)){
             setBirthYearError('אנא ודא שגילך קטן מ-120');
+            setShowBDayError(true);
             return false
         }
         else {
             setBirthYearError('')
+            setShowBDayError(false);
             return true
         }
         // if (!dateChanged) {
@@ -199,7 +204,7 @@ const PersonalDetails = ({navigation}) => {
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
             />
-            <HelperText type="error" visible={!newBirthYear}>
+            <HelperText type="error" visible={showBDayError}>
                 {newBirthYearError}
             </HelperText>
 
