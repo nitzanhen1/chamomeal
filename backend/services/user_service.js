@@ -1,6 +1,7 @@
 const DButils = require("../data/db_utils");
 const moment = require('moment');
 const bcrypt = require("bcryptjs");
+const logger = require("../logger")
 
 
 async function userMiddleware(req, res, next) {
@@ -12,7 +13,8 @@ async function userMiddleware(req, res, next) {
             }
         }).catch(err => next(err));
     } else {
-         res.status(419).send({message: "Session expired, please login again", success: false});
+        res.status(419).send({message: "Session expired, please login again", success: false});
+        logger.http({label: 'session expired', message:'session expired', user_id: 0, controller: 'user', meta:{path: req.path}})
     }
 }
 
@@ -96,28 +98,26 @@ async function getGlobalDetails(user_id) {
 }
 
 async function checkBadges(user_id, new_score, score_key, char_type) {
-    console.log(new_score)
     let badges = await getBadgesFromDB(user_id)
     for (let i = 0; i < score_key.length - 1; i++) {
         let col = score_key[i] + char_type
         console.log(col)
         if (new_score >= score_key[i]) {
             if (badges[col] == false) { //earned new badge
-                console.log('earned')
+                logger.info({label: 'badge', message:'earned', user_id: user_id, meta:{badge: col, new_score: new_score}})
                 await DButils.execQuery(`update badges set ${col}= 1 where user_id='${user_id}'`);
                 badges[col] = 1
                 let earned = true //notify frontend to alert user
                 return [true, badges, earned];
             }
         } else {
-            if (badges[col] == true) { //TODO test if other badges type enter this condition
-                console.log('lost', char_type) //should be always 'p'
+            if (badges[col] == true) {// lost badge
+                logger.info({label: 'badge', message:'lost', user_id: user_id, meta:{badge: col, new_score: new_score}})
                 await DButils.execQuery(`update badges set ${col}= 0 where user_id='${user_id}'`);
                 badges[col] = 0
                 let earned = false //badge lost no need to notify user
                 return [true, badges, earned];
             } else { // no change needed
-                console.log('no change')
                 return false;
             }
         }

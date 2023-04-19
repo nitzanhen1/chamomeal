@@ -17,7 +17,7 @@ export default function FavoriteScreen() {
         <ScrollView style={styles.inputsContainer}>
             {favorites.map(meal=>
                 <View key={meal.recipe_id}>
-                    <PreviewCard recipe={meal} sustainable={false} />
+                    <PreviewCard recipe={meal} sustainable={false} from={'favorites'}/>
                 </View>
             )}
         </ScrollView>
