@@ -1,6 +1,7 @@
 const DButils = require("../data/db_utils");
 const bcrypt = require("bcryptjs");
 const nodemailer = require('nodemailer');
+const logger = require("../logger")
 
 async function register(user_details) {
     let users = await DButils.execQuery(`SELECT username, email FROM Users WHERE (username = '${user_details.username}' or email='${user_details.email}')`);
@@ -54,6 +55,7 @@ async function generateResetPasswordCode(email) {
     const expiryTime = currentTime + 600;
     try {
         await DButils.execQuery(`update Users set verificationCode='${verificationCode}', expiryTime ='${expiryTime}' where email='${email}'`);
+        logger.debug({label:'resetPassword', message:`token generated for user ${email}`})
     }catch (error){
         throw error;
     }
@@ -80,6 +82,7 @@ const transporter = nodemailer.createTransport({
 // });
 
 async function sendResetPasswordEmail(first_name, email, verificationCode){
+    logger.info({label: 'send password', message:`send email to ${email}` , user_id: 0})
     const mailOptions = {
         from: 'chamomeal.office@gmail.com', //chamomeal.office@gmail.com
         to: email,

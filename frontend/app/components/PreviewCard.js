@@ -10,7 +10,7 @@ import COLORS from "../consts/colors";
 import {Button} from '@rneui/themed';
 
 
-const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
+const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -26,7 +26,7 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
 
     const handleChooseButton = () => {
         let replacementDiff = recipe["score"] - meal_score
-        dispatch(replaceRecipe("replaceRecipeById", recipe["recipe_id"], date, meal_type, replacementDiff)).then()
+        dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff)).then()
             if(sustainable) {
                 handleCloseSustainableModal();
             }

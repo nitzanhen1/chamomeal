@@ -25,7 +25,7 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                     <ScrollView style={styles.information}>
                         {recipes.map(recipe=>
                             <View key={recipe.recipe_id}>
-                                <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal}/>
+                                <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal} from={'sustainability'}/>
                             </View>
                         )}
                         {recipes.length==0 && <Text style={styles.helloText}>אין תוצאות</Text>}
