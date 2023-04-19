@@ -7,7 +7,7 @@ import {getDailyMenu, getGlobalDetails} from "../redux/actions";
 import {MenuProvider} from "react-native-popup-menu";
 
 export default function PlannerScreen() {
-    const { meals, consumed_calories, date, total_calories} = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, date, total_calories, EER} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function PlannerScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.textDate}>{dateToShow}</Text>
-            <Text style={styles.textCals}>{consumed_calories}/{total_calories} קלוריות</Text>
+            <Text style={styles.textCals}>צרכת {consumed_calories} קלוריות מתוך {EER} הכמות המומלצת</Text>
             <MenuProvider>
                 <ScrollView style={styles.inputsContainer}>
                     {meals.map(meal => (
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     textCals: {
-        fontSize: 20,
+        fontSize: 18,
         alignSelf: 'center',
         fontFamily: 'Rubik-Regular',
         marginTop: 10,

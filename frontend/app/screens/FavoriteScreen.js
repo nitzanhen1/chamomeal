@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
-import {getFavorites} from "../redux/actions";
+import {getFavorites, setHeartAndChoose} from "../redux/actions";
 import PreviewCard from "../components/PreviewCard";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function FavoriteScreen() {
 
@@ -12,6 +13,15 @@ export default function FavoriteScreen() {
     useEffect(() =>{
         dispatch(getFavorites()).then();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                dispatch(setHeartAndChoose('', true, false));
+
+            };
+        }, [])
+    );
 
     return (
         <ScrollView style={styles.inputsContainer}>

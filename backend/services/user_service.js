@@ -51,7 +51,7 @@ async function calculateEER(gender, year_of_birth, height, weight, physical_acti
     } else {
         EER = 662 - (9.53 * age) + PA_level * (15.91 * weight + 539.6 * height_in_m)
     }
-    return EER;
+    return Math.ceil(EER);
 }
 
 async function calculatePALevel(age, gender, physical_activity) {
@@ -138,11 +138,12 @@ async function checkLoginBadges(user_id, login_score) {
 }
 
 async function checkReplaceBadges(user_id, replace_score) {
-    // TODO think how to get the replace score?
-    await DButils.execQuery(`update Users set replace_score =${replace_score} where user_id = ${user_id}`);
+    let updated_score = await DButils.execQuery(`select replace_score from Users where user_id = ${user_id}`);
+    updated_score = updated_score[0]['replace_score'] + replace_score
+    await DButils.execQuery(`update Users set replace_score =${updated_score} where user_id = ${user_id}`);
     let score_key = [5, 15, 30, 50, 80, 120]
     let char_type = 'c'
-    return checkBadges(user_id, replace_score, score_key, char_type)
+    return checkBadges(user_id, updated_score, score_key, char_type)
 }
 
 async function getBadgesFromDB(user_id, cols = "*") {

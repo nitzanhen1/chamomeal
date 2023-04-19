@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {register} from "../redux/actions";
@@ -99,18 +99,23 @@ const RegisterScreen = ({navigation}) => {
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
         validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
             dispatch(register(username,firstName,lastName,password,email)).then((status)=>{
-                if(status==201) {
+                if(status===201) {
                     navigation.navigate('Login')
-                } else if (status==409) {
-                    alert('שם המשתמש כבר קיים במערכת')
+                } else if (status===409) {
+                    Alert.alert('שם המשתמש כבר קיים במערכת', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
-                else if(status==412){
-                    alert('האימייל כבר קיים במערכת')
+                else if(status===412){
+                    Alert.alert('האימייל כבר קיים במערכת', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 else {
-                    alert('אוי לא משהו קרה! נסה שוב')
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
-
             });
         }
     }

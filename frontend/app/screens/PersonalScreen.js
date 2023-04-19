@@ -1,12 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, {useEffect} from 'react'
+import {View, Text, StyleSheet, Alert} from 'react-native'
+import React from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getDailyMenu,
     getQuestionnaireDetails,
-    getGlobalDetails,
     logout,
-    register,
     getUserDetails
 } from "../redux/actions";
 import COLORS from "../consts/colors";
@@ -21,7 +18,9 @@ export default function PersonalScreen({navigation}) {
             if(success) {
                 navigation.navigate('Login')
             } else {
-                alert('something went wrong')
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
                 navigation.navigate('Login')
             }
         });

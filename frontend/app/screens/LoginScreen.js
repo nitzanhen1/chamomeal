@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native'
 import React, {useState} from 'react'
 import { Input } from 'react-native-elements';
 import {useDispatch} from "react-redux";
@@ -18,6 +18,10 @@ const LoginScreen = ({navigation}) => {
 
     function navToRegister(){
         navigation.navigate('RegisterScreen');
+    }
+
+    function navToForgotPassword(){
+        navigation.navigate('ForgotPasswordScreen');
     }
 
     function validateUsername(username){
@@ -48,17 +52,21 @@ const LoginScreen = ({navigation}) => {
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
                 dispatch(login(username,userPassword)).then((status)=>{
-                if(status==404) {
-                    alert('שם משתמש או סיסמה אינם נכונים')
+                if(status===404) {
+                    Alert.alert('שם משתמש או סיסמה אינם נכונים', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
-                else if(status==202){
+                else if(status===202){
                     navigation.navigate('QuestionnaireScreen');
                 }
-                else if(status==200){
+                else if(status===200){
                     navigation.navigate('BottomNavigator');
                 }
                 else{
-                    alert('אוי לא משהו קרה! נסה שוב')
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }
                 });
             }catch (error){
@@ -128,6 +136,9 @@ const LoginScreen = ({navigation}) => {
                 <TouchableOpacity onPress={navToRegister} style={styles.registerLink}>
                     <Text style={styles.account}>אין לך משתמש? </Text>
                     <Text style={styles.register}>הירשם עכשיו!</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={navToForgotPassword} style={styles.registerLink}>
+                    <Text style={styles.account}>שכחתי סיסמה</Text>
                 </TouchableOpacity>
             </View>
         </View>

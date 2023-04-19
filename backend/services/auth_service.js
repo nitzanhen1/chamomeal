@@ -40,18 +40,18 @@ async function login(username, password){
 }
 
 async function forgotPassword(email){
-    let user_email = await DButils.execQuery(`SELECT email FROM Users WHERE email = '${email}'`);
+    let user_email = await DButils.execQuery(`SELECT first_name, email FROM Users WHERE email = '${email}'`);
     if(user_email.length==0){
         throw {status: 404, message: "email doesn't exists"};
     }
     const verificationCode = await generateResetPasswordCode(user_email[0].email)
-    await sendResetPasswordEmail(email, verificationCode);
-
+    let success =  await sendResetPasswordEmail(user_email[0].first_name, user_email[0].email, verificationCode);
+    return success;
 }
 async function generateResetPasswordCode(email) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
     const currentTime = Math.floor(Date.now() / 1000);
-    const expiryTime = currentTime + 3600;
+    const expiryTime = currentTime + 600;
     try {
         await DButils.execQuery(`update Users set verificationCode='${verificationCode}', expiryTime ='${expiryTime}' where email='${email}'`);
     }catch (error){
@@ -61,45 +61,89 @@ async function generateResetPasswordCode(email) {
 }
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    service: 'gmail',
+    host: "smtp.mailtrap.io",
+    port:2525,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
+        user: "246f8e7f495bcb",
+        pass: "354d4de9ed29f6",
     }
 });
+// const transporter = nodemailer.createTransport({
+//     host: "smtp.gmail.com",
+//     port: 587,
+//     secure: false,
+//     requireTLS: true,
+//     auth: {
+//         user: "chamomeal.office@gmail.com",
+//         pass: "ChamomealOffice2023",
+//     }
+// });
 
-const sendResetPasswordEmail = async (email, verificationCode) => {
+async function sendResetPasswordEmail(first_name, email, verificationCode){
     const mailOptions = {
         from: 'chamomeal.office@gmail.com', //chamomeal.office@gmail.com
         to: email,
-        subject: 'Chamomeal - Reset Your Password',
-        text: "hello"
-    //     html: `
-    //   <p>Your code is: ${verificationCode}</p>
-    // `,
-    };
-    await transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-};
+        subject: 'איפוס סיסמה באפליקציית Chamomeal',
+        // text: "hello"
 
-// async function verifyResetPasswordToken(token) {
-//     const storedExpiryTime = getExpiryTimeForVerificationCode(verificationCode);
-//
-//     if (Math.floor(Date.now() / 1000) > storedExpiryTime) {
-//         // The code has expired, prompt the user to request a new code
-//     } else {
-//         // The code is still valid, allow the user to reset their password
-//     }
-// };
+        html: `
+            <html dir="rtl">
+                <head>
+                    <meta charset="utf-8">
+                    <title>Password Reset</title>
+                </head>
+                <body>
+                    <div style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #f5f5f5; padding: 20px;">
+                    <div style="background-color: #ffffff; padding: 20px;">
+                        <h1>איפוס סיסמה</h1>
+                        <p>שלום ${first_name},</p>
+                        <p>קיבלנו את בקשתך לאיפוס הסיסמה.</p>
+                        <p>להמשך התהליך יש להכניס באפליקציה את הקוד הבא:</p>
+                        <h2 style="margin-top: 40px;">${verificationCode}</script></h2>
+                        <p>תודה,<br>אפליקציית chamomeal</p>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        `,
+    };
+    try {
+        let success = await transporter.sendMail(mailOptions);
+        if(success){
+            console.log('Email sent: ' + success.response);
+            return true;
+        }
+    }catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+async function verifyResetPasswordCode(email, code) {
+    let user_email = await DButils.execQuery(`select expiryTime from Users where email='${email}' and verificationCode='${code}'`);
+    if(user_email.length>0) {
+        await DButils.execQuery(`update Users set verificationCode=null, expiryTime=null where email='${email}'`);
+        if (Math.floor(Date.now() / 1000) > user_email[0]['expiryTime']) {
+            throw {status: 401, message: "verification code expired"};
+        } else {
+            return true;
+        }
+    }
+    else{
+        throw {status: 408, message: "verification code is incorrect"};
+    }
+}
+async function resetPassword(email, newPassword) {
+    try {
+        let hash_password = bcrypt.hashSync(newPassword, parseInt(process.env.bcrypt_saltRounds));
+        await DButils.execQuery(`UPDATE Users SET password = '${hash_password}' WHERE email = '${email}'`);
+    }catch (error){
+        throw error;
+    }
+}
 
 exports.register = register
 exports.login = login;
 exports.forgotPassword = forgotPassword;
+exports.verifyResetPasswordCode = verifyResetPasswordCode;
+exports.resetPassword = resetPassword;
