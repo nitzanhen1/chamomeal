@@ -19,12 +19,12 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     function validateNewPassword(newPassword){
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+        let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(newPassword)) {
             setNewPasswordError('')
             return true
         } else {
-            setNewPasswordError("8-16 תווים - אותיות גדולות וקטנות, מספרים, ותו מיוחד")
+            setNewPasswordError("6-16 תווים - אותיות גדולות וקטנות")
             return false
         }
     }

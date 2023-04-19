@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
-import {register} from "../redux/actions";
+import {login, register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
@@ -74,12 +74,12 @@ const RegisterScreen = ({navigation}) => {
         }
     }
     function validatePassword(password){
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+        let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(password)) {
             setPasswordError('')
             return true
         } else {
-            setPasswordError("8-16 תווים - אותיות גדולות וקטנות, מספרים, ותו מיוחד")
+            setPasswordError("6-16 תווים - אותיות גדולות וקטנות")
             return false
         }
     }
@@ -95,6 +95,7 @@ const RegisterScreen = ({navigation}) => {
             return true
         }
     }
+
     function handleSubmitPress(){
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
         validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
@@ -102,11 +103,27 @@ const RegisterScreen = ({navigation}) => {
                 if(status===201) {
                     Alert.alert('תנאי שימוש', 'אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, אתה מסכים לשחרר אותנו מכל אחריות הקשורה לשימוש בה.',
                         [
-                            { text: 'אישור', onPress: () => navigation.navigate('Login') },
+                            { text: 'אישור', onPress: console.log('OK') },
 
                         ],
                         { cancelable: true });
 
+                    try{
+                        dispatch(login(username,password)).then((status)=>{
+                            if(status===202){
+                                navigation.navigate('QuestionnaireScreen', { prevRouteName: 'RegisterScreen' });
+                            }
+                            else if(status===200){
+                                navigation.navigate('LoadingScreen');
+                            }
+                            else{
+                                navigation.navigate('Login');
+
+                            }
+                        });
+                    }catch (error){
+                        console.log(error)
+                    }
                 } else if (status===409) {
                     Alert.alert('שם המשתמש כבר קיים במערכת', null,
                         [{text: 'אוקיי', style: 'cancel'}],

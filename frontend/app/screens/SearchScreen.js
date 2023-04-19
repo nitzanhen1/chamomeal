@@ -5,8 +5,9 @@ import PreviewCard from "../components/PreviewCard";
 import {Searchbar} from 'react-native-paper';
 import {Button, CheckBox, Divider} from '@rneui/themed';
 import COLORS from "../consts/colors";
-import {search, setHeartAndChoose} from "../redux/actions";
+import {resetSearch, search, setHeartAndChoose} from "../redux/actions";
 import {useFocusEffect} from "@react-navigation/native";
+
 
 export default function SearchScreen() {
 
@@ -35,6 +36,21 @@ export default function SearchScreen() {
     const [dinnerCheck, setDinnerCheck] = React.useState(true);
 
     const onChangeSearch = query => setSearchQuery(query);
+
+    function resetSearchScreen(){
+        dispatch(resetSearch());
+        setLactoseCheck(without_lactose);
+        setGlutenCheck(gluten_free);
+        setVeganCheck(vegan);
+        setVegetarianCheck(vegetarian);
+        setKosherCheck(kosher);
+        setSearchQuery('');
+        setExpanded(false);
+        setIngredientsCheck(false);
+        setBreakfastCheck(true);
+        setLunchCheck(true);
+        setDinnerCheck(true);
+    }
 
     useEffect(() => {
         setLactoseCheck(without_lactose);
@@ -75,6 +91,7 @@ export default function SearchScreen() {
         React.useCallback(() => {
             return () => {
                 dispatch(setHeartAndChoose('', true, false));
+                resetSearchScreen();
 
             };
         }, [])

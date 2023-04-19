@@ -1,6 +1,7 @@
 const DButils = require("../data/db_utils");
 const bcrypt = require("bcryptjs");
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const logger = require("../logger")
 
 async function register(user_details) {
@@ -62,35 +63,15 @@ async function generateResetPasswordCode(email) {
     return verificationCode;
 }
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port:2525,
-    auth: {
-        user: "246f8e7f495bcb",
-        pass: "354d4de9ed29f6",
-    }
-});
-// const transporter = nodemailer.createTransport({
-//     host: "smtp.gmail.com",
-//     port: 587,
-//     secure: false,
-//     requireTLS: true,
-//     auth: {
-//         user: "chamomeal.office@gmail.com",
-//         pass: "ChamomealOffice2023",
-//     }
-// });
-
 async function sendResetPasswordEmail(first_name, email, verificationCode){
+    //TODO a fist_name
     logger.info({label: 'send password', message:`send email to ${email}` , user_id: 0})
-    const mailOptions = {
-        from: 'chamomeal.office@gmail.com', //chamomeal.office@gmail.com
+    const msg = {
         to: email,
+        from: 'chamomeal.office@gmail.com',
         subject: 'איפוס סיסמה באפליקציית Chamomeal',
-        // text: "hello"
-
         html: `
-            <html dir="rtl">
+            <html lang="he" dir="rtl">
                 <head>
                     <meta charset="utf-8">
                     <title>Password Reset</title>
@@ -111,9 +92,9 @@ async function sendResetPasswordEmail(first_name, email, verificationCode){
         `,
     };
     try {
-        let success = await transporter.sendMail(mailOptions);
+        let success = await sgMail.send(msg);
         if(success){
-            console.log('Email sent: ' + success.response);
+            console.log('Email sent: ' + success);
             return true;
         }
     }catch (error) {
