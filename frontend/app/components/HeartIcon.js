@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity} from 'react-native'
-import React from 'react';
+import React, {useEffect} from 'react';
 import {addToFavorites} from "../redux/actions";
 import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
 import {useDispatch, useSelector} from "react-redux";
@@ -22,6 +22,11 @@ const HeartIcon = ({recipe}) => {
                 changeFav();
             }
         });}
+
+    useEffect(() => {
+        setFavorite(recipe.isFavorite ? 'heart' : 'heart-outline')
+    }, [recipe.isFavorite
+    ]);
 
 
     return (

@@ -1,5 +1,5 @@
 import { StyleSheet, Text} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import {Menu, MenuOption, MenuOptions, MenuTrigger} from "react-native-popup-menu";
 import { FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import {addToFavorites, replaceRecipe, setHeartAndChoose} from "../redux/actions";
@@ -42,6 +42,12 @@ const OptionsMenu = ({recipe, meal_type}) => {
         dispatch(setHeartAndChoose(meal_type, false, true));
         navigation.navigate('Favorites');
     }
+
+    useEffect(() => {
+        setFavIcon(recipe.isFavorite ?  'heart-off-outline' : 'cards-heart-outline')
+        setFavText(recipe.isFavorite ? 'לא אהבתי' : 'אהבתי')
+    }, [recipe.isFavorite
+    ]);
 
 
     return (

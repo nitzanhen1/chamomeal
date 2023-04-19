@@ -31,7 +31,7 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/logout", function (req, res) {
     if (!req.session || !req.session.user_id){
-        throw { status: 412, message: "no user is logged in" };
+        throw { status: 419, message: "no user is logged in" };
     }
     req.session.reset();
     res.status(200).send({ message: "successful logout", success: true});
