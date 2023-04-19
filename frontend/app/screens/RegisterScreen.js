@@ -244,8 +244,6 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        // alignItems: 'center',
-        // justifyContent: 'center',
         backgroundColor: COLORS.white,
         paddingTop: 30,
 
@@ -268,11 +266,14 @@ const styles = StyleSheet.create({
     },
     register: {
         fontSize: 16,
+        color: COLORS.lightGreen,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
+        textDecorationColor: COLORS.darkGreen,
     },
     registerLink: {
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: 'center'
     },
     account: {
         fontSize: 16,

@@ -154,42 +154,12 @@ const PersonalDetails = ({navigation}) => {
                 {newWeightError}
             </HelperText>
 
-            {/*<TextInput*/}
-            {/*    mode="flat"*/}
-            {/*    label="תאריך לידה"*/}
-            {/*    value={!dateChanged ? '':newBirthYear.toISOString().substring(0, 10)}*/}
-            {/*    onChangeText={(newBirthYear) => {*/}
-            {/*        setBirthYear(newBirthYear.toISOString().substring(0, 10));*/}
-            {/*        setDateChanged(true);*/}
-            {/*    }}*/}
-            {/*    selectionColor={COLORS.primary}*/}
-            {/*    activeUnderlineColor={COLORS.primary}*/}
-            {/*    underlineColor={COLORS.darkGrey}*/}
-            {/*    style={styles.inputText}*/}
-            {/*    underlineStyle={styles.inputContainer}*/}
-            {/*    right={<TextInput.Icon icon="calendar" onPress={showDatepicker}/>}*/}
-            {/*    editable={false}*/}
-            {/*/>*/}
-            {/*<HelperText type="error" visible={!dateChanged}>*/}
-            {/*    {newBirthYearError}*/}
-            {/*</HelperText>*/}
-
-            {/*{show && (*/}
-            {/*    <DateTimePicker*/}
-            {/*        testID="dateTimePicker"*/}
-            {/*        value={newBirthYear}*/}
-            {/*        mode={mode}*/}
-            {/*        is24Hour={true}*/}
-            {/*        onChange={onChange}*/}
-            {/*        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + -16))}*/}
-            {/*    />*/}
-            {/*)}*/}
-
             <TextInput
                 mode="flat"
                 label="שנת לידה"
                 value={newBirthYear}
                 placeholder='yyyy'
+                keyboardType='numeric'
                 onChangeText={(newBirthYear) => {
                     setBirthYear(newBirthYear);
                     validateBirthday(newBirthYear)}}
