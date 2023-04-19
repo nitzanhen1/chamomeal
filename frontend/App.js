@@ -212,23 +212,24 @@ const styles = StyleSheet.create({
         height: 40,
     },
     flowerContainer: {
-        paddingRight: 6,
+        marginRight:-10,
         paddingTop: 6,
         alignSelf: "flex-start",
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: 40,
+        width: 65,
+        justifyContent: 'flex-end',
     },
     flowerIcon: {
-    color:"white"
-},
-flowerText: {
-    paddingHorizontal: 3,
+        color:"white"
+    },
+    flowerText: {
+        paddingHorizontal: 3,
         fontFamily: 'Rubik-Regular',
         fontSize: 18,
         color:"white",
         paddingTop: 3,
         marginRight:4,
-},
+    },
 });

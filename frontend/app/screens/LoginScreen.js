@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 170,
         backgroundColor: COLORS.white,
 
     },
@@ -197,7 +197,8 @@ const styles = StyleSheet.create({
         textDecorationColor: COLORS.darkGreen,
     },
     registerLink: {
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: 'center'
     },
     account: {
         fontSize: 16,

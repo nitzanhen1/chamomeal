@@ -36,7 +36,7 @@ async function updatePreferences(user_id, preferences) {
         without_lactose
     } = preferences;
     const EER = await calculateEER(gender, year_of_birth, height, weight, physical_activity)
-    await DButils.execQuery(`update Users set gender='${Number(gender)}', year_of_birth='${year_of_birth}', height='${height}', weight='${weight}',
+    await DButils.execQuery(`update Users set gender='${Number(gender)}', year_of_birth='${Number(year_of_birth)}', height='${height}', weight='${weight}',
                  physical_activity='${physical_activity}', kosher='${Number(kosher)}', vegetarian='${Number(vegetarian)}', vegan='${Number(vegan)}',
                  gluten_free='${Number(gluten_free)}', without_lactose='${Number(without_lactose)}', EER='${EER}' where user_id='${user_id}'`);
 }

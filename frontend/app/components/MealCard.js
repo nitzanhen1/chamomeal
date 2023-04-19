@@ -133,10 +133,12 @@ const styles = StyleSheet.create({
     },
     upgrade:{
         flexDirection: 'row',
+        paddingLeft: 100,
     },
     upgradeDisable:{
         flexDirection: 'row',
-        opacity: 0.2
+        opacity: 0.2,
+        paddingLeft: 100,
     },
     upgradeText: {
         color: COLORS.upgrade,
@@ -145,6 +147,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Bold',
         marginLeft: 5,
         textDecorationLine: "underline",
+        width: 45
     },
 });
 

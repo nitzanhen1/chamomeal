@@ -46,12 +46,12 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal}) => {
                         <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות" + " | " + recipe.GHG_per_unit.toFixed(3) + " GHG"}</Text>
                         {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
                     </View>
-                    <View style={{flexDirection:'row', justifyContent: "space-between"}}>
+                    <View style={styles.bottomContainer}>
                         <View style={styles.flowerContainer}>
                             <Ionicons name="flower-outline" size={22} style={styles.flowerIcon}/>
                             <Text style={styles.flowerText}>{recipe.score}</Text>
                         </View>
-                        {heartIcon && <HeartIcon style={styles.heart} recipe={recipe}/>}
+                        {heartIcon && <HeartIcon recipe={recipe}/>}
                         <View style={styles.chooseButton}>
                             {chooseButton &&
                                 <Button
@@ -138,13 +138,7 @@ const styles = StyleSheet.create({
         marginRight:10,
         bottom:7,
     },
-    heart:{
-        // alignSelf: "flex-end",
-        // flex:1,
-
-    },
     button:{
-        // flex: 1,
         borderRadius: 5,
         height: 32,
         marginLeft: 5,
@@ -157,6 +151,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingHorizontal: 4,
 
+    },
+    bottomContainer: {
+        flexDirection:'row',
+        justifyContent: "space-between",
     }
 });
 
