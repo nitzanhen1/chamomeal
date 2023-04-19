@@ -19,6 +19,7 @@ import {Ionicons, Feather} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import ChangePassword from "./app/components/ChangePassword";
 import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
+import LoadingScreen from "./app/screens/LoadingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -111,7 +112,7 @@ export default function App() {
                 <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
                     <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
                     <Stack.Navigator
-                        initialRouteName="Login"
+                        initialRouteName="LoadingScreen"
                         screenOptions={{
                             headerBackVisible: false ,
                             headerTitleAlign: 'center',
@@ -125,6 +126,7 @@ export default function App() {
                                 fontFamily: 'Rubik-Regular',
                             },
                         }}>
+                        <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{headerShown:false}}/>
                         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
                         <Stack.Screen name="BottomNavigator" component={BottomNavigator}
                                       options={({ route }) => ({
