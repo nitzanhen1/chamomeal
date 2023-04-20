@@ -1,6 +1,6 @@
 require("dotenv").config();
 const MySql = require("./mysql");
-const logger = require("./logger")
+const logger = require("../logger")
 
 exports.execQuery = async function (query) {
     let returnValue = []
