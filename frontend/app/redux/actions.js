@@ -53,28 +53,40 @@ export const getDailyMenu = (date) => {
 export const markAsEaten = (meal_type, eaten, meal_calories, meal_score, date) => {
     try {
         return async dispatch => {
-            const date_today = date.toISOString().substring(0, 10);
-            const response = await axios.post(`${API_URL}/recipes/markAsEaten`,
-                {
-                    date: date_today,
-                    meal_type: meal_type,
-                    eaten: eaten,
-                    meal_calories: meal_calories,
-                    meal_score: meal_score,
-                }
-            );
-            const data = response.data;
-            dispatch({
-                type: MARK_AS_EATEN,
-                consumed_calories: data['new_consumed_calories'],
-                score: data['new_score'],
-            });
-            if (data['badges'] != null) {
+            try{
+                const date_today = date.toISOString().substring(0, 10);
+                const response = await axios.post(`${API_URL}/recipes/markAsEaten`,
+                    {
+                        date: date_today,
+                        meal_type: meal_type,
+                        eaten: eaten,
+                        meal_calories: meal_calories,
+                        meal_score: meal_score,
+                    }
+                );
+                const data = response.data;
                 dispatch({
-                    type: UPDATE_BADGES,
-                    badges: data['badges'],
-                    earned: data['earned'],
+                    type: MARK_AS_EATEN,
+                    consumed_calories: data['new_consumed_calories'],
+                    score: data['new_score'],
                 });
+                if (data['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: data['badges'],
+                        earned: data['earned'],
+                    });
+                }
+                return true
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                    return false;
+                }
             }
         }
     } catch (error) {
@@ -194,6 +206,7 @@ export const getUserDetails = () => {
                     last_name: data['last_name'],
                     email: data['email'],
                 });
+                return true;
             }catch (error) {
                 if(error.response) {
                     if(error.response.status === 419){
@@ -202,7 +215,7 @@ export const getUserDetails = () => {
                         });
                     }
                 }
-                return error.response.status;
+                return false;
             }
         }
     }catch (error) {
@@ -229,6 +242,7 @@ export const getQuestionnaireDetails = () => {
                     gluten_free: data['gluten_free'],
                     without_lactose: data['without_lactose'],
                 });
+                return true;
             }catch (error) {
                 if(error.response) {
                     if(error.response.status === 419){
@@ -237,6 +251,7 @@ export const getQuestionnaireDetails = () => {
                         });
                     }
                 }
+                return false;
             }
         }
     }catch (error) {
