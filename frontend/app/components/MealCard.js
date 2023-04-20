@@ -28,8 +28,11 @@ const MealCard = ({recipe, meal_type}) => {
     }
 
     const getMoreSustainableRecipes = async () => {
-        await dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.calories, recipe.score)).then(sustainableRecipes =>
-            setSustainableRecipes(sustainableRecipes));
+        await dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.calories, recipe.score)).then(sustainableRecipes => {
+            if (sustainableRecipes != false){
+                setSustainableRecipes(sustainableRecipes)
+            }
+        });
     }
 
 
