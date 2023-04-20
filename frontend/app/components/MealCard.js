@@ -153,12 +153,12 @@ const styles = StyleSheet.create({
     },
     upgrade:{
         flexDirection: 'row',
-        paddingLeft: 80,
+        paddingLeft: '35%',
     },
     upgradeDisable:{
         flexDirection: 'row',
         opacity: 0.2,
-        paddingLeft: 100,
+        paddingLeft: '35%',
     },
     upgradeText: {
         color: COLORS.upgrade,

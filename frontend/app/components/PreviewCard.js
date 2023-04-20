@@ -72,7 +72,7 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                                 right={true}
                             />}
                         </View>
-                        {heartIcon && <HeartIcon recipe={recipe}/>}
+                        {heartIcon && <HeartIcon recipe={recipe} style={styles.heartIcon}/>}
                         <View style={styles.chooseButton}>
                             {chooseButton &&
                                 <Button
@@ -177,7 +177,9 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         flexDirection:'row',
-        justifyContent: "space-between",
+    },
+    hearIcon: {
+        // paddingLeft: '55%',
     }
 });
 

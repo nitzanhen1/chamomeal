@@ -13,7 +13,7 @@ import {
     GET_SEARCH_RESULTS,
     SET_FAVORITE_TO_RECIPES,
     SET_HEART_AND_CHOOSE,
-    SET_DATE,
+    SET_DATE, SET_REPLACED,
 } from './actions';
 
 const initialState = {
@@ -22,6 +22,7 @@ const initialState = {
     email: "",
     badges: [],
     earned: false,
+    replaced: false,
     EER: 0,
     score: 0,
     consumed_calories: 0,
@@ -60,7 +61,7 @@ function mealReducer(state = initialState, action) {
         case GET_USER_DETAILS:
             return { ...state, first_name: action.first_name, last_name: action.last_name, email: action.email};
         case GET_DAILY_MENU:
-            return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories };
+            return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories, replaced: action.replaced };
         case SET_DAILY_MENU:
             return { ...state, meals: action.meals};
         case MARK_AS_EATEN:
@@ -69,6 +70,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, badges: action.badges, earned: action.earned };
         case SET_EARNED:
             return { ...state, earned: action.earned };
+        case SET_REPLACED:
+            return { ...state, replaced: action.replaced };
         case LOGOUT:
             return initialState;
         case SET_FOOD_PREFERENCE:

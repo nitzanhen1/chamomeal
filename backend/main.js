@@ -77,12 +77,12 @@ app.use(function (err, req, res, next) {
 
 
 const server = app.listen(port, () => {
-    console.log(`Server listen on port ${port}`);
+    logger.info({label: 'server', message:`Server listen on port ${port}`, user_id: 0, meta:{}})
 });
 
 process.on("SIGINT", function () {
     if (server) {
-        server.close(() => console.log("server closed"));
+        server.close(() => logger.info({label: 'server', message:'server closed', user_id: 0, meta:{}}));
     }
     process.exit();
 });

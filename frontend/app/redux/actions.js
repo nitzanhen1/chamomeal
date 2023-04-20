@@ -12,6 +12,7 @@ export const SET_PERSONAL_DETAILS = 'SET_PERSONAL_DETAILS';
 export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
 export const UPDATE_BADGES = 'UPDATE_BADGES';
 export const SET_EARNED = 'SET_EARNED';
+export const SET_REPLACED = 'SET_REPLACED';
 export const LOGOUT = 'LOGOUT';
 export const GET_FAVORITES = 'GET_FAVORITES';
 export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
@@ -37,6 +38,7 @@ export const getDailyMenu = (date) => {
                 meals: mealsData,
                 consumed_calories: data['consumed_calories'],
                 total_calories: data['total_calories'],
+                replaced: false
             });
             if (data['badges'] != null) {
                 dispatch({
@@ -330,6 +332,15 @@ export const setEarned = (earned) =>{
     }
 }
 
+export const setReplaced = (replaced) =>{
+    return async dispatch => {
+        dispatch({
+            type: SET_REPLACED,
+            replaced: replaced,
+        });
+    }
+}
+
 export const getFavorites = () =>{
     try{
         return async dispatch =>{
@@ -462,6 +473,7 @@ export const replaceRecipe = (api_replace,from, recipe_id, date, meal_type, repl
                     meals: mealsData,
                     consumed_calories: data['consumed_calories'],
                     total_calories: data['total_calories'],
+                    replaced: true,
                 });
                 const badgesData = response.data;
                 if (badgesData['badges'] != null) {

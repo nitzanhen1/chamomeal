@@ -1,5 +1,6 @@
 require("dotenv").config();
 const MySql = require("./mysql");
+const logger = require("./logger")
 
 exports.execQuery = async function (query) {
     let returnValue = []
@@ -9,7 +10,7 @@ const connection = await MySql.connection();
     returnValue = await connection.query(query);
   } catch (err) {
     await connection.query("ROLLBACK");
-    console.log('ROLLBACK at querySignUp', err);
+    logger.error({label: 'database', message:`ROLLBACK at querySignUp, ${err}`, user_id: 0, meta:{error: err}});
     throw err;
   } finally {
     await connection.release();

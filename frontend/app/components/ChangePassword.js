@@ -30,12 +30,12 @@ const ChangePassword = ({navigation}) => {
     }
 
     function validatePassword(newPassword){
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+        let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(newPassword)) {
             setPasswordError('')
             return true
         } else {
-            setPasswordError("8-16 תווים - אותיות גדולות וקטנות, מספרים, ותו מיוחד")
+            setPasswordError("6-16 תווים - אותיות גדולות וקטנות")
             return false
         }
     }

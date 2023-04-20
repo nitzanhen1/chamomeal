@@ -101,7 +101,6 @@ async function checkBadges(user_id, new_score, score_key, char_type) {
     let badges = await getBadgesFromDB(user_id)
     for (let i = 0; i < score_key.length - 1; i++) {
         let col = score_key[i] + char_type
-        console.log(col)
         if (new_score >= score_key[i]) {
             if (badges[col] == false) { //earned new badge
                 logger.info({label: 'badge', message:'earned', user_id: user_id, meta:{badge: col, new_score: new_score}})
