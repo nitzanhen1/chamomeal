@@ -64,7 +64,6 @@ async function generateResetPasswordCode(email) {
 }
 
 async function sendResetPasswordEmail(first_name, email, verificationCode){
-    //TODO a fist_name
     logger.info({label: 'send password', message:`send email to ${email}` , user_id: 0, meta:{ first_name: first_name}})
     const msg = {
         to: email,
