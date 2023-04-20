@@ -38,13 +38,19 @@ export default function PersonalScreen({navigation}) {
     }
 
     async function updateQuestionnaire() {
-        await dispatch(getQuestionnaireDetails()).then();
-        navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
+        await dispatch(getQuestionnaireDetails()).then(result => {
+            if(result){
+                navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
+            }
+        });
     }
 
     async function updateUserDetails() {
-        await dispatch(getUserDetails()).then();
-        navigation.navigate('EditUserInfo');
+        await dispatch(getUserDetails()).then(result =>{
+            if(result){
+                navigation.navigate('EditUserInfo');
+            }
+        });
     }
 
     return (

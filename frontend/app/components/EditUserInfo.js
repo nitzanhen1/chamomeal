@@ -59,7 +59,6 @@ const EditUserInfo = ({navigation}) => {
     }
 
     function handleSubmitPress(){
-        console.log('hey');
         if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)){
             dispatch(updateUserDetails(firstName,lastName,Email)).then((success)=>{
                 if(success) {
@@ -71,6 +70,7 @@ const EditUserInfo = ({navigation}) => {
                     Alert.alert('עדכון הפרטים נכשל', null,
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });
+                    navigation.navigate('Login');
                 }});
         }
     }

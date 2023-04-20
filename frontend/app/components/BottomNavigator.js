@@ -17,7 +17,7 @@ import {setEarned} from "../redux/actions";
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomNavigator = ({ navigation }) => {
-    const {earned} = useSelector(state => state.mealReducer);
+    const {earned, EER} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     useEffect(() => {
         // This code will be executed whenever the value of 'badges' changes
@@ -34,6 +34,14 @@ const BottomNavigator = ({ navigation }) => {
             dispatch(setEarned(false));
         }
     }, [earned]);
+
+    useEffect(() => {
+        // This code will be executed whenever the value of 'badges' changes
+        if(EER == 0){
+            // console.log("eer")
+            navigation.navigate('Login')
+        }
+    }, [EER]);
 
   return (
     <Tab.Navigator

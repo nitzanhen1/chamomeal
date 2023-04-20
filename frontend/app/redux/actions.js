@@ -55,28 +55,40 @@ export const getDailyMenu = (date) => {
 export const markAsEaten = (meal_type, eaten, meal_calories, meal_score, date) => {
     try {
         return async dispatch => {
-            const date_today = date.toISOString().substring(0, 10);
-            const response = await axios.post(`${API_URL}/recipes/markAsEaten`,
-                {
-                    date: date_today,
-                    meal_type: meal_type,
-                    eaten: eaten,
-                    meal_calories: meal_calories,
-                    meal_score: meal_score,
-                }
-            );
-            const data = response.data;
-            dispatch({
-                type: MARK_AS_EATEN,
-                consumed_calories: data['new_consumed_calories'],
-                score: data['new_score'],
-            });
-            if (data['badges'] != null) {
+            try{
+                const date_today = date.toISOString().substring(0, 10);
+                const response = await axios.post(`${API_URL}/recipes/markAsEaten`,
+                    {
+                        date: date_today,
+                        meal_type: meal_type,
+                        eaten: eaten,
+                        meal_calories: meal_calories,
+                        meal_score: meal_score,
+                    }
+                );
+                const data = response.data;
                 dispatch({
-                    type: UPDATE_BADGES,
-                    badges: data['badges'],
-                    earned: data['earned'],
+                    type: MARK_AS_EATEN,
+                    consumed_calories: data['new_consumed_calories'],
+                    score: data['new_score'],
                 });
+                if (data['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: data['badges'],
+                        earned: data['earned'],
+                    });
+                }
+                return true
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                    return false;
+                }
             }
         }
     } catch (error) {
@@ -169,6 +181,11 @@ export const getGlobalDetails = () => {
                 return response.status;
             }catch (error){
                 if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
                     return error.response.status;
                 }
             }
@@ -181,15 +198,27 @@ export const getGlobalDetails = () => {
 export const getUserDetails = () => {
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/user/getUserDetails`);
-            const data = response.data;
+            try{
+                const response = await axios.get(`${API_URL}/user/getUserDetails`);
+                const data = response.data;
 
-            dispatch({
-                type: GET_USER_DETAILS,
-                first_name: data['first_name'],
-                last_name: data['last_name'],
-                email: data['email'],
-            });
+                dispatch({
+                    type: GET_USER_DETAILS,
+                    first_name: data['first_name'],
+                    last_name: data['last_name'],
+                    email: data['email'],
+                });
+                return true;
+            }catch (error) {
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
+                return false;
+            }
         }
     }catch (error) {
         console.log(error);
@@ -199,22 +228,33 @@ export const getUserDetails = () => {
 export const getQuestionnaireDetails = () => {
     try{
         return async dispatch =>{
-
-            const response = await axios.get(`${API_URL}/user/getPreferences`);
-            const data = response.data;
-            dispatch({
-                type: GET_Q_DETAILS,
-                gender: data['gender'].toString(),
-                year_of_birth: data['year_of_birth'].toString(),
-                height: data['height'].toString(),
-                weight: data['weight'].toString(),
-                physical_activity: data['physical_activity'],
-                kosher: data['kosher'],
-                vegetarian: data['vegetarian'],
-                vegan: data['vegan'],
-                gluten_free: data['gluten_free'],
-                without_lactose: data['without_lactose'],
-            });
+            try{
+                const response = await axios.get(`${API_URL}/user/getPreferences`);
+                const data = response.data;
+                dispatch({
+                    type: GET_Q_DETAILS,
+                    gender: data['gender'].toString(),
+                    year_of_birth: data['year_of_birth'].toString(),
+                    height: data['height'].toString(),
+                    weight: data['weight'].toString(),
+                    physical_activity: data['physical_activity'],
+                    kosher: data['kosher'],
+                    vegetarian: data['vegetarian'],
+                    vegan: data['vegan'],
+                    gluten_free: data['gluten_free'],
+                    without_lactose: data['without_lactose'],
+                });
+                return true;
+            }catch (error) {
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
+                return false;
+            }
         }
     }catch (error) {
         console.log(error);
@@ -225,24 +265,36 @@ export const getQuestionnaireDetails = () => {
 export const updateUserPreferences = (year_of_birth, height, weight, gender, physical_activity, vegan, vegetarian, without_lactose, gluten_free, kosher) => {
     try{
         return async dispatch =>{
-            const response = await axios.post(`${API_URL}/user/updatePreferences`,
-                {
-                    gender: gender,
-                    year_of_birth: year_of_birth,
-                    height: height,
-                    weight:weight,
-                    kosher:kosher,
-                    vegetarian:vegetarian,
-                    vegan:vegan,
-                    gluten_free:gluten_free,
-                    without_lactose:without_lactose,
-                    physical_activity:physical_activity
+            try{
+                const response = await axios.post(`${API_URL}/user/updatePreferences`,
+                    {
+                        gender: gender,
+                        year_of_birth: year_of_birth,
+                        height: height,
+                        weight:weight,
+                        kosher:kosher,
+                        vegetarian:vegetarian,
+                        vegan:vegan,
+                        gluten_free:gluten_free,
+                        without_lactose:without_lactose,
+                        physical_activity:physical_activity
+                    });
+                const data = response.data;
+                dispatch({
+                    type: UPDATE_USER_PREFERENCES,
+                    // preferences: data
                 });
-            const data = response.data;
-            dispatch({
-                type: UPDATE_USER_PREFERENCES,
-                // preferences: data
-            });
+
+            }catch (error) {
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
+            }
+
         }
     }catch (error) {
         console.log(error);
@@ -260,6 +312,13 @@ export const updatePassword = (old_pass, new_pass) => {
                 if(response.status===202){
                     return true;}
             }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
                 return false;
             }
         }
@@ -281,6 +340,13 @@ export const updateUserDetails = (first_name, last_name, email) => {
                 if(response.status===202){
                     return true;}
             }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
                 return false;
             }
         }
@@ -344,12 +410,22 @@ export const setReplaced = (replaced) =>{
 export const getFavorites = () =>{
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/recipes/getFavorites`);
-            const data = response.data;
-            dispatch({
-                type: GET_FAVORITES,
-                favorites: data,
-            });
+            try{
+                const response = await axios.get(`${API_URL}/recipes/getFavorites`);
+                const data = response.data;
+                dispatch({
+                    type: GET_FAVORITES,
+                    favorites: data,
+                });
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
+            }
         }
     }catch (error) {
         console.log(error);
@@ -360,43 +436,55 @@ export const getFavorites = () =>{
 export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
     try{
         return async dispatch =>{
-            let recipe_id = recipe["recipe_id"]
-            let isFavorite = recipe["isFavorite"]
-            const response = await axios.post(`${API_URL}/recipes/addToFavorites`,
-                {
-                    recipe_id : recipe_id,
-                    is_favorite: isFavorite
-                });
-            if(response.status===201){
-                if(meals){
-                    for(let i=0; i<meals.length; i++){
-                        if(meals[i]["mealData"]["recipe_id"]==recipe_id){
-                            meals[i]["mealData"]["isFavorite"] = isFavorite;
+            try{
+                let recipe_id = recipe["recipe_id"]
+                let isFavorite = recipe["isFavorite"]
+                const response = await axios.post(`${API_URL}/recipes/addToFavorites`,
+                    {
+                        recipe_id : recipe_id,
+                        is_favorite: isFavorite
+                    });
+                if(response.status===201){
+                    if(meals){
+                        for(let i=0; i<meals.length; i++){
+                            if(meals[i]["mealData"]["recipe_id"]==recipe_id){
+                                meals[i]["mealData"]["isFavorite"] = isFavorite;
+                            }
                         }
                     }
-                }
-                if(searchResults){
-                    for(let i=0; i<searchResults.length; i++){
-                        if(searchResults[i]["recipe_id"]==recipe_id){
-                            searchResults[i]["isFavorite"] = isFavorite;
+                    if(searchResults){
+                        for(let i=0; i<searchResults.length; i++){
+                            if(searchResults[i]["recipe_id"]==recipe_id){
+                                searchResults[i]["isFavorite"] = isFavorite;
+                            }
                         }
                     }
+                    if(isFavorite){
+                        favorites.unshift(recipe);
+                    }
+                    else{
+                        favorites = favorites.filter(item => item["recipe_id"] !== recipe_id)
+                    }
+                    dispatch({
+                        type: SET_FAVORITE_TO_RECIPES,
+                        meals: meals,
+                        searchResults: searchResults,
+                        favorites: favorites
+                    });
+                    return true;
                 }
-                if(isFavorite){
-                    favorites.unshift(recipe);
+                return false;
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                    return false;
                 }
-                else{
-                    favorites = favorites.filter(item => item["recipe_id"] !== recipe_id)
-                }
-                dispatch({
-                    type: SET_FAVORITE_TO_RECIPES,
-                    meals: meals,
-                    searchResults: searchResults,
-                    favorites: favorites
-                });
-                return true;
             }
-            return false;
+
         }
     }catch (error) {
         console.log(error);
@@ -406,26 +494,37 @@ export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
 export const search = (searchQuery, onlyIngredients, without_lactose, gluten_free, vegan, vegetarian, kosher, breakfast, lunch, dinner) =>{
     try{
         return async dispatch =>{
-            const response = await axios.get(`${API_URL}/search`,
-                {
-                    params: {
-                        searchQuery: searchQuery,
-                        onlyIngredients: onlyIngredients,
-                        without_lactose: without_lactose,
-                        gluten_free: gluten_free,
-                        vegan: vegan,
-                        vegetarian: vegetarian,
-                        kosher: kosher,
-                        breakfast: breakfast,
-                        lunch: lunch,
-                        dinner: dinner
-                    }});
-            const data = response.data;
-            dispatch({
-                type: GET_SEARCH_RESULTS,
-                searchResults: data,
-            });
-            return data;
+            try{
+                const response = await axios.get(`${API_URL}/search`,
+                    {
+                        params: {
+                            searchQuery: searchQuery,
+                            onlyIngredients: onlyIngredients,
+                            without_lactose: without_lactose,
+                            gluten_free: gluten_free,
+                            vegan: vegan,
+                            vegetarian: vegetarian,
+                            kosher: kosher,
+                            breakfast: breakfast,
+                            lunch: lunch,
+                            dinner: dinner
+                        }});
+                const data = response.data;
+                dispatch({
+                    type: GET_SEARCH_RESULTS,
+                    searchResults: data,
+                });
+                return data;
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
+                }
+                return {length:0}
+            }
         }
     }catch (error) {
         console.log(error);
@@ -435,15 +534,26 @@ export const search = (searchQuery, onlyIngredients, without_lactose, gluten_fre
 export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_score) =>{
     try{
         return async dispatch =>{
-            const response = await axios.post(`${API_URL}/recipes/getSustainableRecipes`,
-                {
-                    recipe_id: recipe_id,
-                    meal_type: meal_type,
-                    meal_calories: meal_calories,
-                    meal_score: meal_score
-                });
-            const data = response.data;
-            return data;
+            try{
+                const response = await axios.post(`${API_URL}/recipes/getSustainableRecipes`,
+                    {
+                        recipe_id: recipe_id,
+                        meal_type: meal_type,
+                        meal_calories: meal_calories,
+                        meal_score: meal_score
+                    });
+                const data = response.data;
+                return data;
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                        return false;
+                    }
+                }
+            }
         }
     }catch (error) {
         console.log(error);
@@ -453,35 +563,45 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
 export const replaceRecipe = (api_replace,from, recipe_id, date, meal_type, replacement_score) =>{
     try{
         return async dispatch =>{
-            const date_str = date.toISOString().substring(0, 10);
-            const response = await axios.post(`${API_URL}/recipes/${api_replace}`,
-                {
-                    recipe_id: recipe_id,
-                    date: date_str,
-                    meal_type: meal_type,
-                    replacement_score: replacement_score,
-                    from: from,
-                });
-            if(response.status===202) {
-                const data = response.data['dailyMenu'];
-                let mealsData = [
-                    {title: 'ארוחת בוקר', mealData:data['breakfast']},
-                    {title: 'ארוחת צהריים', mealData: data['lunch']},
-                    {title: 'ארוחת ערב',mealData:data['dinner']}];
-                dispatch({
-                    type: GET_DAILY_MENU,
-                    meals: mealsData,
-                    consumed_calories: data['consumed_calories'],
-                    total_calories: data['total_calories'],
-                    replaced: true,
-                });
-                const badgesData = response.data;
-                if (badgesData['badges'] != null) {
-                    dispatch({
-                        type: UPDATE_BADGES,
-                        badges: badgesData['badges'],
-                        earned: badgesData['earned'],
+            try{
+                const date_str = date.toISOString().substring(0, 10);
+                const response = await axios.post(`${API_URL}/recipes/${api_replace}`,
+                    {
+                        recipe_id: recipe_id,
+                        date: date_str,
+                        meal_type: meal_type,
+                        replacement_score: replacement_score,
+                        from: from,
                     });
+                if(response.status===202) {
+                    const data = response.data['dailyMenu'];
+                    let mealsData = [
+                        {title: 'ארוחת בוקר', mealData:data['breakfast']},
+                        {title: 'ארוחת צהריים', mealData: data['lunch']},
+                        {title: 'ארוחת ערב',mealData:data['dinner']}];
+                    dispatch({
+                        type: GET_DAILY_MENU,
+                        meals: mealsData,
+                        consumed_calories: data['consumed_calories'],
+                        total_calories: data['total_calories'],
+                        replaced: true,
+                    });
+                    const badgesData = response.data;
+                    if (badgesData['badges'] != null) {
+                        dispatch({
+                            type: UPDATE_BADGES,
+                            badges: badgesData['badges'],
+                            earned: badgesData['earned'],
+                        });
+                    }
+                }
+            }catch (error){
+                if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
                 }
             }
         }
@@ -564,6 +684,11 @@ export const resetPassword = (email, newPassword) =>{
                 if(response.status===202){
                     return true;}
             }catch (error){
+                if(error.response.status === 419){
+                    dispatch({
+                        type: LOGOUT,
+                    });
+                }
                 return false;
             }
         }
