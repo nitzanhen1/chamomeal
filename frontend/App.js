@@ -8,13 +8,12 @@ import {useFonts} from 'expo-font';
 import { I18nManager } from "react-native"
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 import EditUserInfo from "./app/components/EditUserInfo";
-import {getGlobalDetails} from "./app/redux/actions";
 import {Ionicons, Feather} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import ChangePassword from "./app/components/ChangePassword";
@@ -60,11 +59,9 @@ export default function App() {
 
     function getFlowers(route) {
         const { score } = useSelector(state => state.mealReducer);
-        const dispatch = useDispatch();
         const navigation = useNavigation();
 
         useEffect(() => {
-            dispatch(getGlobalDetails()).then();
         }, []);
 
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';

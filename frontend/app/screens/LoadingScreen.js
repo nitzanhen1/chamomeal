@@ -28,9 +28,9 @@ export default function LoadingScreen({navigation}) {
         dispatch(getGlobalDetails()).then(status => {
             if(status===200){
                 dispatch({type: SET_DATE});
-                dispatch(getDailyMenu(date)).then(() => {
+                // dispatch(getDailyMenu(date)).then(() => {
                     navigation.navigate('BottomNavigator');
-                });
+                // });
             }else if(status===419){
                 navigation.navigate('Login');
             }

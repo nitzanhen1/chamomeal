@@ -18,10 +18,10 @@ export default function PlannerScreen() {
         }
     }, [focus]);
 
-    useEffect(() => {
-        dispatch({type: SET_DATE});
-        dispatch(getDailyMenu(date)).then();
-    }, []);
+    // useEffect(() => {
+    //     dispatch({type: SET_DATE});
+    //     dispatch(getDailyMenu(date)).then();
+    // }, []);
 
     let day = date.getDate();
     let month = date.getMonth() + 1; // getMonth return value between 0-11

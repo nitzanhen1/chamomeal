@@ -47,10 +47,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                 <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
                             </View>
                             <Text style={styles.flowerText}>·</Text>
-                            <InfoPopUp
-                                icon={<Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>}
-                                explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
-                            />
+                            <Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>
                             <HeartIcon recipe={recipe}/>
                         </View>
                         <View style={styles.detailsContainer}>
