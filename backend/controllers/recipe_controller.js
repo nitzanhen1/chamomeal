@@ -70,8 +70,8 @@ router.post("/getSustainableRecipes", async (req, res, next) =>{
     // logger.http({label: 'POST /getSustainableRecipes', message:'request', user_id: req.user_id, controller: 'recipe', meta:{meal_score: req.body.meal_score}})
     try{
         const user_id = req.user_id;
-        const {recipe_id, meal_type, meal_calories, meal_score} = req.body;
-        const sustainable_recipes = await recipe_service.getSustainableRecipes(user_id, recipe_id, meal_type, meal_calories, meal_score);
+        const {recipe_id, meal_type, meal_score} = req.body;
+        const sustainable_recipes = await recipe_service.getSustainableRecipes(user_id, recipe_id, meal_type, meal_score);
         res.status(200).send(sustainable_recipes);
         const meta_recipes = sustainable_recipes.map(recipe => ({ recipe_id: recipe.recipe_id, score: recipe.score }));
         logger.http({label: 'POST /getSustainableRecipes', message:'success', user_id: req.user_id, controller: 'recipe', meta:{ status: 200, body: meta_recipes, meal_score: req.body.meal_score}});

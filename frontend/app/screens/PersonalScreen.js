@@ -2,7 +2,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Alert,
     Modal,
     TouchableOpacity,
     ScrollView,
@@ -25,15 +24,8 @@ export default function PersonalScreen({navigation}) {
 
 
     function logoutUser() {
-        dispatch(logout()).then((success)=> {
-            if(success) {
+        dispatch(logout()).then(()=> {
                 navigation.navigate('Login')
-            } else {
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-                navigation.navigate('Login')
-            }
         });
     }
 

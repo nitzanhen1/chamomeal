@@ -28,7 +28,7 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                                 <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal} from={'sustainability'}/>
                             </View>
                         )}
-                        {recipes.length==0 && <Text style={styles.helloText}>אין תוצאות</Text>}
+                        {recipes.length===0 && <Text style={styles.helloText}>אין תוצאות</Text>}
                     </ScrollView>
                 </View>
             </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalContainer: {
-        width: '83%',
+        width: '95%',
         height: '63%',
         backgroundColor: COLORS.light,
         borderRadius: 10,

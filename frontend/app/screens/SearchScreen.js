@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Text, ScrollView, LayoutAnimation, Keyboard} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, LayoutAnimation, Keyboard, ActivityIndicator} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import PreviewCard from "../components/PreviewCard";
 import {Searchbar} from 'react-native-paper';
@@ -34,6 +34,7 @@ export default function SearchScreen() {
     const [breakfastCheck, setBreakfastCheck] = React.useState(true);
     const [lunchCheck, setLunchCheck] = React.useState(true);
     const [dinnerCheck, setDinnerCheck] = React.useState(true);
+    const [whileSearch, setWhileSearch] = React.useState(false)
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -69,9 +70,11 @@ export default function SearchScreen() {
         Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(false);
+        setWhileSearch(true)
         dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
             kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
             (data) => {
+                setWhileSearch(false)
                 if (data.length < 1) {
                     setNoResults(true);
                 } else {
@@ -135,7 +138,7 @@ export default function SearchScreen() {
                         <View style={styles.filterOptions}>
                             <CheckBox
                                 checked={veganCheck}
-                                title='צמחוני'
+                                title='טבעוני'
                                 onPress={() => setVeganCheck(!veganCheck)}
                                 containerStyle={styles.radioButtonContainer}
                                 textStyle={styles.optionText}
@@ -143,7 +146,7 @@ export default function SearchScreen() {
                             />
                             <CheckBox
                                 checked={vegetarianCheck}
-                                title='טבעוני'
+                                title='צמחוני'
                                 onPress={() => setVegetarianCheck(!vegetarianCheck)}
                                 containerStyle={styles.radioButtonContainer}
                                 textStyle={styles.optionText}
@@ -222,7 +225,8 @@ export default function SearchScreen() {
                     </View>
                 </View>
             }
-            <ScrollView style={styles.inputsContainer}>
+            {whileSearch && <ActivityIndicator style={styles.indicator} size="large" color={COLORS.darkGreen} />}
+            {!whileSearch && <ScrollView style={styles.inputsContainer}>
                 {searchResults.map(meal =>
                     <View key={meal.recipe_id}>
                         <PreviewCard recipe={meal} sustainable={false} from={'search'}/>
@@ -233,7 +237,7 @@ export default function SearchScreen() {
                     <Text style={styles.helloText}>אין תוצאות</Text>
 
                 }
-            </ScrollView>
+            </ScrollView>}
         </View>
     );
 };
@@ -325,4 +329,7 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
         color: COLORS.darkGrey
     },
+    indicator:{
+        marginTop: '50%'
+    }
 });

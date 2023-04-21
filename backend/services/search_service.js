@@ -1,26 +1,30 @@
 const DButils = require("../data/db_utils");
 const recipe_service = require("./recipe_service");
 async function search(user_id, searchQuery, onlyIngredients, without_lactose, gluten_free, vegan, vegetarian, kosher, breakfast, lunch, dinner){
+    let results = [];
     if(searchQuery==null || searchQuery==""){
-        return [];
+        return results;
     }
     let recipe_name_query="", meal_type_query="", prefs_query="";
     if(without_lactose!=null && gluten_free!=null && vegan!=null && vegetarian!=null && kosher!=null) {
-        prefs_query = `and kosher>=${kosher} and vegetarian>=${vegetarian} and vegan>=${vegan} and gluten_free>=${gluten_free} and without_lactose>=${without_lactose}`
+        prefs_query = `and kosher>='${Number(kosher)}' and vegetarian>=${Number(vegetarian)} and vegan>=${Number(vegan)} and gluten_free>=${Number(gluten_free)} and without_lactose>=${Number(without_lactose)}`
     }
     if(breakfast!=null && lunch!=null && dinner!=null) {
         meal_type_query = await getMealTypeQuery(breakfast, lunch, dinner);
     }
     if(!onlyIngredients){
-        recipe_name_query = `or name LIKE '%${searchQuery}%'`
+        recipe_name_query = `and name NOT LIKE '%${searchQuery}%'`
+        let recipes_with_name = await DButils.execQuery(`select distinct * from recipes where name LIKE '%${searchQuery}%' ${prefs_query} ${meal_type_query} order by score desc limit 30`);
+        results = results.concat(recipes_with_name)
     }
     let ingredients_recipes = await DButils.execQuery(`select recipe_id from IngredientsInRecipe where ingredient_name LIKE '%${searchQuery}%'`);
-    let ingredients_recipes_ids = ingredients_recipes.map(element => element['recipe_id'])
-    if(ingredients_recipes_ids.length==0){
-        ingredients_recipes_ids=[0]
+    if(results.length>=30 || ingredients_recipes.length==0){
+        results = await recipe_service.addIsFavorite(user_id, results)
+        return results;
     }
-    let ing_recipes_ids_join = ingredients_recipes_ids.join()
-    let results = await DButils.execQuery(`select distinct * from recipes where (recipe_id in (${ing_recipes_ids_join}) ${recipe_name_query}) ${prefs_query} ${meal_type_query} order by score desc limit 30`);
+    let ingredients_recipes_ids = (ingredients_recipes.map(element => element['recipe_id'])).join()
+    let recipes_with_ing = await DButils.execQuery(`select distinct * from recipes where (recipe_id in (${ingredients_recipes_ids}) ${recipe_name_query}) ${prefs_query} ${meal_type_query} order by score desc limit ${30-results.length}`);
+    results = results.concat(recipes_with_ing)
     results = await recipe_service.addIsFavorite(user_id, results)
     return results;
 }

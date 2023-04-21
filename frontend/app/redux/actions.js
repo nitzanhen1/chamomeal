@@ -26,26 +26,33 @@ const API_URL = 'http://10.0.2.2:3000'; //localhost
 export const getDailyMenu = (date) => {
     try{
         return async dispatch =>{
-            const date_today = date.toISOString().substring(0, 10);
-            const response = await axios.get(`${API_URL}/recipes/getDailyMenu/${date_today}`);
-            const data = response.data;
-            let mealsData = [
-                {title: 'ארוחת בוקר', mealData:data['breakfast']},
-                {title: 'ארוחת צהריים', mealData: data['lunch']},
-                {title: 'ארוחת ערב',mealData:data['dinner']}]
-            dispatch({
-                type: GET_DAILY_MENU,
-                meals: mealsData,
-                consumed_calories: data['consumed_calories'],
-                total_calories: data['total_calories'],
-                replaced: false
-            });
-            if (data['badges'] != null) {
+            try {
+                const date_today = date.toISOString().substring(0, 10);
+                const response = await axios.get(`${API_URL}/recipes/getDailyMenu/${date_today}`);
+                const data = response.data;
+                let mealsData = [
+                    {title: 'ארוחת בוקר', mealData: data['breakfast']},
+                    {title: 'ארוחת צהריים', mealData: data['lunch']},
+                    {title: 'ארוחת ערב', mealData: data['dinner']}]
                 dispatch({
-                    type: UPDATE_BADGES,
-                    badges: data['badges'],
-                    earned: data['earned'],
+                    type: GET_DAILY_MENU,
+                    meals: mealsData,
+                    consumed_calories: data['consumed_calories'],
+                    total_calories: data['total_calories'],
+                    replaced: false
                 });
+                if (data['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: data['badges'],
+                        earned: data['earned'],
+                    });
+                }
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
             }
         }
     }catch (error) {
@@ -151,6 +158,9 @@ export const logout = () => {
                     return true;
                 }
             }catch (error){
+                dispatch({
+                    type: LOGOUT,
+                });
                 return false;
             }
         }
@@ -531,7 +541,7 @@ export const search = (searchQuery, onlyIngredients, without_lactose, gluten_fre
     }
 }
 
-export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_score) =>{
+export const getSustainableRecipes = (recipe_id, meal_type, meal_score) =>{
     try{
         return async dispatch =>{
             try{
@@ -539,7 +549,6 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
                     {
                         recipe_id: recipe_id,
                         meal_type: meal_type,
-                        meal_calories: meal_calories,
                         meal_score: meal_score
                     });
                 const data = response.data;
