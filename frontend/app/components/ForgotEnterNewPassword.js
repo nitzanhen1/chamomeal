@@ -13,7 +13,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
     const dispatch = useDispatch();
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [Email, setEmail] = useState(route.params.email)
+    const [Email] = useState(route.params.email)
 
     const [newPasswordError, setNewPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');

@@ -1,18 +1,18 @@
-import {View, StyleSheet, Alert} from 'react-native'
+import {View, StyleSheet, Alert, Text, TouchableOpacity} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
 import {AntDesign} from "@expo/vector-icons";
-import {verifyResetPasswordCode} from "../redux/actions";
+import {forgotPassword, verifyResetPasswordCode} from "../redux/actions";
 
 
 const ForgotEnterCode = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const [code, setCode] = useState('');
-    const [Email, setEmail] = useState(route.params.email)
+    const [Email] = useState(route.params.email)
 
     const handleSubmit = () => {
             dispatch(verifyResetPasswordCode(Email, code)).then((status)=>{
@@ -37,11 +37,19 @@ const ForgotEnterCode = ({navigation, route}) => {
             });
     };
 
+    const handleSendAgain = () =>{
+        dispatch(forgotPassword(Email)).then();
+    }
+
 
     return (
         <View style={styles.container}>
             <AntDesign name="unlock" size={50} style={styles.editIcon}/>
-
+            <Text style={styles.textUp}>שלחנו לאימייל שלך קוד אימות התקף ל10 דקות</Text>
+            <Text style={styles.textUp}>אם אינך רואה את המייל בדוק בתיקיית הספאם</Text>
+            <TouchableOpacity onPress={handleSendAgain}>
+                <Text style={styles.textDown}>או לחץ כאן לשליחה חוזרת</Text>
+            </TouchableOpacity>
             <Input
                 label='קוד אימות'
                 labelStyle={styles.label}
@@ -95,7 +103,32 @@ const styles = StyleSheet.create({
     editIcon:{
         color: COLORS.grey,
         margin:50,
-    }
+    },
+    textUp: {
+        fontSize: 15,
+        textAlign: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: 25,
+        paddingRight: 20,
+        fontFamily: 'Rubik-Bold',
+        letterSpacing: 1,
+        color: COLORS.darkGrey
+    },
+    textDown: {
+        fontSize: 15,
+        textAlign: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: 25,
+        marginBottom: 20,
+        paddingRight: 20,
+        fontFamily: 'Rubik-Bold',
+        letterSpacing: 1,
+        color: COLORS.dark,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+    },
 })
 
 export default ForgotEnterCode;
