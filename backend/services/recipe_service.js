@@ -211,7 +211,6 @@ async function getRecipesIdsArrayByFilters(meal_type, meal_calories, preferences
         threshold+=20;
         loop+=1;
     } while(recipes_ids_dict.length<3 && loop < maxLoop)
-    console.log(recipes_ids_dict)
     if (recipes_ids_dict.length==0){return [];}
     return recipes_ids_dict.map(element => element['recipe_id'])
 }
