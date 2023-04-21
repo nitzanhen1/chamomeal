@@ -90,7 +90,7 @@ export default function SearchScreen() {
     useFocusEffect(
         React.useCallback(() => {
             return () => {
-                dispatch(setHeartAndChoose('', true, false));
+                dispatch(setHeartAndChoose('', 0,true, false));
                 resetSearchScreen();
 
             };

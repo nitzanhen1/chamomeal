@@ -17,7 +17,7 @@ export default function FavoriteScreen() {
     useFocusEffect(
         React.useCallback(() => {
             return () => {
-                dispatch(setHeartAndChoose('', true, false));
+                dispatch(setHeartAndChoose('', 0, true, false));
 
             };
         }, [])

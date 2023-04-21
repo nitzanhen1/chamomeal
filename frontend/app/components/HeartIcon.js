@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     heartContainer: {
         bottom: 5,
-        // paddingLeft: '30%', //TODO works well only for preview card
+        paddingLeft: '15%', //TODO works well only for preview card
     }
 });
 export default HeartIcon;
