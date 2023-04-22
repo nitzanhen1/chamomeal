@@ -5,7 +5,12 @@ import PreviewCard from "./PreviewCard";
 import {AntDesign, Ionicons} from "@expo/vector-icons";
 
 
-const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal, getMoreSustainableRecipes, recipes}) => {
+const SustainableModal = ({
+                              visibleSustainableModal,
+                              handleCloseSustainableModal,
+                              getMoreSustainableRecipes,
+                              recipes
+                          }) => {
 
     return (
         <Modal
@@ -13,25 +18,36 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
             visible={visibleSustainableModal}
             onRequestClose={handleCloseSustainableModal}
             animationType="slide">
-            <View style={styles.modalBackGround}>
-                <View style={styles.modalContainer}>
-                    <View style={styles.container} >
-                        <TouchableOpacity onPress={handleCloseSustainableModal} style={{ position: 'absolute', top: 10, right: 10 }}>
-                            <AntDesign  name="closecircleo" size={25} style={styles.exitIcon} />
-                        </TouchableOpacity>
-                        <Ionicons style={styles.iconMore} name="sync-circle-outline" onPress={getMoreSustainableRecipes}/>
-                        <Text style={styles.textHeader}>ארוחות מקיימות לסביבה</Text>
+            <TouchableOpacity
+                style={{height: '100%', width: '100%'}}
+                activeOpacity={1}
+                onPressOut={handleCloseSustainableModal
+                }
+            >
+                <View style={styles.modalBackGround}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.container}>
+                            <TouchableOpacity onPress={handleCloseSustainableModal}
+                                              style={{position: 'absolute', top: 10, right: 10}}>
+                                <AntDesign name="closecircleo" size={25} style={styles.exitIcon}/>
+                            </TouchableOpacity>
+                            <Ionicons style={styles.iconMore} name="sync-circle-outline"
+                                      onPress={getMoreSustainableRecipes}/>
+                            <Text style={styles.textHeader}>ארוחות מקיימות לסביבה</Text>
                         </View>
-                    <ScrollView style={styles.information}>
-                        {recipes.map(recipe=>
-                            <View key={recipe.recipe_id}>
-                                <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal} from={'sustainability'}/>
-                            </View>
-                        )}
-                        {recipes.length==0 && <Text style={styles.helloText}>אין תוצאות</Text>}
-                    </ScrollView>
+                        <ScrollView style={styles.information}>
+                            {recipes.map(recipe =>
+                                <View key={recipe.recipe_id}>
+                                    <PreviewCard recipe={recipe} sustainable={true}
+                                                 handleCloseSustainableModal={handleCloseSustainableModal}
+                                                 from={'sustainability'}/>
+                                </View>
+                            )}
+                            {recipes.length == 0 && <Text style={styles.helloText}>אין תוצאות</Text>}
+                        </ScrollView>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         </Modal>
     );
 };
@@ -50,7 +66,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         // paddingHorizontal: 10
     },
-    container:{
+    container: {
         flexDirection: "row",
         borderRadius: 10,
 
@@ -62,7 +78,7 @@ const styles = StyleSheet.create({
     },
     information: {
         marginTop: 40,
-        marginHorizontal:10,
+        marginHorizontal: 10,
         // borderRadius: 10,
         borderBottomLeftRadius: 10, // apply the bottom radius to the scroll view
         borderBottomRightRadius: 10,

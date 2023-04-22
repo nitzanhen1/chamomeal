@@ -1,4 +1,14 @@
-import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Modal} from 'react-native'
+import {
+    View,
+    Text,
+    StyleSheet,
+    FlatList,
+    Image,
+    TouchableOpacity,
+    ScrollView,
+    Modal,
+    TouchableWithoutFeedback
+} from 'react-native'
 import React, {useState} from 'react'
 import {useSelector} from "react-redux";
 import COLORS from "../consts/colors";
@@ -135,68 +145,103 @@ export default function GameScreen() {
                 />
 
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={modalVisibleOne}
                     onRequestClose={() => {
-                        setModalVisibleOne(false);
+                        setModalVisibleOne(false)
                     }}
                 >
-                    <View style={styles.modalBackGround}>
-
-                        <View style={styles.modalView}>
-                            <Text style={styles.modalTitle}>נקודות קיימות</Text>
-                            <Text style={styles.modalText}>נקודות אלה נצברות כאשר משדרגים ארוחה ועוזרים לסביבה!</Text>
-                            <TouchableOpacity onPress={() => setModalVisibleOne(false)}>
-                                <Text style={styles.modalButton}>סגור</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.modalContainer}
+                        activeOpacity={1}
+                        onPressOut={() => {
+                            setModalVisibleOne(false)
+                        }}
+                    >
+                        <ScrollView
+                            directionalLockEnabled={true}
+                            contentContainerStyle={styles.modalBackGround}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View style={styles.modalView}>
+                                    <Text style={styles.modalTitle}>נקודות קיימות</Text>
+                                    <Text style={styles.modalText}>נקודות אלה נצברות כאשר משדרגים ארוחה ועוזרים
+                                        לסביבה!</Text>
+                                    <TouchableOpacity onPress={() => setModalVisibleOne(false)}>
+                                        <Text style={styles.modalButton}>סגור</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </ScrollView>
+                    </TouchableOpacity>
                 </Modal>
 
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={modalVisibleTwo}
                     onRequestClose={() => {
-                        setModalVisibleTwo(false);
+                        setModalVisibleTwo(false)
                     }}
                 >
-                    <View style={styles.modalBackGround}>
-
-                        <View style={styles.modalView}>
-                            <Text style={styles.modalTitle}>פרחים</Text>
-                            <Text style={styles.modalText}>נקודות אלה נצברות כאשר אתם מסמנים שאכלתם ארוחה, בהתאם להשפעה
-                                הסביבתית שלה.</Text>
-                            <TouchableOpacity onPress={() => setModalVisibleTwo(false)}>
-                                <Text style={styles.modalButton}>סגור</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.modalContainer}
+                        activeOpacity={1}
+                        onPressOut={() => {
+                            setModalVisibleTwo(false)
+                        }}
+                    >
+                        <ScrollView
+                            directionalLockEnabled={true}
+                            contentContainerStyle={styles.modalBackGround}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View style={styles.modalView}>
+                                    <Text style={styles.modalTitle}>פרחים</Text>
+                                    <Text style={styles.modalText}>נקודות אלה נצברות כאשר אתם מסמנים שאכלתם ארוחה, בהתאם
+                                        להשפעה
+                                        הסביבתית שלה.</Text>
+                                    <TouchableOpacity onPress={() => setModalVisibleTwo(false)}>
+                                        <Text style={styles.modalButton}>סגור</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </ScrollView>
+                    </TouchableOpacity>
                 </Modal>
 
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={modalVisibleThree}
                     onRequestClose={() => {
-                        setModalVisibleThree(false);
+                        setModalVisibleThree(false)
                     }}
                 >
-                    <View style={styles.modalBackGround}>
-
-                        <View style={styles.modalView}>
-                            <Text style={styles.modalTitle}>רצף התחברות</Text>
-
-                            <Text style={styles.modalText}>מתחברים ברציפות וצוברים תגים! </Text>
-                            <TouchableOpacity onPress={() => setModalVisibleThree(false)}>
-                                <Text style={styles.modalButton}>סגור</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.modalContainer}
+                        activeOpacity={1}
+                        onPressOut={() => {
+                            setModalVisibleThree(false)
+                        }}
+                    >
+                        <ScrollView
+                            directionalLockEnabled={true}
+                            contentContainerStyle={styles.modalBackGround}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View style={styles.modalView}>
+                                    <Text style={styles.modalTitle}>רצף התחברות</Text>
+                                    <Text style={styles.modalText}>מתחברים ברציפות וצוברים תגים! </Text>
+                                    <TouchableOpacity onPress={() => setModalVisibleThree(false)}>
+                                        <Text style={styles.modalButton}>סגור</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </ScrollView>
+                    </TouchableOpacity>
                 </Modal>
-
-
             </View>
         </ScrollView>
 
@@ -208,6 +253,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+
     },
     textCals: {
         fontSize: 24,
@@ -314,5 +360,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
+    modalContainer: {
+        height: '100%',
+        width: '100%'
+    }
 });
