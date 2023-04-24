@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalContainer: {
-        width: '83%',
+        width: '90%',
         height: '63%',
         backgroundColor: COLORS.light,
         borderRadius: 10,
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         borderRadius: 10,
-
     },
     exitIcon: {
         color: COLORS.darkGrey,
@@ -92,8 +91,8 @@ const styles = StyleSheet.create({
         left: 50,
         fontFamily: 'Rubik-Bold',
         letterSpacing: 0.5,
-        color: COLORS.darkGrey
-
+        color: COLORS.darkGrey,
+        flexWrap: "wrap",
     },
     iconMore: {
         fontSize: 30,
