@@ -6,7 +6,7 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import { updateUserPreferences} from "../redux/actions";
+import {regenerateDailyMenu, updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Feather} from "@expo/vector-icons";
 
@@ -14,7 +14,8 @@ import {Feather} from "@expo/vector-icons";
 const Stack = createNativeStackNavigator();
 
 const QuestionnaireScreen = ({navigation, route}) => {
-    const { year_of_birth,
+    const {date,
+        year_of_birth,
         height,
         weight,
         gender,
@@ -29,8 +30,21 @@ const QuestionnaireScreen = ({navigation, route}) => {
     function handleFinish(foodData) {
         dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(() =>{
             const prevRouteName = route.params.prevRouteName;
-            const screenToNavigate = (prevRouteName=='PersonalScreen') ? 'BottomNavigator' : 'LoadingScreen';
-            navigation.navigate(screenToNavigate);
+            if(prevRouteName=='PersonalScreen'){
+                Alert.alert('השינויים נשמרו', 'כמות הקלוריות המומלצת ליום השתנתה, האם תרצו להישאר עם התכנון היומי הנוכחי או לייצר חדש?',
+                    [
+                        { text: 'תפריט חדש', onPress: () => handleGenerateNewDaily() },
+                        {
+                            text: ' תפריט נוכחי',
+                            style: 'cancel',
+                            onPress: () => navigation.navigate('BottomNavigator')
+                        },
+                    ],
+                    { cancelable: true });
+            }
+            else{
+                navigation.navigate('LoadingScreen');
+            }
         });
     }
 
@@ -45,6 +59,20 @@ const QuestionnaireScreen = ({navigation, route}) => {
             ],
             { cancelable: true });
         // dispatch(setEarned(false));
+    }
+
+    function handleGenerateNewDaily() {
+        console.log("here1")
+        dispatch(regenerateDailyMenu(date)).then(status => {
+            console.log("here2 ",status)
+            if(status===202){
+                navigation.navigate('Meal Planner');
+            }else if (status===419){
+                navigation.navigate('Login');
+            }else{
+                navigation.navigate('BottomNavigator');
+            }
+        })
     }
 
     function returnButton(){

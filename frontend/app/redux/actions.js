@@ -706,4 +706,44 @@ export const resetPassword = (email, newPassword) =>{
     }
 }
 
-
+export const regenerateDailyMenu = (date) => {
+    try{
+        return async dispatch =>{
+            try {
+                const date_today = date.toISOString().substring(0, 10);
+                const response = await axios.post(`${API_URL}/recipes/regenerateDailyMenu/${date_today}`,{});
+                const data = response.data;
+                let mealsData = [
+                    {title: 'ארוחת בוקר', mealData: data['breakfast']},
+                    {title: 'ארוחת צהריים', mealData: data['lunch']},
+                    {title: 'ארוחת ערב', mealData: data['dinner']}]
+                dispatch({
+                    type: GET_DAILY_MENU,
+                    meals: mealsData,
+                    consumed_calories: data['consumed_calories'],
+                    total_calories: data['total_calories'],
+                    replaced: false
+                });
+                dispatch({
+                    type: MARK_AS_EATEN,
+                    consumed_calories: data['consumed_calories'],
+                    score: data['new_score'],
+                });
+                if (data['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: data['badges'],
+                        earned: data['earned'],
+                    });
+                }
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}
