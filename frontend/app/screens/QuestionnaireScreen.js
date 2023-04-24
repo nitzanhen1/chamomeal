@@ -62,9 +62,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
     }
 
     function handleGenerateNewDaily() {
-        console.log("here1")
         dispatch(regenerateDailyMenu(date)).then(status => {
-            console.log("here2 ",status)
             if(status===202){
                 navigation.navigate('Meal Planner');
             }else if (status===419){

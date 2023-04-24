@@ -70,18 +70,25 @@ export default function SearchScreen() {
         Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(false);
-        setWhileSearch(true)
-        dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
-            kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
-            (data) => {
-                setWhileSearch(false)
-                if (data.length < 1) {
-                    setNoResults(true);
-                } else {
-                    setNoResults(false);
+        let format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        let checkQuery = format.test(searchQuery) ? false : true;
+        if(checkQuery){
+            setWhileSearch(true);
+            dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
+                kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
+                (data) => {
+                    setWhileSearch(false)
+                    if (data.length < 1) {
+                        setNoResults(true);
+                    } else {
+                        setNoResults(false);
+                    }
                 }
-            }
-        );
+            );
+        }else{
+            dispatch(resetSearch());
+            setNoResults(true);
+        }
     }
 
     function toggleExpand() {
