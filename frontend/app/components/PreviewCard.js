@@ -36,6 +36,34 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
         }
     }
 
+    const getNumberTextColor = (number) => {
+        switch (number) {
+            case 1:
+                return COLORS.flower1;
+            case 2:
+                return COLORS.flower2;
+
+            case 3:
+                return COLORS.flower3;
+            case 4:
+                return COLORS.flower4;
+            case 5:
+                return COLORS.flower5;
+            case 6:
+                return COLORS.flower6;
+            case 7:
+                return COLORS.flower7;
+            case 8:
+                return COLORS.flower8;
+            case 9:
+                return COLORS.flower9;
+            case 10:
+                return COLORS.flower10;
+            default:
+                return 'black';
+        }
+    };
+
     return (
         <View style={styles.container}>
             <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={() => handleOpenFull()}>
@@ -63,12 +91,12 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                             {sustainable &&
                                 <View style={{flexDirection: 'row'}}>
                                     <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={styles.flowerText}>{recipe.score}</Text>
+                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                 </View>}
                             {(!sustainable) && <InfoPopUp
                                 icon={<View style={{flexDirection: 'row'}}>
                                     <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={styles.flowerText}>{recipe.score}</Text>
+                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                 </View>}
                                 explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
                                 right={true}
@@ -166,7 +194,7 @@ const styles = StyleSheet.create({
         marginRight: 4,
     },
     chooseButton: {
-        marginRight: 10,
+        marginRight: '35%',
         bottom: 5,
     },
     button: {
@@ -186,9 +214,12 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         flexDirection: 'row',
+        justifyContent: "space-between"
     },
     heartIcon: {
-        paddingLeft: '55%',
+        // paddingLeft: '55%',
+        // marginLeft: '30%',
+        marginRight: 10
     },
     cardGHGSubtitle: {
         marginBottom: 5,
