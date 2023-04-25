@@ -17,8 +17,12 @@ async function search(user_id, searchQuery, onlyIngredients, without_lactose, gl
         let recipes_with_name = await DButils.execQuery(`select distinct * from recipes where name LIKE '%${searchQuery}%' ${prefs_query} ${meal_type_query} order by score desc limit 30`);
         results = results.concat(recipes_with_name)
     }
+    if(results.length>=30){
+        results = await recipe_service.addIsFavorite(user_id, results)
+        return results;
+    }
     let ingredients_recipes = await DButils.execQuery(`select recipe_id from IngredientsInRecipe where ingredient_name LIKE '%${searchQuery}%'`);
-    if(results.length>=30 || ingredients_recipes.length==0){
+    if(ingredients_recipes.length==0){
         results = await recipe_service.addIsFavorite(user_id, results)
         return results;
     }

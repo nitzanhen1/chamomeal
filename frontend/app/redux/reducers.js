@@ -14,6 +14,7 @@ import {
     SET_FAVORITE_TO_RECIPES,
     SET_HEART_AND_CHOOSE,
     SET_DATE, SET_REPLACED,
+    SET_SHOW_TUTORIAL,
 } from './actions';
 
 const initialState = {
@@ -48,6 +49,7 @@ const initialState = {
     chooseButton: false,
     meal_type:"",
     meal_score:0,
+    showTutorial: false,
 }
 
 function mealReducer(state = initialState, action) {
@@ -93,6 +95,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, meal_type: action.meal_type, meal_score: action.meal_score, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
         case SET_DATE:
             return { ...state, date: new Date()};
+        case SET_SHOW_TUTORIAL:
+            return { ...state, showTutorial: action.showTutorial};
         default:
             return state;
     }

@@ -5,9 +5,10 @@ import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
 import { useIsFocused } from "@react-navigation/native";
+import {TutorialOverlay} from "./TutorialScreen";
 
 export default function PlannerScreen() {
-    const { meals, consumed_calories, date, EER, replaced} = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const focus = useIsFocused();
 
@@ -32,6 +33,8 @@ export default function PlannerScreen() {
 
     return (
         <View style={styles.container}>
+            {showTutorial && <TutorialOverlay />}
+            <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
             <Text style={styles.textDate}>{dateToShow}</Text>
             <Text style={styles.textCals}>צרכת {consumed_calories} קלוריות מתוך {EER} הכמות המומלצת</Text>
                 <ScrollView style={styles.inputsContainer}>
@@ -46,6 +49,7 @@ export default function PlannerScreen() {
                         </View>
                     ))}
                 </ScrollView>
+        </View>
         </View>
     )
 }
@@ -75,6 +79,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Regular',
         letterSpacing: 1,
         color: COLORS.darkGreen
+    },
+    mainContent: {
+    },
+    translucentBackground: {
+        opacity: 0.5,
     },
 })
 

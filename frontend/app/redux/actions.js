@@ -19,6 +19,7 @@ export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
 export const SET_FAVORITE_TO_RECIPES = 'SET_FAVORITE_TO_RECIPES';
 export const SET_HEART_AND_CHOOSE = 'SET_HEART_AND_CHOOSE';
 export const SET_DATE = 'SET_DATE';
+export const SET_SHOW_TUTORIAL = 'SET_SHOW_TUTORIAL';
 
 const API_URL = 'http://10.0.2.2:3000'; //localhost
 // const API_URL = 'http://132.73.84.195:443'; //remote backend
@@ -639,6 +640,15 @@ export const resetSearch = () =>{
                 searchResults: [],
             });
             }
+}
+
+export const setShowTutorial = (showTutorial) =>{
+    return async dispatch =>{
+        dispatch({
+            type: SET_SHOW_TUTORIAL,
+            showTutorial: showTutorial,
+        });
+    }
 }
 
 export const forgotPassword = (email) =>{

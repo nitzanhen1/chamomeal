@@ -70,11 +70,12 @@ export default function SearchScreen() {
         Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(false);
-        let format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-        let checkQuery = format.test(searchQuery) ? false : true;
+        let format = /[@#$%^&*()_+=\[\]{};':"\\|.<>?]+/;
+        let fixedQuery = searchQuery.replace(/'/g, "’");
+        let checkQuery = format.test(fixedQuery) ? false : true;
         if(checkQuery){
             setWhileSearch(true);
-            dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
+            dispatch(search(fixedQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
                 kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
                 (data) => {
                     setWhileSearch(false)

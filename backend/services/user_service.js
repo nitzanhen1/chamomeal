@@ -99,7 +99,7 @@ async function getGlobalDetails(user_id) {
 
 async function checkBadges(user_id, new_score, score_key, char_type) {
     let badges = await getBadgesFromDB(user_id)
-    for (let i = 0; i < score_key.length - 1; i++) {
+    for (let i = 0; i < score_key.length ; i++) {
         let col = score_key[i] + char_type
         if (new_score >= score_key[i]) {
             if (badges[col] == false) { //earned new badge
@@ -108,6 +108,11 @@ async function checkBadges(user_id, new_score, score_key, char_type) {
                 badges[col] = 1
                 let earned = true //notify frontend to alert user
                 return [true, badges, earned];
+            }
+            else{
+                if(i+1==score_key.length){
+                    return false;
+                }
             }
         } else {
             if (badges[col] == true) {// lost badge
