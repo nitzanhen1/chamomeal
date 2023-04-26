@@ -179,15 +179,18 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     register: {
+        fontWeight: 'bold',
         fontSize: 16,
-        color: COLORS.lightGreen,
+        color: COLORS.darkGreen,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
         textDecorationColor: COLORS.darkGreen,
     },
     registerLink: {
         flexDirection: "row",
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
     },
     account: {
         fontSize: 16,

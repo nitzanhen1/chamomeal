@@ -6,9 +6,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
 import { useIsFocused } from "@react-navigation/native";
 import {TutorialOverlay} from "./TutorialScreen";
+import { ProgressBar } from 'react-native-paper';
+
 
 export default function PlannerScreen() {
-    const { meals, consumed_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const focus = useIsFocused();
 
@@ -36,7 +38,21 @@ export default function PlannerScreen() {
             {showTutorial && <TutorialOverlay />}
             <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
             <Text style={styles.textDate}>{dateToShow}</Text>
-            <Text style={styles.textCals}>צרכת {consumed_calories} קלוריות מתוך {EER} הכמות המומלצת</Text>
+                <View style={styles.calsContainer}>
+                    <View style={{ flexDirection: 'row'}}>
+                        <Text style={styles.label}>צרכת:</Text>
+                        <Text style={styles.value}>{consumed_calories}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row'}}>
+                        <Text style={styles.label}>מומלץ ליום:</Text>
+                        <Text style={styles.value}>{EER} קלוריות </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.label}>סה"כ:</Text>
+                        <Text style={styles.value}>{total_calories}</Text>
+                    </View>
+                </View>
+                <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
                 <ScrollView style={styles.inputsContainer}>
                     {meals.map(meal => (
                         <View key={meal.title}>
@@ -85,5 +101,22 @@ const styles = StyleSheet.create({
     translucentBackground: {
         opacity: 0.5,
     },
+    calsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5,
+        backgroundColor: '#f2f2f2',
+        borderRadius: 5,
+    },
+    label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginRight: 10,
+    },
+    value: {
+        fontSize: 16,
+    },
+
 })
 

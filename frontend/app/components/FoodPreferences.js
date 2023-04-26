@@ -36,7 +36,7 @@ const FoodPreferences = (props) => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.question}>
-                באפשרותכם לסמן יותר מהעדפה אחת
+                ניתן לסמן יותר מהעדפה אחת או אף אחת מהאפשרויות
             </Text>
             <View style={styles.prefContainer}>
                 <CheckBox
