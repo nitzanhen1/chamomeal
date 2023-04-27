@@ -91,7 +91,7 @@ const MealCard = ({recipe, meal_type}) => {
                                         <Ionicons name="flower-outline" size={22} style={{color:"black"}}/>
                                         <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                     </View>}
-                                explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
+                                explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית מופחתת"
                                 right={true}
                             />
                         <View style={styles.icons}>

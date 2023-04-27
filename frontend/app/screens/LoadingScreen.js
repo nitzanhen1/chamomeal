@@ -11,16 +11,15 @@ export default function LoadingScreen({navigation}) {
     const focus = useIsFocused();
     const {date} = useSelector(state => state.mealReducer);
     const sentences = [
-        'משפט 1',
-        'משפט 2',
-        'משפט 3',
-        'משפט 4',
-        'משפט 5',
-        'משפט 6',
-        'משפט 7',
-        'משפט 8',
-        'משפט 9',
-        'משפט 10',
+        'תכנון ארוחות יכול לעזור \nלהפחית בזבוז מזון ולחסוך כסף',
+        'מעל 30%\n מפליטות גזי החממה העולמיות\n מגיעות מייצור מזון',
+        'תזונה ברת קיימא יכולה\n לתרום לבריאות האישית \nולבריאות כדור הארץ',
+        'ישראל מובילה בחיסכון במים\n ובחקלאות בת קיימא',
+        'פסולת מזון מהווה\n 1/3 מכלל הפסולת בישראל',
+        'ישראל שואפת להפחית\nאת פליטת גזי החממה\nב-25% עד 2030',
+        'תזונה ברת קיימא יכולה \nלסייע במאבק בשינויי האקלים',
+        'רק רגע, \nאנחנו עובדים על זה',
+        'מתאימים לך תפריט אישי\n  מתוך 4,500 מתכונים',
     ];
     const [sentenceIndex] = useState(Math.floor(Math.random()*sentences.length));
 
@@ -102,7 +101,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignItems: 'center',
         width: '100%',
-        height: 30,
         marginTop: 50,
         marginBottom: 50,
         fontFamily: 'Rubik-Bold',

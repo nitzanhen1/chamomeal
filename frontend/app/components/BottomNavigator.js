@@ -22,7 +22,7 @@ const BottomNavigator = ({ navigation }) => {
     useEffect(() => {
         // This code will be executed whenever the value of 'badges' changes
         if(earned){
-            Alert.alert('כל הכבוד', 'זכית בהישג חדש! תוכל לצפות בו בעמוד הקיימות',
+            Alert.alert('כל הכבוד', 'זכית בהישג חדש! תוכל לצפות בו בעמוד ההישגים',
                 [
                     { text: 'צפה כעת', onPress: () => navigation.navigate('Sustainability') },
                     {

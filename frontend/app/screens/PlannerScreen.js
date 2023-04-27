@@ -45,12 +45,12 @@ export default function PlannerScreen() {
                 <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
                 <View style={styles.calsContainer}>
                     <View style={{ flexDirection: 'row'}}>
-                        <Text style={styles.label}>צרכת:</Text>
+                        <Text style={styles.label}>אכלתי:</Text>
                         <Text style={styles.value}>{consumed_calories}</Text>
                     </View>
 
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.label}>כמות יומית:</Text>
+                        <Text style={styles.label}>הצעה יומית:</Text>
                         <Text style={styles.value}>{total_calories}</Text>
                     </View>
                 </View>

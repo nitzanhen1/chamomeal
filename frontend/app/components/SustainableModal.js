@@ -43,7 +43,7 @@ const SustainableModal = ({
                                                  from={'sustainability'}/>
                                 </View>
                             )}
-                            {recipes.length === 0 && <Text style={styles.helloText}>אין תוצאות</Text>}
+                            {recipes.length === 0 && <Text style={styles.helloText}>לא מצאנו שדרוג מתאים להעדפות או להמלצת הקלוריות שלך</Text>}
                         </ScrollView>
                     </View>
                 </View>
