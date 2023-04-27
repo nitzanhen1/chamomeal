@@ -110,9 +110,9 @@ const MealCard = ({recipe, meal_type}) => {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity>
+                <View>
                     <MoreOptionsMenu recipe={recipe} meal_type={meal_type}/>
-                </TouchableOpacity>
+                </View>
             </TouchableOpacity>
         </View>
     );
