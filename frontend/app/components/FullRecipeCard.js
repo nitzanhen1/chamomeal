@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
     information: {
         padding: 10,
     },
-    titleContainer: {},
     title: {
         fontFamily: 'Rubik-Bold',
         fontWeight: "600",
@@ -248,7 +247,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
-        paddingHorizontal: 32,
+        // paddingHorizontal: 32,
         marginBottom: 10,
         borderRadius: 4,
         elevation: 2,

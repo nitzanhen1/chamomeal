@@ -16,22 +16,22 @@ import {
     getUserDetails
 } from "../redux/actions";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 
 export default function PersonalScreen({navigation}) {
-    const { first_name } = useSelector(state => state.mealReducer);
+    const {first_name} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
 
 
     function logoutUser() {
-        dispatch(logout()).then((success)=> {
-            if(success) {
+        dispatch(logout()).then((success) => {
+            if (success) {
                 navigation.navigate('Login')
             } else {
                 Alert.alert('אוי לא משהו קרה! נסה שוב', null,
                     [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
+                    {cancelable: true});
                 navigation.navigate('Login')
             }
         });
@@ -39,15 +39,15 @@ export default function PersonalScreen({navigation}) {
 
     async function updateQuestionnaire() {
         await dispatch(getQuestionnaireDetails()).then(result => {
-            if(result){
-                navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
+            if (result) {
+                navigation.navigate('QuestionnaireScreen', {prevRouteName: 'PersonalScreen'});
             }
         });
     }
 
     async function updateUserDetails() {
-        await dispatch(getUserDetails()).then(result =>{
-            if(result){
+        await dispatch(getUserDetails()).then(result => {
+            if (result) {
                 navigation.navigate('EditUserInfo');
             }
         });
@@ -59,7 +59,7 @@ export default function PersonalScreen({navigation}) {
             <Button
                 title="עדכון פרטי חשבון"
                 onPress={() => updateUserDetails()}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -68,7 +68,7 @@ export default function PersonalScreen({navigation}) {
             <Button
                 title="עדכון פרטים אישיים"
                 onPress={() => updateQuestionnaire()}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -77,7 +77,7 @@ export default function PersonalScreen({navigation}) {
             <Button
                 title="עדכון סיסמה"
                 onPress={() => navigation.navigate('ChangePassword')}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -86,7 +86,7 @@ export default function PersonalScreen({navigation}) {
             <Button
                 title="התנתק"
                 onPress={() => logoutUser()}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -95,7 +95,7 @@ export default function PersonalScreen({navigation}) {
             <Button
                 title="תנאי שימוש"
                 onPress={() => setModalVisible(true)}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -106,12 +106,16 @@ export default function PersonalScreen({navigation}) {
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {setModalVisible(false)}}
+                onRequestClose={() => {
+                    setModalVisible(false)
+                }}
             >
                 <TouchableOpacity
                     style={styles.container}
                     activeOpacity={1}
-                    onPressOut={() => {setModalVisible(false)}}
+                    onPressOut={() => {
+                        setModalVisible(false)
+                    }}
                 >
                     <ScrollView
                         directionalLockEnabled={true}
@@ -121,7 +125,12 @@ export default function PersonalScreen({navigation}) {
                             <View style={styles.modalView}>
                                 <Text style={styles.modalTitle}>תנאי שימוש</Text>
 
-                                <Text style={styles.modalText} >אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, אתה מסכים לשחרר אותנו מכל אחריות הקשורה לשימוש בה.</Text>
+                                <Text style={styles.modalText}>אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת
+                                    למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר
+                                    אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו
+                                    דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על
+                                    סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו,
+                                    אתה מסכים לשחרר אותנו מכל אחריות הקשורה לשימוש בה.</Text>
                                 <TouchableOpacity onPress={() => setModalVisible(false)}>
                                     <Text style={styles.modalButton}>סגור</Text>
                                 </TouchableOpacity>
@@ -132,7 +141,7 @@ export default function PersonalScreen({navigation}) {
             </Modal>
 
         </View>
-  )
+    )
 }
 
 const styles = StyleSheet.create({
@@ -141,12 +150,11 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
     },
-    helloText:{
+    helloText: {
         fontSize: 25,
         textAlign: 'left',
         alignItems: 'center',
         width: '100%',
-        height: 30,
         marginTop: 10,
         marginBottom: 15,
         paddingRight: 20,
@@ -195,11 +203,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Bold',
         fontSize: 16,
         color: COLORS.primary
-
     },
     modalButton: {
         fontFamily: 'Rubik-Bold',
-
         color: COLORS.primary,
     },
 })

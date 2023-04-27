@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity} from 'react-native'
+import {StyleSheet, TouchableOpacity} from 'react-native'
 import React, {useEffect} from 'react';
 import {addToFavorites} from "../redux/actions";
 import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
@@ -9,19 +9,20 @@ const HeartIcon = ({recipe}) => {
 
     const dispatch = useDispatch();
     const [favorite, setFavorite] = React.useState(recipe.isFavorite ? 'heart' : 'heart-outline');
-    const {meals, searchResults, favorites} =  useSelector(state => state.mealReducer);
+    const {meals, searchResults, favorites} = useSelector(state => state.mealReducer);
 
-    const changeFav = () =>{
+    const changeFav = () => {
         recipe.isFavorite = !recipe.isFavorite;
         setFavorite(recipe.isFavorite ? 'heart' : 'heart-outline')
     }
     const handleHeartIconPress = async () => {
         changeFav();
-        dispatch(addToFavorites(recipe, favorites, meals, searchResults )).then(async success => {
+        dispatch(addToFavorites(recipe, favorites, meals, searchResults)).then(async success => {
             if (!success) {
                 changeFav();
             }
-        });}
+        });
+    }
 
     useEffect(() => {
         setFavorite(recipe.isFavorite ? 'heart' : 'heart-outline')
@@ -30,15 +31,14 @@ const HeartIcon = ({recipe}) => {
 
 
     return (
-        <TouchableOpacity  style={styles.heartContainer} onPress={handleHeartIconPress}>
-            <Iconn style={styles.heartIcon} name={favorite} size={32} color={COLORS.heart} />
+        <TouchableOpacity style={styles.heartContainer} onPress={handleHeartIconPress}>
+            <Iconn style={styles.heartIcon} name={favorite} size={32} color={COLORS.heart}/>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    heartIcon: {
-    },
+    heartIcon: {},
     heartContainer: {
         bottom: 5,
         paddingLeft: '15%', //TODO works well only for preview card

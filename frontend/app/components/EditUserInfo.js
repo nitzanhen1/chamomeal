@@ -1,16 +1,15 @@
 import {View, StyleSheet, Alert} from 'react-native'
 import React, {useState} from 'react'
-import { Input } from '@rneui/themed';
-import { updateUserDetails} from "../redux/actions";
+import {Input} from '@rneui/themed';
+import {updateUserDetails} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
-import {AntDesign, } from "@expo/vector-icons";
-
+import {Button} from '@rneui/themed';
+import {AntDesign,} from "@expo/vector-icons";
 
 
 const EditUserInfo = ({navigation}) => {
-    const { first_name, last_name, email } = useSelector(state => state.mealReducer);
+    const {first_name, last_name, email} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     const [firstName, setFirstName] = useState(first_name);
@@ -21,7 +20,7 @@ const EditUserInfo = ({navigation}) => {
     const [lastNameError, setLastNameError] = useState('');
     const [emailError, setEmailError] = useState('');
 
-    function validateFirstName(firstName){
+    function validateFirstName(firstName) {
         if (!firstName) {
             setFirstNameError('נדרש שם פרטי');
             return false
@@ -34,7 +33,7 @@ const EditUserInfo = ({navigation}) => {
         }
     }
 
-    function validateLastName(lastName){
+    function validateLastName(lastName) {
         if (!lastName) {
             setLastNameError('נדרש שם משפחה');
             return false
@@ -58,20 +57,21 @@ const EditUserInfo = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress(){
-        if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)){
-            dispatch(updateUserDetails(firstName,lastName,Email)).then((success)=>{
-                if(success) {
+    function handleSubmitPress() {
+        if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)) {
+            dispatch(updateUserDetails(firstName, lastName, Email)).then((success) => {
+                if (success) {
                     Alert.alert('הפרטים עודכנו בהצלחה!', null,
                         [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
+                        {cancelable: true});
                     navigation.goBack();
                 } else {
                     Alert.alert('עדכון הפרטים נכשל', null,
                         [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
+                        {cancelable: true});
                     navigation.navigate('Login');
-                }});
+                }
+            });
         }
     }
 
@@ -86,7 +86,7 @@ const EditUserInfo = ({navigation}) => {
                     setFirstName(firstName)
                     validateFirstName(firstName)
                 }}
-                errorStyle={{ color: 'red' }}
+                errorStyle={{color: 'red'}}
                 errorMessage={firstNameError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -99,7 +99,7 @@ const EditUserInfo = ({navigation}) => {
                     setLastName(lastName)
                     validateLastName(lastName)
                 }}
-                errorStyle={{ color: 'red' }}
+                errorStyle={{color: 'red'}}
                 errorMessage={lastNameError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -113,7 +113,7 @@ const EditUserInfo = ({navigation}) => {
                     validateEmail(email)
                 }}
                 keyboardType="email-address"
-                errorStyle={{ color: 'red' }}
+                errorStyle={{color: 'red'}}
                 errorMessage={emailError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -121,7 +121,7 @@ const EditUserInfo = ({navigation}) => {
             <Button
                 title="שמור"
                 onPress={handleSubmitPress}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -137,29 +137,31 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         backgroundColor: COLORS.white,
-        paddingTop:30,
+        paddingTop: '10%',
     },
-    input:{
-        borderBottomColor: COLORS.lightGreen
+    input: {
+        borderBottomColor: COLORS.lightGreen,
+        width: '95%',
+        alignSelf: "center"
     },
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
         alignSelf: "center"
     },
     nextText: {
         fontFamily: 'Rubik-Bold',
         fontSize: 23
     },
-    label:{
+    label: {
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         color: COLORS.grey,
+        marginLeft: '3%'
     },
-    editIcon:{
+    editIcon: {
         color: COLORS.grey,
-        margin:50,
+        margin: '13%',
     }
 })
 

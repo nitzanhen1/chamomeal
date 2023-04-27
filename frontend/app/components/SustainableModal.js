@@ -64,11 +64,11 @@ const styles = StyleSheet.create({
         height: '63%',
         backgroundColor: COLORS.light,
         borderRadius: 10,
-        // paddingHorizontal: 10
     },
     container: {
         flexDirection: "row",
         borderRadius: 10,
+        width: '100%'
     },
     exitIcon: {
         color: COLORS.darkGrey,
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
     information: {
         marginTop: 40,
         marginHorizontal: 10,
-        // borderRadius: 10,
         borderBottomLeftRadius: 10, // apply the bottom radius to the scroll view
         borderBottomRightRadius: 10,
         paddingBottom: 10,

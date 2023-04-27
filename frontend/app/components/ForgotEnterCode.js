@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import {AntDesign} from "@expo/vector-icons";
 import {verifyResetPasswordCode} from "../redux/actions";
 
@@ -15,26 +15,23 @@ const ForgotEnterCode = ({navigation, route}) => {
     const [Email, setEmail] = useState(route.params.email)
 
     const handleSubmit = () => {
-            dispatch(verifyResetPasswordCode(Email, code)).then((status)=>{
-                if(status===401) {
-                    Alert.alert('הקוד אינו תקף יותר', null,
+        dispatch(verifyResetPasswordCode(Email, code)).then((status) => {
+            if (status === 401) {
+                Alert.alert('הקוד אינו תקף יותר', null,
                     [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-                }
-                else if(status===408){
-                    Alert.alert('הקוד שהוזן אינו נכון', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===200){
-                    navigation.navigate('EnterNewPassword', {email: Email});
-                }
-                else{
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-            });
+                    {cancelable: true});
+            } else if (status === 408) {
+                Alert.alert('הקוד שהוזן אינו נכון', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 200) {
+                navigation.navigate('EnterNewPassword', {email: Email});
+            } else {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            }
+        });
     };
 
 
@@ -56,7 +53,7 @@ const ForgotEnterCode = ({navigation, route}) => {
             <Button
                 title="המשך"
                 onPress={handleSubmit}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -72,29 +69,29 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         backgroundColor: COLORS.white,
-        paddingTop:30,
+        paddingTop: '10%',
     },
-    input:{
-        borderBottomColor: COLORS.lightGreen
+    input: {
+        borderBottomColor: COLORS.lightGreen,
+        alignSelf: "center"
     },
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
         alignSelf: "center"
     },
     nextText: {
         fontWeight: 'bold',
         fontSize: 20
     },
-    label:{
+    label: {
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         color: COLORS.grey,
     },
-    editIcon:{
+    editIcon: {
         color: COLORS.grey,
-        margin:50,
+        margin: '13%',
     }
 })
 

@@ -3,7 +3,7 @@ import {ActivityIndicator, Alert, StyleSheet, View, Text, Image, ImageBackground
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, getGlobalDetails, SET_DATE} from "../redux/actions";
 import COLORS from "../consts/colors";
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from "@react-navigation/native";
 
 export default function LoadingScreen({navigation}) {
 
@@ -22,75 +22,67 @@ export default function LoadingScreen({navigation}) {
         'משפט 9',
         'משפט 10',
     ];
-    const [sentenceIndex] = useState(Math.floor(Math.random()*sentences.length));
+    const [sentenceIndex] = useState(Math.floor(Math.random() * sentences.length));
 
-    async function handleGetGlobalDetails(){
+    async function handleGetGlobalDetails() {
         dispatch(getGlobalDetails()).then(status => {
-            if(status===200){
+            if (status === 200) {
                 dispatch({type: SET_DATE});
                 dispatch(getDailyMenu(date)).then(() => {
                     navigation.navigate('BottomNavigator');
                 });
-            }else if(status===419){
+            } else if (status === 419) {
                 navigation.navigate('Login');
-            }
-            else{
+            } else {
                 Alert.alert('אוי לא משהו קרה! נסה שוב', null,
                     [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
+                    {cancelable: true});
             }
-        });}
+        });
+    }
 
     useEffect(() => {
-        if(focus == true) {
+        if (focus == true) {
             handleGetGlobalDetails().then();
         }
     }, [focus]);
 
     return (
-                <View style={styles.container}>
-                    <ImageBackground source={require('../assets/background3.png')} resizeMode="cover" style={styles.backgroundImage}>
-                    <View style={styles.title}>
-                        <Image
-                            style={styles.image}
-                            source={require('frontend/app/assets/CHAMOMEAL2.png')}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.loadingText}>{sentences[sentenceIndex]}</Text>
-                    </View>
-                    <ActivityIndicator size="large" color={COLORS.darkGreen} />
-                    </ImageBackground>
+        <View style={styles.container}>
+            <ImageBackground source={require('../assets/background3.png')} resizeMode="cover"
+                             style={styles.backgroundImage}>
+                <View style={styles.title}>
+                    <Image
+                        style={styles.image}
+                        source={require('frontend/app/assets/CHAMOMEAL2.png')}
+                    />
                 </View>
+                <View>
+                    <Text style={styles.loadingText}>{sentences[sentenceIndex]}</Text>
+                </View>
+                <ActivityIndicator size="large" color={COLORS.darkGreen}/>
+            </ImageBackground>
+        </View>
 
     );
 };
 const styles = StyleSheet.create({
-    view: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems:  "center",
-    },
     container: {
         height: '100%',
         width: '100%',
         justifyContent: 'center',
-        // backgroundColor: COLORS.white,
-
     },
     backgroundImage: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
-    title:{
+    title: {
         bottom: 30
     },
     image: {
         width: 271,
         height: 130,
-
     },
     loadingText: {
         fontSize: 20,

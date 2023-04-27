@@ -4,15 +4,15 @@ import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from "@react-navigation/native";
 
 export default function PlannerScreen() {
-    const { meals, consumed_calories, date, EER, replaced} = useSelector(state => state.mealReducer);
+    const {meals, consumed_calories, date, EER, replaced} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const focus = useIsFocused();
 
     useEffect(() => {
-        if(replaced) {
+        if (replaced) {
             dispatch({type: SET_DATE});
             dispatch(getDailyMenu(date)).then();
             dispatch(setReplaced(false));
@@ -34,18 +34,18 @@ export default function PlannerScreen() {
         <View style={styles.container}>
             <Text style={styles.textDate}>{dateToShow}</Text>
             <Text style={styles.textCals}>צרכת {consumed_calories} קלוריות מתוך {EER} הכמות המומלצת</Text>
-                <ScrollView style={styles.inputsContainer}>
-                    {meals.map(meal => (
-                        <View key={meal.title}>
-                            <Accordion
-                                title={meal.title}
-                                mealData={meal.mealData}
-                                date={date}
-                                dispatch={dispatch}
-                            />
-                        </View>
-                    ))}
-                </ScrollView>
+            <ScrollView style={styles.inputsContainer}>
+                {meals.map(meal => (
+                    <View key={meal.title}>
+                        <Accordion
+                            title={meal.title}
+                            mealData={meal.mealData}
+                            date={date}
+                            dispatch={dispatch}
+                        />
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }

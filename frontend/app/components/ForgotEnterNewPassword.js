@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import {AntDesign} from "@expo/vector-icons";
 import {resetPassword} from "../redux/actions";
 
@@ -18,7 +18,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
     const [newPasswordError, setNewPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    function validateNewPassword(newPassword){
+    function validateNewPassword(newPassword) {
         let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(newPassword)) {
             setNewPasswordError('')
@@ -29,7 +29,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
         }
     }
 
-    function validateConfirmPassword(confirmPassword){
+    function validateConfirmPassword(confirmPassword) {
         if (!confirmPassword) {
             setConfirmPasswordError("נדרשת סיסמה")
             return false
@@ -43,18 +43,19 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
     }
 
     const handleSubmitPress = () => {
-        if (validateNewPassword(newPassword) && validateConfirmPassword(confirmPassword)){
-            dispatch(resetPassword(Email, newPassword)).then((success)=>{
-                if(success) {
+        if (validateNewPassword(newPassword) && validateConfirmPassword(confirmPassword)) {
+            dispatch(resetPassword(Email, newPassword)).then((success) => {
+                if (success) {
                     Alert.alert('סיסמה שונתה בהצלחה!', null,
                         [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
+                        {cancelable: true});
                     navigation.navigate("Login");
                 } else {
                     Alert.alert('משהו השתבש, נסה שוב', null,
                         [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }});
+                        {cancelable: true});
+                }
+            });
         }
     };
 
@@ -70,7 +71,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
                 }}
                 secureTextEntry={true}
                 maxLength={16}
-                errorStyle={{ color: 'red' }}
+                errorStyle={{color: 'red'}}
                 errorMessage={newPasswordError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -84,7 +85,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
                     validateConfirmPassword(confirmPassword)
                 }}
                 secureTextEntry={true}
-                errorStyle={{ color: 'red' }}
+                errorStyle={{color: 'red'}}
                 errorMessage={confirmPasswordError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -93,7 +94,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
             <Button
                 title="שמור"
                 onPress={handleSubmitPress}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -109,29 +110,29 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         backgroundColor: COLORS.white,
-        paddingTop:30,
+        paddingTop: '10%',
     },
-    input:{
-        borderBottomColor: COLORS.lightGreen
+    input: {
+        borderBottomColor: COLORS.lightGreen,
+        alignSelf: 'center'
     },
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
         alignSelf: "center"
     },
     nextText: {
         fontWeight: 'bold',
         fontSize: 20
     },
-    label:{
+    label: {
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         color: COLORS.grey,
     },
-    editIcon:{
+    editIcon: {
         color: COLORS.grey,
-        margin:50,
+        margin: '13%',
     }
 })
 

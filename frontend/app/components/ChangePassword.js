@@ -4,7 +4,7 @@ import {Input} from "react-native-elements";
 import {updatePassword} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import {AntDesign} from "@expo/vector-icons";
 
 
@@ -19,7 +19,7 @@ const ChangePassword = ({navigation}) => {
     const [oldPasswordError, setOldPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    function validateOldPassword(oldPassword){
+    function validateOldPassword(oldPassword) {
         if (!oldPassword) {
             setOldPasswordError("אנא הכנס סיסמה נוכחית")
             return false
@@ -29,7 +29,7 @@ const ChangePassword = ({navigation}) => {
         }
     }
 
-    function validatePassword(newPassword){
+    function validatePassword(newPassword) {
         let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(newPassword)) {
             setPasswordError('')
@@ -40,7 +40,7 @@ const ChangePassword = ({navigation}) => {
         }
     }
 
-    function validateConfirmPassword(confirmPassword){
+    function validateConfirmPassword(confirmPassword) {
         if (!confirmPassword) {
             setConfirmPasswordError("נדרשת סיסמה")
             return false
@@ -53,81 +53,82 @@ const ChangePassword = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress(){
-        if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)){
-            dispatch(updatePassword(oldPassword,newPassword)).then((success)=>{
-                if(success) {
+    function handleSubmitPress() {
+        if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)) {
+            dispatch(updatePassword(oldPassword, newPassword)).then((success) => {
+                if (success) {
                     Alert.alert('סיסמה שונתה בהצלחה!', null,
                         [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
+                        {cancelable: true});
                     navigation.goBack();
                 } else {
                     Alert.alert('סיסמה נוכחית שגויה', null,
                         [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }});
+                        {cancelable: true});
+                }
+            });
         }
     }
 
     return (
-            <View style={styles.container}>
-                <AntDesign name="edit" size={50} style={styles.editIcon}/>
-                <Input
-                    label='סיסמה נוכחית'
-                    labelStyle={styles.label}
-                    onChangeText={(password) => {
-                        setOldPassword(password)
-                        validateOldPassword(password)
-                    }}
-                    secureTextEntry={true}
-                    maxLength={16}
-                    errorStyle={{ color: 'red' }}
-                    errorMessage={oldPasswordError}
-                    autoCapitalize='none'
-                    inputContainerStyle={styles.input}
-                    inputStyle={styles.text}
-                    // placeholder="••••••••"
-                />
-                <Input
-                    label='סיסמה חדשה'
-                    labelStyle={styles.label}
-                    onChangeText={(password) => {
-                        setNewPassword(password)
-                        validatePassword(password)
-                    }}
-                    // placeholder="••••••••"
-                    secureTextEntry={true}
-                    maxLength={16}
-                    errorStyle={{ color: 'red' }}
-                    errorMessage={passwordError}
-                    autoCapitalize='none'
-                    inputContainerStyle={styles.input}
-                    inputStyle={styles.text}
-                />
-                <Input
-                    label='אימות סיסמה חדשה'
-                    labelStyle={styles.label}
-                    onChangeText={(confirmPassword) => {
-                        setConfirmPassword(confirmPassword)
-                        validateConfirmPassword(confirmPassword)
-                    }}
-                    // placeholder="••••••••"
-                    secureTextEntry={true}
-                    errorStyle={{ color: 'red' }}
-                    errorMessage={confirmPasswordError}
-                    autoCapitalize='none'
-                    inputContainerStyle={styles.input}
-                    inputStyle={styles.text}
-                />
-                <Button
-                    title="שמור"
-                    onPress={handleSubmitPress}
-                    color = {COLORS.lightGreen}
-                    containerStyle={styles.nextButton}
-                    titleStyle={styles.nextText}
-                    radius={8}
-                />
-            </View>
+        <View style={styles.container}>
+            <AntDesign name="edit" size={50} style={styles.editIcon}/>
+            <Input
+                label='סיסמה נוכחית'
+                labelStyle={styles.label}
+                onChangeText={(password) => {
+                    setOldPassword(password)
+                    validateOldPassword(password)
+                }}
+                secureTextEntry={true}
+                maxLength={16}
+                errorStyle={{color: 'red'}}
+                errorMessage={oldPasswordError}
+                autoCapitalize='none'
+                inputContainerStyle={styles.input}
+                inputStyle={styles.text}
+                // placeholder="••••••••"
+            />
+            <Input
+                label='סיסמה חדשה'
+                labelStyle={styles.label}
+                onChangeText={(password) => {
+                    setNewPassword(password)
+                    validatePassword(password)
+                }}
+                // placeholder="••••••••"
+                secureTextEntry={true}
+                maxLength={16}
+                errorStyle={{color: 'red'}}
+                errorMessage={passwordError}
+                autoCapitalize='none'
+                inputContainerStyle={styles.input}
+                inputStyle={styles.text}
+            />
+            <Input
+                label='אימות סיסמה חדשה'
+                labelStyle={styles.label}
+                onChangeText={(confirmPassword) => {
+                    setConfirmPassword(confirmPassword)
+                    validateConfirmPassword(confirmPassword)
+                }}
+                // placeholder="••••••••"
+                secureTextEntry={true}
+                errorStyle={{color: 'red'}}
+                errorMessage={confirmPasswordError}
+                autoCapitalize='none'
+                inputContainerStyle={styles.input}
+                inputStyle={styles.text}
+            />
+            <Button
+                title="שמור"
+                onPress={handleSubmitPress}
+                color={COLORS.lightGreen}
+                containerStyle={styles.nextButton}
+                titleStyle={styles.nextText}
+                radius={8}
+            />
+        </View>
     )
 }
 
@@ -138,32 +139,35 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         backgroundColor: COLORS.white,
-        paddingTop:30,
+        paddingTop: '10%',
     },
-    input:{
-        borderBottomColor: COLORS.lightGreen
+    input: {
+        alignSelf: 'center',
+        borderBottomColor: COLORS.lightGreen,
+        width: '95%'
     },
-    text:{
-        textAlign:"right"
+    text: {
+        textAlign: "right",
     },
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
         alignSelf: "center"
     },
     nextText: {
         fontWeight: 'bold',
         fontSize: 20
     },
-    label:{
+    label: {
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         color: COLORS.grey,
+        marginLeft: '3%'
+
     },
-    editIcon:{
+    editIcon: {
         color: COLORS.grey,
-        margin:50,
+        margin: '13%',
     }
 })
 

@@ -15,8 +15,12 @@ const MealCard = ({recipe, meal_type}) => {
     const [visibleFullRecipe, setFullVisible] = React.useState(false);
     const [visibleSustainableModal, setVisibleSustainableModal] = React.useState(false);
 
-    const handleOpenFull = () => {setFullVisible(true);}
-    const handleCloseFull = () => {setFullVisible(false);}
+    const handleOpenFull = () => {
+        setFullVisible(true);
+    }
+    const handleCloseFull = () => {
+        setFullVisible(false);
+    }
 
     const handleCloseSustainableModal = () => {
         dispatch(setHeartAndChoose("", recipe["score"], true, false));
@@ -30,7 +34,7 @@ const MealCard = ({recipe, meal_type}) => {
 
     const getMoreSustainableRecipes = async () => {
         await dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.calories, recipe.score)).then(sustainableRecipes => {
-            if (sustainableRecipes != false){
+            if (sustainableRecipes != false) {
                 setSustainableRecipes(sustainableRecipes)
             }
         });
@@ -65,39 +69,52 @@ const MealCard = ({recipe, meal_type}) => {
     };
 
 
-
     return (
         <View style={styles.container}>
-            <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={()=>handleOpenFull()}>
-                <Image source={{uri:recipe.image}} style={styles.cardImage}/>
+            <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={() => handleOpenFull()}>
+                <Image source={{uri: recipe.image}} style={styles.cardImage}/>
                 <View style={styles.cardContent}>
-                        <View style={styles.cardTextContent}>
-                            <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
-                                <Text style={styles.cardSubtitle}>·</Text>
-                                <InfoPopUp
-                                    icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
-                                    explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
-                                    right={false}
-                                />
-                            </View>
-                            {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
-                            {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal} handleCloseSustainableModal={handleCloseSustainableModal} getMoreSustainableRecipes={getMoreSustainableRecipes} recipes={sustainableRecipes}/>}
-                        </View>
-                    <View style={styles.flowerContainer}>
+                    <View style={styles.cardTextContent}>
+                        <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
+                            <Text style={styles.cardSubtitle}>·</Text>
                             <InfoPopUp
-                                icon={<View style={{flexDirection: 'row'}}>
-                                        <Ionicons name="flower-outline" size={22} style={{color:"black"}}/>
-                                        <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
-                                    </View>}
-                                explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
-                                right={true}
+                                icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                                explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
+                                right={false}
                             />
+                        </View>
+                        {visibleFullRecipe &&
+                            <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull}
+                                            recipe={recipe}/>}
+                        {visibleSustainableModal && <SustainableModal visibleSustainableModal={visibleSustainableModal}
+                                                                      handleCloseSustainableModal={handleCloseSustainableModal}
+                                                                      getMoreSustainableRecipes={getMoreSustainableRecipes}
+                                                                      recipes={sustainableRecipes}/>}
+                    </View>
+                    <View style={styles.flowerContainer}>
+                        <InfoPopUp
+                            icon={<View style={{flexDirection: 'row'}}>
+                                <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
+                                <Text
+                                    style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
+                            </View>}
+                            explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
+                            right={true}
+                        />
                         <View style={styles.icons}>
-                            <TouchableOpacity disabled={!!recipe.eaten} style={recipe.eaten ? styles.upgradeDisable : styles.upgrade}  onPress={handleOpenSustainableModal}>
+                            <TouchableOpacity disabled={!!recipe.eaten}
+                                              style={recipe.eaten ? styles.upgradeDisable : styles.upgrade}
+                                              onPress={handleOpenSustainableModal}>
                                 <Image
-                                    style={{width: 26, height: 26,borderColor: COLORS.dark, borderWidth:2, borderRadius:50}}
+                                    style={{
+                                        width: 26,
+                                        height: 26,
+                                        borderColor: COLORS.dark,
+                                        borderWidth: 2,
+                                        borderRadius: 50
+                                    }}
                                     source={require('frontend/app/assets/earth-globe-12153.png')}
                                 />
                                 <Text style={styles.upgradeText}>שדרג!</Text>
@@ -128,7 +145,7 @@ const styles = StyleSheet.create({
     card: {
         height: 130,
         flexDirection: 'row',
-        borderRadius:10,
+        borderRadius: 10,
         backgroundColor: "white",
         elevation: 5,
     },
@@ -147,11 +164,10 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         fontFamily: 'Rubik-Regular',
         marginBottom: 5,
-
     },
     cardSubtitle: {
         marginBottom: 5,
-        marginRight:15,
+        marginRight: 15,
         fontSize: 15,
         fontFamily: 'Rubik-Regular',
     },
@@ -175,18 +191,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 3,
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
-        color:"black",
+        color: "black",
         paddingTop: 3,
-        marginRight:4,
+        marginRight: 4,
     },
-    icons:{
+    icons: {
         marginLeft: 10
     },
-    upgrade:{
+    upgrade: {
         flexDirection: 'row',
         paddingLeft: '35%',
     },
-    upgradeDisable:{
+    upgradeDisable: {
         flexDirection: 'row',
         opacity: 0.2,
         paddingLeft: '35%',
@@ -199,7 +215,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         textDecorationLine: "underline",
-        width: 45
+        // width: 45
     },
 });
 

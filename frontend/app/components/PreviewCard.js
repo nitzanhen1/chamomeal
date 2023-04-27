@@ -91,12 +91,14 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                             {sustainable &&
                                 <View style={{flexDirection: 'row'}}>
                                     <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
+                                    <Text
+                                        style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                 </View>}
                             {(!sustainable) && <InfoPopUp
                                 icon={<View style={{flexDirection: 'row'}}>
                                     <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
+                                    <Text
+                                        style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                 </View>}
                                 explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
                                 right={true}

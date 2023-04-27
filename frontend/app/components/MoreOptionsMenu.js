@@ -1,10 +1,11 @@
-import { StyleSheet, Text} from "react-native";
+import {StyleSheet, Text} from "react-native";
 import React, {useEffect} from "react";
 import {Menu, MenuOption, MenuOptions, MenuTrigger} from "react-native-popup-menu";
-import { FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 import {addToFavorites, replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
+
 const OptionsMenu = ({recipe, meal_type}) => {
 
 
@@ -13,16 +14,16 @@ const OptionsMenu = ({recipe, meal_type}) => {
     const {date} = useSelector(state => state.mealReducer);
     const [favIcon, setFavIcon] = React.useState(recipe.isFavorite ? 'heart-off-outline' : 'cards-heart-outline');
     const [favText, setFavText] = React.useState(recipe.isFavorite ? 'לא אהבתי' : 'אהבתי');
-    const {meals, searchResults, favorites} =  useSelector(state => state.mealReducer);
+    const {meals, searchResults, favorites} = useSelector(state => state.mealReducer);
 
-    const changeFav = () =>{
+    const changeFav = () => {
         recipe.isFavorite = !recipe.isFavorite;
-        setFavIcon(recipe.isFavorite ?  'heart-off-outline' : 'cards-heart-outline')
+        setFavIcon(recipe.isFavorite ? 'heart-off-outline' : 'cards-heart-outline')
         setFavText(recipe.isFavorite ? 'לא אהבתי' : 'אהבתי')
     }
     const handleAddToFavorite = async () => {
         changeFav();
-        dispatch(addToFavorites(recipe, favorites, meals, searchResults )).then(async success => {
+        dispatch(addToFavorites(recipe, favorites, meals, searchResults)).then(async success => {
             if (!success) {
                 changeFav();
             }
@@ -30,7 +31,7 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
 
     const handleReplaceByRandom = () => {
-        dispatch(replaceRecipe("replaceRecipeByRandom",'random', recipe["recipe_id"], date, meal_type, recipe["score"])).then();
+        dispatch(replaceRecipe("replaceRecipeByRandom", 'random', recipe["recipe_id"], date, meal_type, recipe["score"])).then();
     }
 
     const handleReplaceBySearch = () => {
@@ -44,62 +45,62 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
 
     useEffect(() => {
-        setFavIcon(recipe.isFavorite ?  'heart-off-outline' : 'cards-heart-outline')
+        setFavIcon(recipe.isFavorite ? 'heart-off-outline' : 'cards-heart-outline')
         setFavText(recipe.isFavorite ? 'לא אהבתי' : 'אהבתי')
     }, [recipe.isFavorite
     ]);
 
 
     return (
-            <Menu>
-                <MenuTrigger>
-                    <MaterialIcons name="more-vert" size={25} color="black" style={styles.moreIcon} />
-                </MenuTrigger>
-                <MenuOptions
-                    customStyles={styles.menuStyle}>
-                    <MenuOption
-                        onSelect={handleAddToFavorite}
-                        customStyles={styles.optionStyle}>
-                        <Text>{favText}</Text>
-                        <MaterialCommunityIcons name={favIcon} size={24} color="black" />
-                    </MenuOption>
-                    <MenuOption
-                        disabled={!!recipe.eaten}
-                        onSelect={handleReplaceByRandom}
-                        customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
-                        <Text>תפתיעו אותי</Text>
-                        <FontAwesome name="random" size={24} color="black" />
-                    </MenuOption>
-                    <MenuOption
-                        disabled={!!recipe.eaten}
-                        onSelect={handleReplaceBySearch}
-                        customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
-                        <Text>חפש מתכון אחר</Text>
-                        <MaterialCommunityIcons name="find-replace" size={24} color="black" />
-                    </MenuOption>
-                    <MenuOption
-                        disabled={!!recipe.eaten}
-                        onSelect={handleReplaceByFavorite}
-                        customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
-                        <Text>החלף מהמועדפים</Text>
-                        <Ionicons name="md-heart-circle-outline" size={24} color="black" />
-                    </MenuOption>
-                </MenuOptions>
-            </Menu>
+        <Menu>
+            <MenuTrigger>
+                <MaterialIcons name="more-vert" size={25} color="black" style={styles.moreIcon}/>
+            </MenuTrigger>
+            <MenuOptions
+                customStyles={styles.menuStyle}>
+                <MenuOption
+                    onSelect={handleAddToFavorite}
+                    customStyles={styles.optionStyle}>
+                    <Text>{favText}</Text>
+                    <MaterialCommunityIcons name={favIcon} size={24} color="black"/>
+                </MenuOption>
+                <MenuOption
+                    disabled={!!recipe.eaten}
+                    onSelect={handleReplaceByRandom}
+                    customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
+                    <Text>תפתיעו אותי</Text>
+                    <FontAwesome name="random" size={24} color="black"/>
+                </MenuOption>
+                <MenuOption
+                    disabled={!!recipe.eaten}
+                    onSelect={handleReplaceBySearch}
+                    customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
+                    <Text>חפש מתכון אחר</Text>
+                    <MaterialCommunityIcons name="find-replace" size={24} color="black"/>
+                </MenuOption>
+                <MenuOption
+                    disabled={!!recipe.eaten}
+                    onSelect={handleReplaceByFavorite}
+                    customStyles={recipe.eaten ? styles.optionStyleDisable : styles.optionStyle}>
+                    <Text>החלף מהמועדפים</Text>
+                    <Ionicons name="md-heart-circle-outline" size={24} color="black"/>
+                </MenuOption>
+            </MenuOptions>
+        </Menu>
     );
 };
 export default OptionsMenu;
 
 const styles = StyleSheet.create({
-    menuStyle:{
+    menuStyle: {
         optionsContainer: {
             borderRadius: 10,
             marginTop: 20,
             marginRight: 20,
-            width:"40%"
+            width: "40%"
         }
     },
-    optionStyle:{
+    optionStyle: {
         optionWrapper: {
             flexDirection: "row",
             alignItems: "center",
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
             opacity: 1,
         },
     },
-    optionStyleDisable:{
+    optionStyleDisable: {
         optionWrapper: {
             flexDirection: "row",
             alignItems: "center",

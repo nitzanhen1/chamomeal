@@ -37,7 +37,7 @@ export default function SearchScreen() {
 
     const onChangeSearch = query => setSearchQuery(query);
 
-    function resetSearchScreen(){
+    function resetSearchScreen() {
         dispatch(resetSearch());
         setLactoseCheck(without_lactose);
         setGlutenCheck(gluten_free);
@@ -90,7 +90,7 @@ export default function SearchScreen() {
     useFocusEffect(
         React.useCallback(() => {
             return () => {
-                dispatch(setHeartAndChoose('', 0,true, false));
+                dispatch(setHeartAndChoose('', 0, true, false));
                 resetSearchScreen();
 
             };
@@ -238,11 +238,6 @@ export default function SearchScreen() {
     );
 };
 const styles = StyleSheet.create({
-    view: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
     container: {
         direction: 'rtl',
         height: '100%'

@@ -253,13 +253,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-
-    },
-    textCals: {
-        fontSize: 24,
-        alignSelf: 'center',
-        top: 20,
-        fontWeight: 'bold',
     },
     textImg: {
         fontSize: 18,
@@ -269,12 +262,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     list_img: {
-        // top: 50,
         marginTop: 7,
         marginBottom: 10,
         justifyContent: 'space-evenly',
         alignItems: 'center',
-
     },
     image: {
         width: 100,
@@ -299,29 +290,20 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Bold',
         fontSize: 22,
         alignSelf: 'center',
-        // width: '100%',
-        // textAlign: "center",
-        height: 32,
         textAlignVertical: "center",
         color: COLORS.darkGrey
-        // fontWeight: '700',
     },
     header: {
         flexDirection: "row",
         width: '100%',
         backgroundColor: COLORS.subtitles,
-        // marginTop: 15,
         justifyContent: "space-between",
         height: 32,
-        paddingHorizontal: 27
-        // alignItems: "stretch",
-        // alignContent: "center"
+        paddingHorizontal: '6%',
     },
     qIcon: {
         marginTop: 3,
         color: COLORS.darkGrey,
-
-        // alignSelf: "flex-end"
     },
     modalView: {
         margin: 20,
@@ -345,14 +327,12 @@ const styles = StyleSheet.create({
     },
     modalButton: {
         fontFamily: 'Rubik-Bold',
-
         color: COLORS.primary,
     },
     modalTitle: {
         fontFamily: 'Rubik-Bold',
         fontSize: 16,
         color: COLORS.title
-
     },
     modalBackGround: {
         flex: 1,

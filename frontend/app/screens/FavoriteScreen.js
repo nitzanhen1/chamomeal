@@ -10,7 +10,7 @@ export default function FavoriteScreen() {
     const {favorites} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
-    useEffect(() =>{
+    useEffect(() => {
         dispatch(getFavorites()).then();
     }, []);
 
@@ -24,8 +24,8 @@ export default function FavoriteScreen() {
     );
 
     return (
-        <ScrollView style={{paddingHorizontal: 8}}>
-            {favorites.map(meal=>
+        <ScrollView style={styles.view}>
+            {favorites.map(meal =>
                 <View key={meal.recipe_id}>
                     <PreviewCard recipe={meal} sustainable={false} from={'favorites'}/>
                 </View>
@@ -35,8 +35,6 @@ export default function FavoriteScreen() {
 };
 const styles = StyleSheet.create({
     view: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems:  "center",
+        paddingHorizontal: 8
     },
 });
