@@ -1,10 +1,10 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native'
 import React, {useState} from 'react'
-import { Input } from 'react-native-elements';
+import {Input} from 'react-native-elements';
 import {useDispatch} from "react-redux";
 import {login} from "../redux/actions";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import {useFocusEffect} from "@react-navigation/native";
 
 
@@ -16,15 +16,15 @@ const LoginScreen = ({navigation}) => {
     const [passwordError, setPasswordError] = useState('')
 
 
-    function navToRegister(){
+    function navToRegister() {
         navigation.navigate('RegisterScreen');
     }
 
-    function navToForgotPassword(){
+    function navToForgotPassword() {
         navigation.navigate('ForgotPasswordScreen');
     }
 
-    function validateUsername(username){
+    function validateUsername(username) {
         if (!username) {
             setUsernameError('נדרש שם משתמש');
             return false
@@ -36,7 +36,8 @@ const LoginScreen = ({navigation}) => {
             return true
         }
     }
-    function validatePassword(password){
+
+    function validatePassword(password) {
         if (!password) {
             setPasswordError('נדרשת סיסמה');
             return false
@@ -48,28 +49,26 @@ const LoginScreen = ({navigation}) => {
             return true
         }
     }
-    async function handleSubmitPress(){
+
+    async function handleSubmitPress() {
         if (validateUsername(username) && validatePassword(userPassword)) {
-            try{
-                dispatch(login(username,userPassword)).then((status)=>{
-                if(status===404) {
-                    Alert.alert('שם משתמש או סיסמה אינם נכונים', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===202){
-                    navigation.navigate('QuestionnaireScreen', { prevRouteName: 'LoginScreen' });
-                }
-                else if(status===200){
-                    navigation.navigate('LoadingScreen');
-                }
-                else{
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
+            try {
+                dispatch(login(username, userPassword)).then((status) => {
+                    if (status === 404) {
+                        Alert.alert('שם משתמש או סיסמה אינם נכונים', null,
+                            [{text: 'אוקיי', style: 'cancel'}],
+                            {cancelable: true});
+                    } else if (status === 202) {
+                        navigation.navigate('QuestionnaireScreen', {prevRouteName: 'LoginScreen'});
+                    } else if (status === 200) {
+                        navigation.navigate('LoadingScreen');
+                    } else {
+                        Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                            [{text: 'אוקיי', style: 'cancel'}],
+                            {cancelable: true});
+                    }
                 });
-            }catch (error){
+            } catch (error) {
                 console.log(error)
             }
         }
@@ -103,7 +102,7 @@ const LoginScreen = ({navigation}) => {
                         setUsername(username)
                     }}
                     placeholder='שם משתמש / אימייל'
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={usernameError}
                     autoCapitalize='none'
                     containerStyle={styles.input}
@@ -118,7 +117,7 @@ const LoginScreen = ({navigation}) => {
                     placeholder="סיסמה"
                     secureTextEntry={true}
                     maxLength={16}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={passwordError}
                     containerStyle={styles.input}
                     inputContainerStyle={styles.input}
@@ -128,7 +127,7 @@ const LoginScreen = ({navigation}) => {
                 <Button
                     title="התחבר"
                     onPress={handleSubmitPress}
-                    color = {COLORS.lightGreen}
+                    color={COLORS.lightGreen}
                     containerStyle={styles.nextButton}
                     titleStyle={styles.nextText}
                     radius={8}
@@ -149,29 +148,29 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         justifyContent: "center",
-        alignItems:  "center",
+        alignItems: "center",
     },
     container: {
         height: '100%',
         width: '100%',
         alignItems: 'center',
-        paddingTop: 170,
+        paddingTop: '50%',
         backgroundColor: COLORS.white,
-
     },
-    title:{
-        bottom: 50
+    title: {
+        bottom: '10%',
     },
-    input:{
-        borderBottomColor: COLORS.lightGreen
+    input: {
+        borderBottomColor: COLORS.lightGreen,
+        width: '98%',
     },
-    text:{
-        textAlign:"right"
+    text: {
+        textAlign: "right"
     },
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
+        marginBottom: '7%',
         alignSelf: "center"
     },
     nextText: {
@@ -194,13 +193,13 @@ const styles = StyleSheet.create({
     },
     account: {
         fontSize: 16,
+        marginBottom: 5,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
     },
     image: {
         width: 271,
         height: 130,
-
     }
 })
 

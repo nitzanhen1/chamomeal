@@ -17,9 +17,20 @@ const COLORS = {
     meal: '#ffc14f',
     row: 'rgba(122,204,110,0.54)',
     upgrade: '#2d7a9a',
-    upgradeButton: '#4a915e',
+    upgradeButton: '#137070',
     heart: '#fa5a5a',
     subtitles: 'rgba(159,176,159,0.36)',
+    //flower scale
+    flower1: '#FF0000',
+    flower2: '#FF4500',
+    flower3: '#ff8800',
+    flower4: '#ffae00',
+    flower5: '#9ACD32',
+    flower6: '#7CFC00',
+    flower7: '#32CD32',
+    flower8: '#008000',
+    flower9: '#006400',
+    flower10: '#006461',
   };
   
   export default COLORS;

@@ -14,7 +14,8 @@ import {Feather} from "@expo/vector-icons";
 const Stack = createNativeStackNavigator();
 
 const QuestionnaireScreen = ({navigation, route}) => {
-    const {date,
+    const {
+        date,
         year_of_birth,
         height,
         weight,
@@ -24,7 +25,8 @@ const QuestionnaireScreen = ({navigation, route}) => {
         vegetarian,
         without_lactose,
         gluten_free,
-        kosher} = useSelector(state => state.mealReducer);
+        kosher
+    } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     function handleFinish(foodData) {
@@ -48,16 +50,16 @@ const QuestionnaireScreen = ({navigation, route}) => {
         });
     }
 
-    function handleBack(){
+    function handleBack() {
         Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
             [
-                { text: 'כן', onPress: () => navigation.goBack() },
+                {text: 'כן', onPress: () => navigation.goBack()},
                 {
                     text: 'לא',
                     style: 'cancel',
                 },
             ],
-            { cancelable: true });
+            {cancelable: true});
         // dispatch(setEarned(false));
     }
 
@@ -73,7 +75,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
         })
     }
 
-    function returnButton(){
+    function returnButton() {
         return (
             <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => handleBack()}/>
         );
@@ -85,11 +87,11 @@ const QuestionnaireScreen = ({navigation, route}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:true,
+                        headerShown: true,
                     }}>
                     <Stack.Screen name="PersonalDetails" component={PersonalDetails}
                                   options={{
-                                      headerTitle:"פרופיל פיזיולוגי",
+                                      headerTitle: "פרופיל פיזיולוגי",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -104,7 +106,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
                                   }}/>
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{
-                                      headerTitle:"פעילות גופנית",
+                                      headerTitle: "פעילות גופנית",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -118,7 +120,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
                     />
                     <Stack.Screen name="FoodPreferences"
                                   options={{
-                                      headerTitle:"העדפות תזונתיות",
+                                      headerTitle: "העדפות תזונתיות",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -130,7 +132,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
                                       headerBackVisible: false,
                                   }}
                     >
-                        {(props) => <FoodPreferences {...props} handleFinish={(foodData)=>handleFinish(foodData)} />}
+                        {(props) => <FoodPreferences {...props} handleFinish={(foodData) => handleFinish(foodData)}/>}
                     </Stack.Screen>
                 </Stack.Navigator>
             </View>
@@ -152,16 +154,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.grey,
         marginTop: 10,
     },
-    nextButton: {
-        marginTop: 10,
-        width: '85%',
-        height: 65,
-    },
-    nextText: {
-        fontFamily: 'Rubik-Bold',
-        fontSize: 20
-    }
-
 })
 
 export default QuestionnaireScreen;

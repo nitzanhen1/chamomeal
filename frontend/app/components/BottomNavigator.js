@@ -56,7 +56,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "חיפוש",
           tabBarIcon: ({color}) => (
-            <Icon name="search" color={color} size={26} />
+            <Icon name="search" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
@@ -66,7 +66,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "מועדפים",
           tabBarIcon: ({color}) => (
-            <Icon name="favorite-border" color={color} size={26} />
+            <Icon name="favorite-border" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
@@ -77,7 +77,7 @@ const BottomNavigator = ({ navigation }) => {
             tabBarLabel: "תפריט יומי",
           tabBarIcon: ({color}) => (
             <View style={styles.centerTabd}>
-              <Icon name="list-alt" color={color} size={26} />
+              <Icon name="list-alt" color={color} size={26} style={{bottom: 2}}/>
             </View>
           ),
         }}
@@ -88,7 +88,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "ההישגים שלי",
           tabBarIcon: ({color}) => (
-            <Icon name="public" color={color} size={26} />
+            <Icon name="public" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
@@ -98,7 +98,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "פרופיל אישי",
           tabBarIcon: ({color}) => (
-            <Icon name="account-circle" color={color} size={26} />
+            <Icon name="account-circle" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
