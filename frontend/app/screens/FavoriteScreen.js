@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {StyleSheet, View, ScrollView, Alert} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {getFavorites, setHeartAndChoose} from "../redux/actions";
 import PreviewCard from "../components/PreviewCard";
@@ -11,7 +11,13 @@ export default function FavoriteScreen() {
     const dispatch = useDispatch();
 
     useEffect(() =>{
-        dispatch(getFavorites()).then();
+        dispatch(getFavorites()).then(result =>{
+            if(!result){
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
+        });
     }, []);
 
     useFocusEffect(

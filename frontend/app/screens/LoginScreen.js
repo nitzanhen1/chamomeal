@@ -6,6 +6,7 @@ import {login} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
 import {useFocusEffect} from "@react-navigation/native";
+import { Ionicons } from '@expo/vector-icons';
 
 
 const LoginScreen = ({navigation}) => {
@@ -13,7 +14,8 @@ const LoginScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [usernameError, setUsernameError] = useState('');
-    const [passwordError, setPasswordError] = useState('')
+    const [passwordError, setPasswordError] = useState('');
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 
     function navToRegister(){
@@ -75,6 +77,10 @@ const LoginScreen = ({navigation}) => {
         }
     }
 
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    };
+
     useFocusEffect(
         React.useCallback(() => {
             return () => {
@@ -116,7 +122,7 @@ const LoginScreen = ({navigation}) => {
                         validatePassword(UserPassword)
                     }}
                     placeholder="סיסמה"
-                    secureTextEntry={true}
+                    secureTextEntry={!isPasswordVisible}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
                     errorMessage={passwordError}
@@ -124,6 +130,15 @@ const LoginScreen = ({navigation}) => {
                     inputContainerStyle={styles.input}
                     autoCapitalize='none'
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Button
                     title="התחבר"
@@ -198,6 +213,13 @@ const styles = StyleSheet.create({
         width: 271,
         height: 130,
 
+    },
+    iconContainer: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        bottom: 8,
+        justifyContent: 'center',
     }
 })
 

@@ -1,11 +1,11 @@
-import {View, StyleSheet, Alert} from 'react-native'
+import {View, StyleSheet, Alert, TouchableOpacity} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {updatePassword} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
-import {AntDesign} from "@expo/vector-icons";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
 
 
 const ChangePassword = ({navigation}) => {
@@ -18,6 +18,10 @@ const ChangePassword = ({navigation}) => {
     const [passwordError, setPasswordError] = useState('');
     const [oldPasswordError, setOldPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
+    const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
     function validateOldPassword(oldPassword){
         if (!oldPassword) {
@@ -69,6 +73,16 @@ const ChangePassword = ({navigation}) => {
         }
     }
 
+    const toggleOldPasswordVisibility = () => {
+        setIsOldPasswordVisible(!isOldPasswordVisible);
+    };
+    const toggleNewPasswordVisibility = () => {
+        setIsNewPasswordVisible(!isNewPasswordVisible);
+    };
+    const toggleConfirmPasswordVisibility = () => {
+        setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+    };
+
     return (
             <View style={styles.container}>
                 <AntDesign name="edit" size={50} style={styles.editIcon}/>
@@ -79,7 +93,7 @@ const ChangePassword = ({navigation}) => {
                         setOldPassword(password)
                         validateOldPassword(password)
                     }}
-                    secureTextEntry={true}
+                    secureTextEntry={!isOldPasswordVisible}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
                     errorMessage={oldPasswordError}
@@ -87,6 +101,15 @@ const ChangePassword = ({navigation}) => {
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
                     // placeholder="••••••••"
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleOldPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isOldPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Input
                     label='סיסמה חדשה'
@@ -96,13 +119,22 @@ const ChangePassword = ({navigation}) => {
                         validatePassword(password)
                     }}
                     // placeholder="••••••••"
-                    secureTextEntry={true}
+                    secureTextEntry={!isNewPasswordVisible}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleNewPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isNewPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Input
                     label='אימות סיסמה חדשה'
@@ -112,12 +144,21 @@ const ChangePassword = ({navigation}) => {
                         validateConfirmPassword(confirmPassword)
                     }}
                     // placeholder="••••••••"
-                    secureTextEntry={true}
+                    secureTextEntry={!isConfirmPasswordVisible}
                     errorStyle={{ color: 'red' }}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleConfirmPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isConfirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Button
                     title="שמור"
@@ -164,6 +205,13 @@ const styles = StyleSheet.create({
     editIcon:{
         color: COLORS.grey,
         margin:50,
+    },
+    iconContainer: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        bottom: 8,
+        justifyContent: 'center',
     }
 })
 

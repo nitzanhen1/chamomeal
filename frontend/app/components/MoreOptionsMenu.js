@@ -1,4 +1,4 @@
-import { StyleSheet, Text} from "react-native";
+import {Alert, StyleSheet, Text} from "react-native";
 import React, {useEffect} from "react";
 import {Menu, MenuOption, MenuOptions, MenuTrigger} from "react-native-popup-menu";
 import { FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
@@ -25,12 +25,21 @@ const OptionsMenu = ({recipe, meal_type}) => {
         dispatch(addToFavorites(recipe, favorites, meals, searchResults )).then(async success => {
             if (!success) {
                 changeFav();
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
             }
         });
     }
 
     const handleReplaceByRandom = () => {
-        dispatch(replaceRecipe("replaceRecipeByRandom",'random', recipe["recipe_id"], date, meal_type, recipe["score"])).then();
+        dispatch(replaceRecipe("replaceRecipeByRandom",'random', recipe["recipe_id"], date, meal_type, recipe["score"])).then(result =>{
+            if(!result){
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
+        });
     }
 
     const handleReplaceBySearch = () => {

@@ -5,6 +5,7 @@ import {login, register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
+import {Ionicons} from "@expo/vector-icons";
 
 
 const RegisterScreen = ({navigation}) => {
@@ -23,6 +24,9 @@ const RegisterScreen = ({navigation}) => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
     function navToLogin(){
         navigation.navigate('Login');
@@ -143,6 +147,14 @@ const RegisterScreen = ({navigation}) => {
         }
     }
 
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+    };
+
     return (
         <View style={styles.view}>
             <ScrollView style={styles.container}>
@@ -201,13 +213,22 @@ const RegisterScreen = ({navigation}) => {
                         validatePassword(password)
                     }}
                     placeholder="סיסמה"
-                    secureTextEntry={true}
+                    secureTextEntry={!isPasswordVisible}
                     maxLength={16}
                     errorStyle={{ color: 'red' }}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
 
                 />
                 <Input
@@ -216,12 +237,21 @@ const RegisterScreen = ({navigation}) => {
                         validateConfirmPassword(confirmPassword)
                     }}
                     placeholder="אימות סיסמה"
-                    secureTextEntry={true}
+                    secureTextEntry={!isConfirmPasswordVisible}
                     errorStyle={{ color: 'red' }}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleConfirmPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isConfirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Button
                     title="הירשם"
@@ -288,6 +318,13 @@ const styles = StyleSheet.create({
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
     },
+    iconContainer: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        bottom: 8,
+        justifyContent: 'center',
+    }
 })
 
 export default RegisterScreen;

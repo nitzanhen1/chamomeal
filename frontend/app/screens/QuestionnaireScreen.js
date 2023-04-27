@@ -27,10 +27,17 @@ const QuestionnaireScreen = ({navigation, route}) => {
     const dispatch = useDispatch();
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(() =>{
-            const prevRouteName = route.params.prevRouteName;
-            const screenToNavigate = (prevRouteName=='PersonalScreen') ? 'BottomNavigator' : 'LoadingScreen';
-            navigation.navigate(screenToNavigate);
+        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(result => {
+            if(result){
+                const prevRouteName = route.params.prevRouteName;
+                const screenToNavigate = (prevRouteName=='PersonalScreen') ? 'BottomNavigator' : 'LoadingScreen';
+                navigation.navigate(screenToNavigate);
+            }else{
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
+
         });
     }
 
