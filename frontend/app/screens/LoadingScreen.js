@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View, Text, Image, ImageBackground} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getGlobalDetails, SET_DATE} from "../redux/actions";
+import {getDailyMenu, getFavorites, getGlobalDetails, SET_DATE} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -30,6 +30,7 @@ export default function LoadingScreen({navigation}) {
                 dispatch({type: SET_DATE});
                 dispatch(getDailyMenu(date)).then((status) => {
                     if(status===200){
+                        dispatch(getFavorites());
                         navigation.navigate('BottomNavigator');
                     }else if (status===419){
                         navigation.navigate('Login');
