@@ -6,7 +6,7 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import { updateUserPreferences} from "../redux/actions";
+import {updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Feather} from "@expo/vector-icons";
 
@@ -14,7 +14,8 @@ import {Feather} from "@expo/vector-icons";
 const Stack = createNativeStackNavigator();
 
 const QuestionnaireScreen = ({navigation, route}) => {
-    const { year_of_birth,
+    const {
+        year_of_birth,
         height,
         weight,
         gender,
@@ -23,31 +24,32 @@ const QuestionnaireScreen = ({navigation, route}) => {
         vegetarian,
         without_lactose,
         gluten_free,
-        kosher} = useSelector(state => state.mealReducer);
+        kosher
+    } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(() =>{
+        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(() => {
             const prevRouteName = route.params.prevRouteName;
-            const screenToNavigate = (prevRouteName=='PersonalScreen') ? 'BottomNavigator' : 'LoadingScreen';
+            const screenToNavigate = (prevRouteName == 'PersonalScreen') ? 'BottomNavigator' : 'LoadingScreen';
             navigation.navigate(screenToNavigate);
         });
     }
 
-    function handleBack(){
+    function handleBack() {
         Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
             [
-                { text: 'כן', onPress: () => navigation.goBack() },
+                {text: 'כן', onPress: () => navigation.goBack()},
                 {
                     text: 'לא',
                     style: 'cancel',
                 },
             ],
-            { cancelable: true });
+            {cancelable: true});
         // dispatch(setEarned(false));
     }
 
-    function returnButton(){
+    function returnButton() {
         return (
             <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => handleBack()}/>
         );
@@ -59,11 +61,11 @@ const QuestionnaireScreen = ({navigation, route}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:true,
+                        headerShown: true,
                     }}>
                     <Stack.Screen name="PersonalDetails" component={PersonalDetails}
                                   options={{
-                                      headerTitle:"פרופיל פיזיולוגי",
+                                      headerTitle: "פרופיל פיזיולוגי",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -78,7 +80,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
                                   }}/>
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{
-                                      headerTitle:"פעילות גופנית",
+                                      headerTitle: "פעילות גופנית",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -92,7 +94,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
                     />
                     <Stack.Screen name="FoodPreferences"
                                   options={{
-                                      headerTitle:"העדפות תזונתיות",
+                                      headerTitle: "העדפות תזונתיות",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -104,7 +106,7 @@ const QuestionnaireScreen = ({navigation, route}) => {
                                       headerBackVisible: false,
                                   }}
                     >
-                        {(props) => <FoodPreferences {...props} handleFinish={(foodData)=>handleFinish(foodData)} />}
+                        {(props) => <FoodPreferences {...props} handleFinish={(foodData) => handleFinish(foodData)}/>}
                     </Stack.Screen>
                 </Stack.Navigator>
             </View>
@@ -126,16 +128,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.grey,
         marginTop: 10,
     },
-    nextButton: {
-        marginTop: 10,
-        width: '85%',
-        height: 65,
-    },
-    nextText: {
-        fontFamily: 'Rubik-Bold',
-        fontSize: 20
-    }
-
 })
 
 export default QuestionnaireScreen;

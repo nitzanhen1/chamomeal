@@ -28,63 +28,95 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
     const handleChooseButton = () => {
         let replacementDiff = recipe["score"] - meal_score
         dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff)).then()
-            if(sustainable) {
-                handleCloseSustainableModal();
-            }
-            else{
-                dispatch(setHeartAndChoose("",replacementDiff, true, false));
-                navigation.navigate("Meal Planner");
-            }
+        if (sustainable) {
+            handleCloseSustainableModal();
+        } else {
+            dispatch(setHeartAndChoose("", replacementDiff, true, false));
+            navigation.navigate("Meal Planner");
+        }
     }
+
+    const getNumberTextColor = (number) => {
+        switch (number) {
+            case 1:
+                return COLORS.flower1;
+            case 2:
+                return COLORS.flower2;
+
+            case 3:
+                return COLORS.flower3;
+            case 4:
+                return COLORS.flower4;
+            case 5:
+                return COLORS.flower5;
+            case 6:
+                return COLORS.flower6;
+            case 7:
+                return COLORS.flower7;
+            case 8:
+                return COLORS.flower8;
+            case 9:
+                return COLORS.flower9;
+            case 10:
+                return COLORS.flower10;
+            default:
+                return 'black';
+        }
+    };
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={()=>handleOpenFull()}>
-                <Image source={{uri:recipe.image}} style={styles.cardImage}/>
+            <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={() => handleOpenFull()}>
+                <Image source={{uri: recipe.image}} style={styles.cardImage}/>
                 <View style={styles.cardContent}>
                     <View style={styles.cardTextContent}>
                         <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             <Text style={styles.cardSubtitle}>·</Text>
-                            {sustainable && <Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                            {sustainable && <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
+                                                  numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text>}
                             {(!sustainable) && <InfoPopUp
                                 icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
                                 explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
                                 right={false}
                             />}
                         </View>
-                        {visibleFullRecipe && <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull} recipe={recipe}/>}
+                        {visibleFullRecipe &&
+                            <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull}
+                                            recipe={recipe}/>}
                     </View>
                     <View style={styles.bottomContainer}>
                         <View style={styles.flowerContainer}>
                             {sustainable &&
                                 <View style={{flexDirection: 'row'}}>
-                                    <Ionicons name="flower-outline" size={22} style={{color:"black"}}/>
-                                    <Text style={styles.flowerText}>{recipe.score}</Text>
+                                    <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
+                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                 </View>}
                             {(!sustainable) && <InfoPopUp
                                 icon={<View style={{flexDirection: 'row'}}>
-                                    <Ionicons name="flower-outline" size={22} style={{color:"black"}}/>
-                                    <Text style={styles.flowerText}>{recipe.score}</Text>
+                                    <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
+                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
                                 </View>}
                                 explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית נמוכה"
                                 right={true}
                             />}
                         </View>
-                        <View style={styles.heartIcon}>
-                        {heartIcon && <HeartIcon recipe={recipe}/>}
-                        </View>
-                        <View style={styles.chooseButton}>
-                            {chooseButton &&
-                                <Button
-                                onPress={handleChooseButton}
-                                title="בחר"
-                                color={COLORS.upgradeButton}
-                                size="sm"
-                                containerStyle={styles.button}
-                                titleStyle={styles.buttonText}
-                                />}
+                        <View>
+                            <View style={styles.heartIcon}>
+                                {heartIcon && <HeartIcon recipe={recipe}/>}
+                            </View>
+                            <View style={styles.chooseButton}>
+                                {chooseButton &&
+                                    <Button
+                                        onPress={handleChooseButton}
+                                        title="בחר"
+                                        color={COLORS.upgradeButton}
+                                        size="sm"
+                                        containerStyle={styles.button}
+                                        titleStyle={styles.buttonText}
+                                    />}
+                            </View>
                         </View>
                     </View>
 
@@ -106,7 +138,7 @@ const styles = StyleSheet.create({
     card: {
         height: 130,
         flexDirection: 'row',
-        borderRadius:10,
+        borderRadius: 10,
         backgroundColor: "white",
         elevation: 5,
     },
@@ -118,14 +150,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         paddingTop: 16,
-        paddingLeft: 10
+        paddingLeft: 10,
+        paddingRight: 7
     },
     cardTitle: {
         fontSize: 20,
         fontWeight: '900',
         fontFamily: 'Rubik-Regular',
         paddingLeft: 7,
-        marginBottom: 5,
+        marginBottom: 3,
+        lineHeight: 24
     },
     cardSubtitle: {
         marginBottom: 5,
@@ -149,39 +183,50 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     flowerIcon: {
-        color:"black"
+        color: "black"
     },
     flowerText: {
         paddingHorizontal: 3,
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
-        color:"black",
+        color: "black",
         paddingTop: 3,
-        marginRight:4,
+        marginRight: 4,
     },
-    chooseButton:{
-        marginRight:10,
-        bottom:7,
+    chooseButton: {
+        marginRight: '35%',
+        bottom: 5,
     },
-    button:{
+    button: {
         borderRadius: 5,
-        height: 32,
-        marginLeft: 5,
+        height: 28,
+        width: '80%',
+        marginLeft: '30%',
         textAlignVertical: "center",
-        borderBottomLeftRadius: 8, // apply the bottom radius to the scroll view
-        borderBottomRightRadius: 8,
+        borderWidth: 1,
+        borderColor: COLORS.title
     },
-    buttonText:{
+    buttonText: {
         fontFamily: 'Rubik-Bold',
         fontSize: 16,
-        paddingHorizontal: 4,
-
+        // paddingHorizontal: 4,
+        letterSpacing: 1
     },
     bottomContainer: {
-        flexDirection:'row',
+        flexDirection: 'row',
+        justifyContent: "space-between"
     },
     heartIcon: {
-        paddingLeft: '55%',
+        // paddingLeft: '55%',
+        // marginLeft: '30%',
+        marginRight: 10
+    },
+    cardGHGSubtitle: {
+        marginBottom: 5,
+        marginRight: 7,
+        fontSize: 15,
+        fontFamily: 'Rubik-Regular',
+
     }
 });
 

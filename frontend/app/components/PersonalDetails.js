@@ -4,7 +4,7 @@ import {TextInput, RadioButton, HelperText} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPersonalDetails} from "../redux/actions";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const PersonalDetails = ({navigation}) => {
@@ -12,7 +12,8 @@ const PersonalDetails = ({navigation}) => {
         height,
         weight,
         year_of_birth,
-        gender} = useSelector(state => state.mealReducer);
+        gender
+    } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const [newHeight, setHeight] = useState(height);
     const [newWeight, setWeight] = useState(weight);
@@ -30,7 +31,7 @@ const PersonalDetails = ({navigation}) => {
     const [newBirthYearError, setBirthYearError] = useState('');
 
     const handleSubmit = () => {
-        if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday() && validateGender()){
+        if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday() && validateGender()) {
             const newPersonalDetails = {newWeight, newHeight, newGender, newBirthYear};
             dispatch(setPersonalDetails(newPersonalDetails))
             navigation.navigate('PhysicalActivity')
@@ -55,42 +56,40 @@ const PersonalDetails = ({navigation}) => {
         showMode('date');
     };
 
-    function validateHeight(height){
+    function validateHeight(height) {
         if (!newHeight) {
             setHeightError('אנא הכנס גובה');
             return false
-        }
-        else {
+        } else {
             setHeightError('')
             return true
         }
     }
 
-    function validateWeight(weight){
+    function validateWeight(weight) {
         if (!newWeight) {
             setWeightError('אנא הכנס משקל');
             return false
-        }else {
+        } else {
             setWeightError('')
             return true
         }
     }
 
-    function validateBirthday(){
+    function validateBirthday() {
         if (newBirthYear == "") {
             setBirthYearError('אנא הכנס שנת לידה');
             setShowBDayError(true);
             return false
-        }else if (newBirthYear > (new Date().getFullYear() + -16)){
+        } else if (newBirthYear > (new Date().getFullYear() + -16)) {
             setBirthYearError('עליך להיות מעל גיל 16 על מנת להשתמש באפליקציה');
             setShowBDayError(true);
             return false
-        }else if (newBirthYear < (new Date().getFullYear() + -120)){
+        } else if (newBirthYear < (new Date().getFullYear() + -120)) {
             setBirthYearError('אנא ודא שגילך קטן מ-120');
             setShowBDayError(true);
             return false
-        }
-        else {
+        } else {
             setBirthYearError('')
             setShowBDayError(false);
             return true
@@ -104,11 +103,11 @@ const PersonalDetails = ({navigation}) => {
         // }
     }
 
-    function validateGender(){
+    function validateGender() {
         if (!newGender) {
             setGenderError('אנא בחר מין');
             return false
-        }else {
+        } else {
             setGenderError('')
             return true
         }
@@ -129,7 +128,8 @@ const PersonalDetails = ({navigation}) => {
                 keyboardType='numeric'
                 onChangeText={(height) => {
                     setHeight(height);
-                    validateHeight(height)}}
+                    validateHeight(height)
+                }}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.darkGrey}
@@ -148,7 +148,8 @@ const PersonalDetails = ({navigation}) => {
                 keyboardType='numeric'
                 onChangeText={(weight) => {
                     setWeight(weight);
-                    validateWeight(weight)}}
+                    validateWeight(weight)
+                }}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.darkGrey}
@@ -167,7 +168,8 @@ const PersonalDetails = ({navigation}) => {
                 keyboardType='numeric'
                 onChangeText={(newBirthYear) => {
                     setBirthYear(newBirthYear);
-                    validateBirthday(newBirthYear)}}
+                    validateBirthday(newBirthYear)
+                }}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.grey}
@@ -199,7 +201,7 @@ const PersonalDetails = ({navigation}) => {
             <Button
                 title="המשך"
                 onPress={handleSubmit}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -224,11 +226,10 @@ const styles = StyleSheet.create({
     inputText: {
         fontFamily: 'Rubik-Regular',
         backgroundColor: COLORS.white,
-        marginHorizontal: 10,
-        marginVertical: 0
+        width: '96%',
+        alignSelf: "center"
     },
     genderTitle: {
-
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
         color: COLORS.darkGrey,
@@ -256,7 +257,6 @@ const styles = StyleSheet.create({
     nextButton: {
         marginTop: 0,
         width: '85%',
-        height: 65,
         alignSelf: "center"
     },
     nextText: {

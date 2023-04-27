@@ -18,7 +18,7 @@ const ForgotPasswordScreen = ({navigation}) => {
                 <Stack.Navigator
                     initialRouteName="EnterEmail"
                     screenOptions={{
-                        headerShown:false,
+                        headerShown: false,
                     }}>
                     <Stack.Screen name="EnterEmail" component={ForgotEnterEmail}/>
                     <Stack.Screen name="EnterCode" component={ForgotEnterCode}/>
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
     },
     nextText: {
         fontFamily: 'Rubik-Bold',
