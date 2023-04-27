@@ -15,6 +15,7 @@ import {
     SET_HEART_AND_CHOOSE,
     SET_DATE, SET_REPLACED,
     SET_SHOW_TUTORIAL,
+    UPDATE_USER_DETAILS
 } from './actions';
 
 const initialState = {
@@ -97,6 +98,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, date: new Date()};
         case SET_SHOW_TUTORIAL:
             return { ...state, showTutorial: action.showTutorial};
+        case UPDATE_USER_DETAILS:
+            return {...state, first_name: action.first_name}
         default:
             return state;
     }

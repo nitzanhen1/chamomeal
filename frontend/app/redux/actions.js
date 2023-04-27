@@ -20,6 +20,7 @@ export const SET_FAVORITE_TO_RECIPES = 'SET_FAVORITE_TO_RECIPES';
 export const SET_HEART_AND_CHOOSE = 'SET_HEART_AND_CHOOSE';
 export const SET_DATE = 'SET_DATE';
 export const SET_SHOW_TUTORIAL = 'SET_SHOW_TUTORIAL';
+export const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';
 
 const API_URL = 'http://10.0.2.2:3000'; //localhost
 // const API_URL = 'https://chamomeal.cs.bgu.ac.il'; //remote backend
@@ -349,6 +350,10 @@ export const updateUserDetails = (first_name, last_name, email) => {
                         email: email,
                     });
                 if(response.status===202){
+                    await dispatch({
+                        type: UPDATE_USER_DETAILS,
+                        first_name: first_name,
+                    });
                     return true;}
             }catch (error){
                 if(error.response) {
