@@ -2,7 +2,6 @@ import {
     View,
     Text,
     StyleSheet,
-    Alert,
     Modal,
     TouchableOpacity,
     ScrollView,
@@ -25,15 +24,8 @@ export default function PersonalScreen({navigation}) {
 
 
     function logoutUser() {
-        dispatch(logout()).then((success)=> {
-            if(success) {
+        dispatch(logout()).then(()=> {
                 navigation.navigate('Login')
-            } else {
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-                navigation.navigate('Login')
-            }
         });
     }
 
@@ -121,7 +113,7 @@ export default function PersonalScreen({navigation}) {
                             <View style={styles.modalView}>
                                 <Text style={styles.modalTitle}>תנאי שימוש</Text>
 
-                                <Text style={styles.modalText} >אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, אתה מסכים לשחרר אותנו מכל אחריות הקשורה לשימוש בה.</Text>
+                                <Text style={styles.modalText} >אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.</Text>
                                 <TouchableOpacity onPress={() => setModalVisible(false)}>
                                     <Text style={styles.modalButton}>סגור</Text>
                                 </TouchableOpacity>

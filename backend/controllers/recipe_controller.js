@@ -23,6 +23,21 @@ router.get("/getDailyMenu/:date", async (req, res, next) =>{
 
 });
 
+router.post("/regenerateDailyMenu/:date", async (req, res, next) =>{
+    // logger.http({label: 'POST /regenerateDailyMenu', message:'request', user_id: req.user_id, controller: 'recipe', meta:{date: req.params.date}})
+    try{
+        const user_id = req.user_id;
+        const date = req.params.date;
+        const dailyMenu = await recipe_service.regenerateDailyMenu(user_id, date);
+        res.status(202).send(dailyMenu);
+        logger.http({label: 'POST /regenerateDailyMenu', message:'success', user_id: req.user_id, controller: 'recipe', meta:{ status: 200, body: {breakfast: dailyMenu['breakfast']['recipe_id'],lunch: dailyMenu['lunch']['recipe_id'],dinner: dailyMenu['dinner']['recipe_id'], total_calories: dailyMenu['total_calories']}, date: req.params.date }});
+    }catch(error){
+        logger.http({label: 'POST /regenerateDailyMenu', message:'error', user_id: req.user_id, controller: 'recipe', meta: {error: error, date: req.params.date}});
+        next(error);
+    }
+
+});
+
 router.post("/markAsEaten", async (req, res, next) =>{
     // logger.http({label: 'POST /markAsEaten', message:'request', user_id: req.user_id, controller: 'recipe', meta:{date: req.body.date, meal_type: req.body.meal_type}})
     try{
@@ -70,8 +85,8 @@ router.post("/getSustainableRecipes", async (req, res, next) =>{
     // logger.http({label: 'POST /getSustainableRecipes', message:'request', user_id: req.user_id, controller: 'recipe', meta:{meal_score: req.body.meal_score}})
     try{
         const user_id = req.user_id;
-        const {recipe_id, meal_type, meal_calories, meal_score} = req.body;
-        const sustainable_recipes = await recipe_service.getSustainableRecipes(user_id, recipe_id, meal_type, meal_calories, meal_score);
+        const {recipe_id, meal_type, meal_score} = req.body;
+        const sustainable_recipes = await recipe_service.getSustainableRecipes(user_id, recipe_id, meal_type, meal_score);
         res.status(200).send(sustainable_recipes);
         const meta_recipes = sustainable_recipes.map(recipe => ({ recipe_id: recipe.recipe_id, score: recipe.score }));
         logger.http({label: 'POST /getSustainableRecipes', message:'success', user_id: req.user_id, controller: 'recipe', meta:{ status: 200, body: meta_recipes, meal_score: req.body.meal_score}});

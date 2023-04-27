@@ -19,6 +19,7 @@ export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
 export const SET_FAVORITE_TO_RECIPES = 'SET_FAVORITE_TO_RECIPES';
 export const SET_HEART_AND_CHOOSE = 'SET_HEART_AND_CHOOSE';
 export const SET_DATE = 'SET_DATE';
+export const SET_SHOW_TUTORIAL = 'SET_SHOW_TUTORIAL';
 
 const API_URL = 'http://10.0.2.2:3000'; //localhost
 // const API_URL = 'http://132.73.84.195:443'; //remote backend
@@ -26,26 +27,33 @@ const API_URL = 'http://10.0.2.2:3000'; //localhost
 export const getDailyMenu = (date) => {
     try{
         return async dispatch =>{
-            const date_today = date.toISOString().substring(0, 10);
-            const response = await axios.get(`${API_URL}/recipes/getDailyMenu/${date_today}`);
-            const data = response.data;
-            let mealsData = [
-                {title: 'ארוחת בוקר', mealData:data['breakfast']},
-                {title: 'ארוחת צהריים', mealData: data['lunch']},
-                {title: 'ארוחת ערב',mealData:data['dinner']}]
-            dispatch({
-                type: GET_DAILY_MENU,
-                meals: mealsData,
-                consumed_calories: data['consumed_calories'],
-                total_calories: data['total_calories'],
-                replaced: false
-            });
-            if (data['badges'] != null) {
+            try {
+                const date_today = date.toISOString().substring(0, 10);
+                const response = await axios.get(`${API_URL}/recipes/getDailyMenu/${date_today}`);
+                const data = response.data;
+                let mealsData = [
+                    {title: 'ארוחת בוקר', mealData: data['breakfast']},
+                    {title: 'ארוחת צהריים', mealData: data['lunch']},
+                    {title: 'ארוחת ערב', mealData: data['dinner']}]
                 dispatch({
-                    type: UPDATE_BADGES,
-                    badges: data['badges'],
-                    earned: data['earned'],
+                    type: GET_DAILY_MENU,
+                    meals: mealsData,
+                    consumed_calories: data['consumed_calories'],
+                    total_calories: data['total_calories'],
+                    replaced: false
                 });
+                if (data['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: data['badges'],
+                        earned: data['earned'],
+                    });
+                }
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
             }
         }
     }catch (error) {
@@ -151,6 +159,9 @@ export const logout = () => {
                     return true;
                 }
             }catch (error){
+                dispatch({
+                    type: LOGOUT,
+                });
                 return false;
             }
         }
@@ -531,7 +542,7 @@ export const search = (searchQuery, onlyIngredients, without_lactose, gluten_fre
     }
 }
 
-export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_score) =>{
+export const getSustainableRecipes = (recipe_id, meal_type, meal_score) =>{
     try{
         return async dispatch =>{
             try{
@@ -539,7 +550,6 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_calories, meal_
                     {
                         recipe_id: recipe_id,
                         meal_type: meal_type,
-                        meal_calories: meal_calories,
                         meal_score: meal_score
                     });
                 const data = response.data;
@@ -632,6 +642,15 @@ export const resetSearch = () =>{
             }
 }
 
+export const setShowTutorial = (showTutorial) =>{
+    return async dispatch =>{
+        dispatch({
+            type: SET_SHOW_TUTORIAL,
+            showTutorial: showTutorial,
+        });
+    }
+}
+
 export const forgotPassword = (email) =>{
     try{
         return async dispatch =>{
@@ -697,4 +716,44 @@ export const resetPassword = (email, newPassword) =>{
     }
 }
 
-
+export const regenerateDailyMenu = (date) => {
+    try{
+        return async dispatch =>{
+            try {
+                const date_today = date.toISOString().substring(0, 10);
+                const response = await axios.post(`${API_URL}/recipes/regenerateDailyMenu/${date_today}`,{});
+                const data = response.data;
+                let mealsData = [
+                    {title: 'ארוחת בוקר', mealData: data['breakfast']},
+                    {title: 'ארוחת צהריים', mealData: data['lunch']},
+                    {title: 'ארוחת ערב', mealData: data['dinner']}]
+                dispatch({
+                    type: GET_DAILY_MENU,
+                    meals: mealsData,
+                    consumed_calories: data['consumed_calories'],
+                    total_calories: data['total_calories'],
+                    replaced: false
+                });
+                dispatch({
+                    type: MARK_AS_EATEN,
+                    consumed_calories: data['consumed_calories'],
+                    score: data['new_score'],
+                });
+                if (data['badges'] != null) {
+                    dispatch({
+                        type: UPDATE_BADGES,
+                        badges: data['badges'],
+                        earned: data['earned'],
+                    });
+                }
+                return response.status;
+            }catch (error){
+                if(error.response) {
+                    return error.response.status;
+                }
+            }
+        }
+    }catch (error) {
+        console.log(error);
+    }
+}

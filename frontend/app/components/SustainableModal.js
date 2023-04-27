@@ -19,7 +19,7 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                         <TouchableOpacity onPress={handleCloseSustainableModal} style={{ position: 'absolute', top: 10, right: 10 }}>
                             <AntDesign  name="closecircleo" size={25} style={styles.exitIcon} />
                         </TouchableOpacity>
-                        <Ionicons style={styles.iconMore} name="sync-circle-outline" onPress={getMoreSustainableRecipes}/>
+                        {recipes.length!= 0 && <Ionicons style={styles.iconMore} name="sync-circle-outline" onPress={getMoreSustainableRecipes}/>}
                         <Text style={styles.textHeader}>ארוחות מקיימות לסביבה</Text>
                         </View>
                     <ScrollView style={styles.information}>
@@ -28,7 +28,7 @@ const SustainableModal = ({visibleSustainableModal, handleCloseSustainableModal,
                                 <PreviewCard recipe={recipe} sustainable={true} handleCloseSustainableModal={handleCloseSustainableModal} from={'sustainability'}/>
                             </View>
                         )}
-                        {recipes.length==0 && <Text style={styles.helloText}>אין תוצאות</Text>}
+                        {recipes.length===0 && <Text style={styles.helloText}> שדרגת כבר למקסימום :)</Text>}
                     </ScrollView>
                 </View>
             </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalContainer: {
-        width: '83%',
+        width: '95%',
         height: '63%',
         backgroundColor: COLORS.light,
         borderRadius: 10,

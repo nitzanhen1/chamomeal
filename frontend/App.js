@@ -8,18 +8,19 @@ import {useFonts} from 'expo-font';
 import { I18nManager } from "react-native"
 I18nManager.forceRTL(true);
 I18nManager.allowRTL(true);
-import {Provider, useSelector} from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 import EditUserInfo from "./app/components/EditUserInfo";
-import {Ionicons, Feather} from "@expo/vector-icons";
+import {Ionicons, Feather, FontAwesome} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import ChangePassword from "./app/components/ChangePassword";
 import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
 import LoadingScreen from "./app/screens/LoadingScreen";
 import {MenuProvider} from "react-native-popup-menu";
+import {setShowTutorial} from "./app/redux/actions";
 
 const Stack = createNativeStackNavigator();
 
@@ -85,6 +86,27 @@ export default function App() {
         }
     }
 
+    function getQuestionMark(route) {
+        const { showTutorial } = useSelector(state => state.mealReducer);
+        const dispatch = useDispatch();
+        useEffect(() => {
+        }, []);
+
+        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';
+
+        switch (routeName) {
+            case 'Meal Planner':
+                return (
+                        <TouchableOpacity style={styles.questionContainer} onPress={() =>
+                            dispatch(setShowTutorial(!showTutorial))}>
+                            <FontAwesome name="question-circle-o" size={26} style={styles.flowerIcon}/>
+                        </TouchableOpacity>
+                );
+            default:
+                return null;
+        }
+    }
+
     function getHeaderTitle(route) {
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';
 
@@ -136,6 +158,7 @@ export default function App() {
                                           },
                                                     headerStyle: { backgroundColor : COLORS.primary},
                                                     headerLeft: () => getFlowers(route),
+                                                    headerRight: () => getQuestionMark(route),
                                       })}
                         />
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen}
@@ -222,6 +245,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: 65,
         justifyContent: 'flex-end',
+    },
+    questionContainer: {
+        paddingTop: 6,
+        paddingLeft: 5,
+        marginBottom: 6,
+        flexDirection: 'row',
+        width: 65,
     },
     flowerIcon: {
         color:"white"
