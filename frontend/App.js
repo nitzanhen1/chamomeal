@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import {StyleSheet, Text, View, SafeAreaView, StatusBar, Image, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, SafeAreaView, StatusBar, TouchableOpacity, Alert} from 'react-native';
 import BottomNavigator from './app/components/BottomNavigator';
 import COLORS from './app/consts/colors';
 import {NavigationContainer, getFocusedRouteNameFromRoute, useNavigation} from '@react-navigation/native';
@@ -14,10 +14,13 @@ import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import QuestionnaireScreen from "./app/screens/QuestionnaireScreen";
 import EditUserInfo from "./app/components/EditUserInfo";
-import {getGlobalDetails} from "./app/redux/actions";
-import {Ionicons, Feather} from "@expo/vector-icons";
+import {Ionicons, Feather, FontAwesome} from "@expo/vector-icons";
 import * as SplashScreen from "expo-splash-screen";
 import ChangePassword from "./app/components/ChangePassword";
+import ForgotPasswordScreen from "./app/screens/ForgotPasswordScreen";
+import LoadingScreen from "./app/screens/LoadingScreen";
+import {MenuProvider} from "react-native-popup-menu";
+import {setShowTutorial} from "./app/redux/actions";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,11 +60,9 @@ export default function App() {
 
     function getFlowers(route) {
         const { score } = useSelector(state => state.mealReducer);
-        const dispatch = useDispatch();
         const navigation = useNavigation();
 
         useEffect(() => {
-            dispatch(getGlobalDetails()).then();
         }, []);
 
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';
@@ -81,6 +82,27 @@ export default function App() {
             case 'Sustainability':
                 return null;
             case 'Account':
+                return null;
+        }
+    }
+
+    function getQuestionMark(route) {
+        const { showTutorial } = useSelector(state => state.mealReducer);
+        const dispatch = useDispatch();
+        useEffect(() => {
+        }, []);
+
+        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Meal Planner';
+
+        switch (routeName) {
+            case 'Meal Planner':
+                return (
+                        <TouchableOpacity style={styles.questionContainer} onPress={() =>
+                            dispatch(setShowTutorial(!showTutorial))}>
+                            <FontAwesome name="question-circle-o" size={26} style={styles.flowerIcon}/>
+                        </TouchableOpacity>
+                );
+            default:
                 return null;
         }
     }
@@ -108,9 +130,10 @@ export default function App() {
         <Provider store={Store}>
             <NavigationContainer>
                 <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+                    <MenuProvider>
                     <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
                     <Stack.Navigator
-                        initialRouteName="Login"
+                        initialRouteName="LoadingScreen"
                         screenOptions={{
                             headerBackVisible: false ,
                             headerTitleAlign: 'center',
@@ -124,6 +147,7 @@ export default function App() {
                                 fontFamily: 'Rubik-Regular',
                             },
                         }}>
+                        <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{headerShown:false}}/>
                         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
                         <Stack.Screen name="BottomNavigator" component={BottomNavigator}
                                       options={({ route }) => ({
@@ -134,6 +158,7 @@ export default function App() {
                                           },
                                                     headerStyle: { backgroundColor : COLORS.primary},
                                                     headerLeft: () => getFlowers(route),
+                                                    headerRight: () => getQuestionMark(route),
                                       })}
                         />
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen}
@@ -143,6 +168,17 @@ export default function App() {
                                           headerTitleAlign: "left",
                                           headerStyle: { backgroundColor : COLORS.white},
                                           headerTintColor: COLORS.grey
+                                      }}/>
+                        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}
+                                      options={{
+                                          headerTitle:'איפוס סיסמה',
+                                          headerShown:true,
+                                          headerRight: () => (returnButton()
+                                          ),
+                                          headerTitleStyle: {
+                                              fontSize: 21,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
                                       }}/>
                         <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen} options={{headerShown:false}}/>
                         <Stack.Screen name="EditUserInfo" component={EditUserInfo}
@@ -168,6 +204,7 @@ export default function App() {
                                           },
                                       }}/>
                     </Stack.Navigator>
+                    </MenuProvider>
                 </SafeAreaView>
             </NavigationContainer>
         </Provider>
@@ -200,23 +237,31 @@ const styles = StyleSheet.create({
         height: 40,
     },
     flowerContainer: {
-        paddingRight: 6,
+        marginRight:-10,
         paddingTop: 6,
         alignSelf: "flex-start",
         marginBottom: 6,
         marginLeft: 6,
         flexDirection: 'row',
-        width: 40,
+        width: 65,
+        justifyContent: 'flex-end',
+    },
+    questionContainer: {
+        paddingTop: 6,
+        paddingLeft: 5,
+        marginBottom: 6,
+        flexDirection: 'row',
+        width: 65,
     },
     flowerIcon: {
-    color:"white"
-},
-flowerText: {
-    paddingHorizontal: 3,
+        color:"white"
+    },
+    flowerText: {
+        paddingHorizontal: 3,
         fontFamily: 'Rubik-Regular',
         fontSize: 18,
         color:"white",
         paddingTop: 3,
         marginRight:4,
-},
+    },
 });

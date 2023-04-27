@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native';
+import {View, StyleSheet, ScrollView, Alert} from 'react-native';
 import React, {useState} from 'react'
 import PersonalDetails from "../components/PersonalDetails";
 import PhysicalActivity from "../components/PhysicalActivity";
@@ -6,16 +6,17 @@ import FoodPreferences from "../components/FoodPreferences";
 import colors from "../consts/colors";
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
-import {setEarned, updateUserPreferences} from "../redux/actions";
+import {regenerateDailyMenu, updateUserPreferences} from "../redux/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {useNavigation} from "@react-navigation/native";
 import {Feather} from "@expo/vector-icons";
 
 
 const Stack = createNativeStackNavigator();
 
-const QuestionnaireScreen = ({navigation}) => {
-    const { year_of_birth,
+const QuestionnaireScreen = ({navigation, route}) => {
+    const {
+        date,
+        year_of_birth,
         height,
         weight,
         gender,
@@ -24,30 +25,57 @@ const QuestionnaireScreen = ({navigation}) => {
         vegetarian,
         without_lactose,
         gluten_free,
-        kosher} = useSelector(state => state.mealReducer);
+        kosher
+    } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const [step, setStep] = useState(1);
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2));
-        navigation.navigate('BottomNavigator');
+        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(() =>{
+            const prevRouteName = route.params.prevRouteName;
+            if(prevRouteName=='PersonalScreen'){
+                Alert.alert('השינויים נשמרו', 'כמות הקלוריות המומלצת ליום השתנתה, האם תרצו להישאר עם התכנון היומי הנוכחי או לייצר חדש?',
+                    [
+                        { text: 'תפריט חדש', onPress: () => handleGenerateNewDaily() },
+                        {
+                            text: ' תפריט נוכחי',
+                            style: 'cancel',
+                            onPress: () => navigation.navigate('BottomNavigator')
+                        },
+                    ],
+                    { cancelable: true });
+            }
+            else{
+                navigation.navigate('LoadingScreen');
+            }
+        });
     }
 
-    function handleBack(){
+    function handleBack() {
         Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
             [
-                { text: 'כן', onPress: () => navigation.goBack() },
+                {text: 'כן', onPress: () => navigation.goBack()},
                 {
                     text: 'לא',
                     style: 'cancel',
                 },
             ],
-            { cancelable: true });
+            {cancelable: true});
         // dispatch(setEarned(false));
     }
 
-    function returnButton(){
-        const navigation = useNavigation();
+    function handleGenerateNewDaily() {
+        dispatch(regenerateDailyMenu(date)).then(status => {
+            if(status===202){
+                navigation.navigate('Meal Planner');
+            }else if (status===419){
+                navigation.navigate('Login');
+            }else{
+                navigation.navigate('BottomNavigator');
+            }
+        })
+    }
+
+    function returnButton() {
         return (
             <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => handleBack()}/>
         );
@@ -59,11 +87,11 @@ const QuestionnaireScreen = ({navigation}) => {
                 <Stack.Navigator
                     initialRouteName="PersonalDetails"
                     screenOptions={{
-                        headerShown:true,
+                        headerShown: true,
                     }}>
                     <Stack.Screen name="PersonalDetails" component={PersonalDetails}
                                   options={{
-                                      headerTitle:"פרופיל פיזיולוגי",
+                                      headerTitle: "פרופיל פיזיולוגי",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -78,7 +106,7 @@ const QuestionnaireScreen = ({navigation}) => {
                                   }}/>
                     <Stack.Screen name="PhysicalActivity" component={PhysicalActivity}
                                   options={{
-                                      headerTitle:"פעילות גופנית",
+                                      headerTitle: "פעילות גופנית",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -92,7 +120,7 @@ const QuestionnaireScreen = ({navigation}) => {
                     />
                     <Stack.Screen name="FoodPreferences"
                                   options={{
-                                      headerTitle:"העדפות תזונתיות",
+                                      headerTitle: "העדפות תזונתיות",
                                       headerTitleAlign: "center",
                                       headerTitleStyle:
                                           {
@@ -104,7 +132,7 @@ const QuestionnaireScreen = ({navigation}) => {
                                       headerBackVisible: false,
                                   }}
                     >
-                        {(props) => <FoodPreferences {...props} handleFinish={(foodData)=>handleFinish(foodData)} />}
+                        {(props) => <FoodPreferences {...props} handleFinish={(foodData) => handleFinish(foodData)}/>}
                     </Stack.Screen>
                 </Stack.Navigator>
             </View>
@@ -126,16 +154,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.grey,
         marginTop: 10,
     },
-    nextButton: {
-        marginTop: 10,
-        width: '85%',
-        height: 65,
-    },
-    nextText: {
-        fontFamily: 'Rubik-Bold',
-        fontSize: 20
-    }
-
 })
 
 export default QuestionnaireScreen;

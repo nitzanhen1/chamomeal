@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Text, ScrollView, LayoutAnimation, Keyboard} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, LayoutAnimation, Keyboard, ActivityIndicator} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import PreviewCard from "../components/PreviewCard";
 import {Searchbar} from 'react-native-paper';
 import {Button, CheckBox, Divider} from '@rneui/themed';
 import COLORS from "../consts/colors";
-import { search} from "../redux/actions";
+import {resetSearch, search, setHeartAndChoose} from "../redux/actions";
+import {useFocusEffect} from "@react-navigation/native";
+
 
 export default function SearchScreen() {
 
@@ -13,7 +15,15 @@ export default function SearchScreen() {
 
     const [expanded, setExpanded] = React.useState(false);
     const [searchQuery, setSearchQuery] = React.useState('');
-    const {searchResults, vegan, vegetarian, without_lactose, gluten_free, kosher} = useSelector(state => state.mealReducer);
+    const [noResults, setNoResults] = React.useState(false);
+    const {
+        searchResults,
+        vegan,
+        vegetarian,
+        without_lactose,
+        gluten_free,
+        kosher
+    } = useSelector(state => state.mealReducer);
 
     const [ingredientsCheck, setIngredientsCheck] = React.useState(false);
     const [lactoseCheck, setLactoseCheck] = React.useState(without_lactose);
@@ -24,8 +34,24 @@ export default function SearchScreen() {
     const [breakfastCheck, setBreakfastCheck] = React.useState(true);
     const [lunchCheck, setLunchCheck] = React.useState(true);
     const [dinnerCheck, setDinnerCheck] = React.useState(true);
+    const [whileSearch, setWhileSearch] = React.useState(false)
 
     const onChangeSearch = query => setSearchQuery(query);
+
+    function resetSearchScreen(){
+        dispatch(resetSearch());
+        setLactoseCheck(without_lactose);
+        setGlutenCheck(gluten_free);
+        setVeganCheck(vegan);
+        setVegetarianCheck(vegetarian);
+        setKosherCheck(kosher);
+        setSearchQuery('');
+        setExpanded(false);
+        setIngredientsCheck(false);
+        setBreakfastCheck(true);
+        setLunchCheck(true);
+        setDinnerCheck(true);
+    }
 
     useEffect(() => {
         setLactoseCheck(without_lactose);
@@ -37,20 +63,50 @@ export default function SearchScreen() {
         vegetarian,
         without_lactose,
         gluten_free,
-        kosher]);
+        kosher,
+    ]);
 
     function searchRecipes() {
-        Keyboard.dismiss()
+        Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(false);
-        dispatch(search(searchQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
-            kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then();
+        let format = /[@#$%^&*()_+=\[\]{};':"\\|.<>?]+/;
+        let fixedQuery = searchQuery.replace(/'/g, "’");
+        let checkQuery = format.test(fixedQuery) ? false : true;
+        if(checkQuery){
+            setWhileSearch(true);
+            dispatch(search(fixedQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
+                kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
+                (data) => {
+                    setWhileSearch(false)
+                    if (data.length < 1) {
+                        setNoResults(true);
+                    } else {
+                        setNoResults(false);
+                    }
+                }
+            );
+        }else{
+            dispatch(resetSearch());
+            setNoResults(true);
+        }
     }
 
     function toggleExpand() {
+        Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(!expanded);
     }
+
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                dispatch(setHeartAndChoose('', 0,true, false));
+                resetSearchScreen();
+
+            };
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
@@ -66,6 +122,7 @@ export default function SearchScreen() {
                     buttonStyle={styles.filterButton}
                 />
                 <Searchbar
+                    onSubmitEditing={searchRecipes}
                     onChangeText={onChangeSearch}
                     value={searchQuery}
                     style={styles.searchContainer}
@@ -73,7 +130,8 @@ export default function SearchScreen() {
                 />
                 <Button
                     title='חפש'
-                    onPress={searchRecipes}
+                    onPress={() => searchRecipes()}
+                    onClearIconPress={() => setNoResults(false)}
                     buttonStyle={styles.searchButton}
                     color={COLORS.grey}
                     containerColor={COLORS.lightGreen}
@@ -86,10 +144,9 @@ export default function SearchScreen() {
                     <View style={styles.filterContainer}>
                         <Text style={styles.filterTitle}>העדפות</Text>
                         <View style={styles.filterOptions}>
-                            {/*<View style={styles.radioButtonContainer}>*/}
                             <CheckBox
                                 checked={veganCheck}
-                                title='צמחוני'
+                                title='טבעוני'
                                 onPress={() => setVeganCheck(!veganCheck)}
                                 containerStyle={styles.radioButtonContainer}
                                 textStyle={styles.optionText}
@@ -97,7 +154,7 @@ export default function SearchScreen() {
                             />
                             <CheckBox
                                 checked={vegetarianCheck}
-                                title='טבעוני'
+                                title='צמחוני'
                                 onPress={() => setVegetarianCheck(!vegetarianCheck)}
                                 containerStyle={styles.radioButtonContainer}
                                 textStyle={styles.optionText}
@@ -133,7 +190,6 @@ export default function SearchScreen() {
                     <View style={styles.filterContainer}>
                         <Text style={styles.filterTitle}>סוג ארוחה</Text>
                         <View style={styles.filterOptions}>
-                            {/*<View style={styles.radioButtonContainer}>*/}
                             <CheckBox
                                 checked={breakfastCheck}
                                 title='בוקר'
@@ -177,13 +233,19 @@ export default function SearchScreen() {
                     </View>
                 </View>
             }
-            <ScrollView style={styles.inputsContainer}>
+            {whileSearch && <ActivityIndicator style={styles.indicator} size="large" color={COLORS.darkGreen} />}
+            {!whileSearch && <ScrollView style={styles.inputsContainer}>
                 {searchResults.map(meal =>
                     <View key={meal.recipe_id}>
-                        <PreviewCard recipe={meal} sustainable={false}/>
+                        <PreviewCard recipe={meal} sustainable={false} from={'search'}/>
                     </View>
                 )}
-            </ScrollView>
+                {
+                    noResults &&
+                    <Text style={styles.helloText}>אין תוצאות</Text>
+
+                }
+            </ScrollView>}
         </View>
     );
 };
@@ -233,7 +295,6 @@ const styles = StyleSheet.create({
     filterContainer: {
         flexDirection: 'column',
         marginHorizontal: 5,
-        // backgroundColor: COLORS.light,
         marginBottom: 3,
     },
     filterTitle: {
@@ -252,8 +313,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 10,
-        marginTop:1
-        // backgroundColor: COLORS.
+        marginTop: 1
     },
     optionText: {
         fontFamily: 'Rubik-Regular',
@@ -262,6 +322,22 @@ const styles = StyleSheet.create({
     },
     divider: {
         marginHorizontal: 10,
-        marginVertical:2
+        marginVertical: 2
+    },
+    helloText: {
+        fontSize: 20,
+        textAlign: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: 30,
+        marginTop: 20,
+        marginBottom: 15,
+        paddingRight: 20,
+        fontFamily: 'Rubik-Bold',
+        letterSpacing: 1,
+        color: COLORS.darkGrey
+    },
+    indicator:{
+        marginTop: '50%'
     }
 });

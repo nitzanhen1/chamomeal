@@ -1,23 +1,25 @@
 const DButils = require("../data/db_utils");
 const moment = require('moment');
 const bcrypt = require("bcryptjs");
+const logger = require("../logger")
 
 
 async function userMiddleware(req, res, next) {
     if (req.session && req.session.user_id) {
-        DButils.execQuery("SELECT user_id FROM users").then((users) => {
+        DButils.execQuery("select user_id from users").then((users) => {
             if (users.find((x) => x.user_id === req.session.user_id)) {
                 req.user_id = req.session.user_id;
                 next();
             }
         }).catch(err => next(err));
     } else {
-         res.status(419).send({message: "Session expired, please login again", success: false});
+        res.status(419).send({message: "Session expired, please login again", success: false});
+        logger.http({label: 'session expired', message:'session expired', user_id: 0, controller: 'user', meta:{path: req.path}})
     }
 }
 
 async function getPreferences(user_id) {
-    const cols = "gender, year_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER"
+    const cols = "gender, year_of_birth, height, weight, physical_activity, kosher, vegetarian, vegan, gluten_free, without_lactose, EER, login_score"
     const preferences = await getUserFromDB(user_id, cols);
     return preferences;
 }
@@ -36,7 +38,7 @@ async function updatePreferences(user_id, preferences) {
         without_lactose
     } = preferences;
     const EER = await calculateEER(gender, year_of_birth, height, weight, physical_activity)
-    await DButils.execQuery(`update Users set gender='${Number(gender)}', year_of_birth='${year_of_birth}', height='${height}', weight='${weight}',
+    await DButils.execQuery(`update Users set gender='${Number(gender)}', year_of_birth='${Number(year_of_birth)}', height='${height}', weight='${weight}',
                  physical_activity='${physical_activity}', kosher='${Number(kosher)}', vegetarian='${Number(vegetarian)}', vegan='${Number(vegan)}',
                  gluten_free='${Number(gluten_free)}', without_lactose='${Number(without_lactose)}', EER='${EER}' where user_id='${user_id}'`);
 }
@@ -51,7 +53,7 @@ async function calculateEER(gender, year_of_birth, height, weight, physical_acti
     } else {
         EER = 662 - (9.53 * age) + PA_level * (15.91 * weight + 539.6 * height_in_m)
     }
-    return EER;
+    return Math.ceil(EER);
 }
 
 async function calculatePALevel(age, gender, physical_activity) {
@@ -95,23 +97,28 @@ async function getGlobalDetails(user_id) {
     return user_details
 }
 
-
-async function checkBadges(user_id, new_score) {
+async function checkBadges(user_id, new_score, score_key, char_type) {
     let badges = await getBadgesFromDB(user_id)
-    let score_key = [10, 20, 50, 100, 200, 350, 500, 750, 1000]
-    for (let i = 0; i < score_key.length - 1; i++) {
-        let col1 = score_key[i] + 'p'
+    for (let i = 0; i < score_key.length ; i++) {
+        let col = score_key[i] + char_type
         if (new_score >= score_key[i]) {
-            if (badges[col1] == false) { //earned new badge
-                await DButils.execQuery(`update badges set ${col1}= 1 where user_id='${user_id}'`);
-                badges[col1] = 1
+            if (badges[col] == false) { //earned new badge
+                logger.info({label: 'badge', message:'earned', user_id: user_id, meta:{badge: col, new_score: new_score}})
+                await DButils.execQuery(`update badges set ${col}= 1 where user_id='${user_id}'`);
+                badges[col] = 1
                 let earned = true //notify frontend to alert user
                 return [true, badges, earned];
             }
+            else{
+                if(i+1==score_key.length){
+                    return false;
+                }
+            }
         } else {
-            if (badges[col1] == true) {
-                await DButils.execQuery(`update badges set ${col1}= 0 where user_id='${user_id}'`);
-                badges[col1] = 0
+            if (badges[col] == true) {// lost badge
+                logger.info({label: 'badge', message:'lost', user_id: user_id, meta:{badge: col, new_score: new_score}})
+                await DButils.execQuery(`update badges set ${col}= 0 where user_id='${user_id}'`);
+                badges[col] = 0
                 let earned = false //badge lost no need to notify user
                 return [true, badges, earned];
             } else { // no change needed
@@ -119,6 +126,28 @@ async function checkBadges(user_id, new_score) {
             }
         }
     }
+}
+
+async function checkEatenBadges(user_id, eaten_score) {
+    let score_key = [10, 50, 100, 200, 500, 1000]
+    let char_type = 'p'
+    return checkBadges(user_id, eaten_score, score_key, char_type)
+}
+
+async function checkLoginBadges(user_id, login_score) {
+    await DButils.execQuery(`update Users set login_score =${login_score} where user_id = ${user_id}`);
+    let score_key = [2, 4, 7, 10, 14, 20]
+    let char_type = 'l'
+    return checkBadges(user_id, login_score, score_key, char_type)
+}
+
+async function checkReplaceBadges(user_id, replace_score) {
+    let updated_score = await DButils.execQuery(`select replace_score from Users where user_id = ${user_id}`);
+    updated_score = updated_score[0]['replace_score'] + replace_score
+    await DButils.execQuery(`update Users set replace_score =${updated_score} where user_id = ${user_id}`);
+    let score_key = [5, 15, 30, 50, 80, 120]
+    let char_type = 'c'
+    return checkBadges(user_id, updated_score, score_key, char_type)
 }
 
 async function getBadgesFromDB(user_id, cols = "*") {
@@ -132,7 +161,7 @@ async function getBadgesFromDB(user_id, cols = "*") {
 }
 
 
-async function resetPassword(user_id, old_pass, new_pass) {
+async function updatePassword(user_id, old_pass, new_pass) {
     let DB_pass = await DButils.execQuery(`SELECT password FROM Users WHERE user_id = '${user_id}'`);
     // check that user_id exists
     if (DB_pass.length > 0) {
@@ -175,5 +204,7 @@ exports.getUserFromDB = getUserFromDB
 exports.getGlobalDetails = getGlobalDetails
 exports.getUserDetails = getUserDetails
 exports.getPreferences = getPreferences
-exports.checkBadges = checkBadges;
-exports.resetPassword = resetPassword;
+exports.checkEatenBadges = checkEatenBadges;
+exports.checkLoginBadges = checkLoginBadges;
+exports.checkReplaceBadges = checkReplaceBadges;
+exports.updatePassword = updatePassword;

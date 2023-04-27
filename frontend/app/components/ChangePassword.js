@@ -1,4 +1,4 @@
-import {View, StyleSheet } from 'react-native'
+import {View, StyleSheet, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {updatePassword} from "../redux/actions";
@@ -30,12 +30,12 @@ const ChangePassword = ({navigation}) => {
     }
 
     function validatePassword(newPassword){
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+        let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(newPassword)) {
             setPasswordError('')
             return true
         } else {
-            setPasswordError("8-16 תווים - אותיות גדולות וקטנות, מספרים, ותו מיוחד")
+            setPasswordError("6-16 תווים - אותיות גדולות וקטנות")
             return false
         }
     }
@@ -54,14 +54,17 @@ const ChangePassword = ({navigation}) => {
     }
 
     function handleSubmitPress(){
-        console.log('hey');
         if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)){
             dispatch(updatePassword(oldPassword,newPassword)).then((success)=>{
                 if(success) {
-                    alert('סיסמה שונתה בהצלחה!');
+                    Alert.alert('סיסמה שונתה בהצלחה!', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                     navigation.goBack();
                 } else {
-                    alert('סיסמה נוכחית שגויה');
+                    Alert.alert('סיסמה נוכחית שגויה', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
                 }});
         }
     }

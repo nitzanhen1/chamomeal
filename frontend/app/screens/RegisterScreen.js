@@ -1,10 +1,10 @@
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
-import {register} from "../redux/actions";
+import {login, register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 
 
 const RegisterScreen = ({navigation}) => {
@@ -24,10 +24,11 @@ const RegisterScreen = ({navigation}) => {
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    function navToLogin(){
+    function navToLogin() {
         navigation.navigate('Login');
     }
-    function validateUsername(username){
+
+    function validateUsername(username) {
         if (!username) {
             setUsernameError('נדרש שם משתמש');
             return false
@@ -39,7 +40,8 @@ const RegisterScreen = ({navigation}) => {
             return true
         }
     }
-    function validateFirstName(firstName){
+
+    function validateFirstName(firstName) {
         if (!firstName) {
             setFirstNameError('נדרש שם פרטי');
             return false
@@ -51,7 +53,8 @@ const RegisterScreen = ({navigation}) => {
             return true
         }
     }
-    function validateLastName(lastName){
+
+    function validateLastName(lastName) {
         if (!lastName) {
             setLastNameError('נדרש שם משפחה');
             return false
@@ -63,6 +66,7 @@ const RegisterScreen = ({navigation}) => {
             return true
         }
     }
+
     function validateEmail(email) {
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (re.test(email)) {
@@ -73,37 +77,71 @@ const RegisterScreen = ({navigation}) => {
             return false
         }
     }
-    function validatePassword(password){
-        let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+
+    function validatePassword(password) {
+        let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(password)) {
             setPasswordError('')
             return true
         } else {
-            setPasswordError("8-16 תווים - אותיות גדולות וקטנות, מספרים, ותו מיוחד")
+            setPasswordError("6-16 תווים - אותיות גדולות וקטנות")
             return false
         }
     }
-    function validateConfirmPassword(confirmPassword){
+
+    function validateConfirmPassword(confirmPassword) {
         if (!confirmPassword) {
             setConfirmPassword("נדרשת סיסמה")
             return false
         } else if (password != confirmPassword) {
-            setConfirmPasswordError("סיסמה לא נכונה");
+            setConfirmPasswordError("הסיסמה אינה תואמת");
             return false
         } else {
             setConfirmPasswordError('')
             return true
         }
     }
-    function handleSubmitPress(){
+
+    function handleSubmitPress() {
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
-        validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)){
-            dispatch(register(username,firstName,lastName,password,email)).then((success)=>{
-                if(success) {
-                    navigation.navigate('Login')
+            validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)) {
+            dispatch(register(username, firstName, lastName, password, email)).then((status) => {
+                if (status === 201) {
+                    Alert.alert('תנאי שימוש', 'אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.',
+                        [
+                            {text: 'אישור', onPress: console.log('OK')},
+
+                        ],
+                        {cancelable: false});
+
+                    try {
+                        dispatch(login(username, password)).then((status) => {
+                            if (status === 202) {
+                                navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
+                            } else if (status === 200) {
+                                navigation.navigate('LoadingScreen');
+                            } else {
+                                navigation.navigate('Login');
+
+                            }
+                        });
+                    } catch (error) {
+                        console.log(error)
+                    }
+                } else if (status === 409) {
+                    Alert.alert('שם המשתמש כבר קיים במערכת', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        {cancelable: true});
+                } else if (status === 412) {
+                    Alert.alert('האימייל כבר קיים במערכת', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        {cancelable: true});
                 } else {
-                    alert('שם משתמש קיים')
-                }});
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        {cancelable: true});
+                }
+            });
         }
     }
 
@@ -116,7 +154,7 @@ const RegisterScreen = ({navigation}) => {
                         validateUsername(username)
                     }}
                     placeholder='שם משתמש'
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={usernameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -128,7 +166,7 @@ const RegisterScreen = ({navigation}) => {
                         validateFirstName(firstName)
                     }}
                     placeholder='שם פרטי'
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={firstNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -140,7 +178,7 @@ const RegisterScreen = ({navigation}) => {
                         validateLastName(lastName)
                     }}
                     placeholder='שם משפחה'
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={lastNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -153,7 +191,7 @@ const RegisterScreen = ({navigation}) => {
                     }}
                     placeholder='אימייל'
                     keyboardType="email-address"
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={emailError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -167,7 +205,7 @@ const RegisterScreen = ({navigation}) => {
                     placeholder="סיסמה"
                     secureTextEntry={true}
                     maxLength={16}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -181,17 +219,16 @@ const RegisterScreen = ({navigation}) => {
                     }}
                     placeholder="אימות סיסמה"
                     secureTextEntry={true}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
-
                 />
                 <Button
                     title="הירשם"
                     onPress={handleSubmitPress}
-                    color = {COLORS.lightGreen}
+                    color={COLORS.lightGreen}
                     containerStyle={styles.nextButton}
                     titleStyle={styles.nextText}
                     radius={8}
@@ -211,27 +248,25 @@ const styles = StyleSheet.create({
     view: {
         flex: 1,
         justifyContent: "center",
-        alignItems:  "center",
+        alignItems: "center",
     },
     container: {
         height: '100%',
         width: '100%',
-        // alignItems: 'center',
-        // justifyContent: 'center',
         backgroundColor: COLORS.white,
         paddingTop: 30,
-
     },
-    input:{
-        borderBottomColor: COLORS.lightGreen
+    input: {
+        borderBottomColor: COLORS.lightGreen,
+        width: '98%',
     },
-    text:{
-        textAlign:"right"
+    text: {
+        textAlign: "right"
     },
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
+        marginBottom: '5%',
         alignSelf: "center"
     },
     nextText: {
@@ -240,11 +275,15 @@ const styles = StyleSheet.create({
     },
     register: {
         fontSize: 16,
+        color: COLORS.lightGreen,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
+        textDecorationColor: COLORS.darkGreen,
     },
     registerLink: {
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: 'center',
+        alignSelf: "center"
     },
     account: {
         fontSize: 16,

@@ -13,6 +13,8 @@ import {
     GET_SEARCH_RESULTS,
     SET_FAVORITE_TO_RECIPES,
     SET_HEART_AND_CHOOSE,
+    SET_DATE, SET_REPLACED,
+    SET_SHOW_TUTORIAL,
 } from './actions';
 
 const initialState = {
@@ -21,18 +23,19 @@ const initialState = {
     email: "",
     badges: [],
     earned: false,
+    replaced: false,
     EER: 0,
     score: 0,
     consumed_calories: 0,
-    total_calories: 0,
+    total_calories: 1,
     meals: [
         {title: 'ארוחת בוקר', mealData:{}},
         {title: 'ארוחת צהריים', mealData: {}},
         {title: 'ארוחת ערב',mealData: {}}],
     date: new Date(),
-    year_of_birth: 0,
-    height: 0,
-    weight: 0,
+    year_of_birth: '',
+    height: '',
+    weight: '',
     gender: '',
     physical_activity: '',
     vegan: false,
@@ -45,6 +48,8 @@ const initialState = {
     heartIcon: true,
     chooseButton: false,
     meal_type:"",
+    meal_score:0,
+    showTutorial: false,
 }
 
 function mealReducer(state = initialState, action) {
@@ -58,7 +63,7 @@ function mealReducer(state = initialState, action) {
         case GET_USER_DETAILS:
             return { ...state, first_name: action.first_name, last_name: action.last_name, email: action.email};
         case GET_DAILY_MENU:
-            return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories };
+            return { ...state, meals: action.meals, consumed_calories: action.consumed_calories, total_calories: action.total_calories, replaced: action.replaced };
         case SET_DAILY_MENU:
             return { ...state, meals: action.meals};
         case MARK_AS_EATEN:
@@ -67,6 +72,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, badges: action.badges, earned: action.earned };
         case SET_EARNED:
             return { ...state, earned: action.earned };
+        case SET_REPLACED:
+            return { ...state, replaced: action.replaced };
         case LOGOUT:
             return initialState;
         case SET_FOOD_PREFERENCE:
@@ -85,7 +92,11 @@ function mealReducer(state = initialState, action) {
         case SET_FAVORITE_TO_RECIPES:
             return { ...state, meals: action.meals, searchResults: action.searchResults, favorites: action.favorites};
         case SET_HEART_AND_CHOOSE:
-            return { ...state, meal_type:action.meal_type, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
+            return { ...state, meal_type: action.meal_type, meal_score: action.meal_score, heartIcon: action.heartIcon, chooseButton: action.chooseButton};
+        case SET_DATE:
+            return { ...state, date: new Date()};
+        case SET_SHOW_TUTORIAL:
+            return { ...state, showTutorial: action.showTutorial};
         default:
             return state;
     }
