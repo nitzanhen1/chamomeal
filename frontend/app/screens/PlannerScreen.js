@@ -38,21 +38,22 @@ export default function PlannerScreen() {
             {showTutorial && <TutorialOverlay />}
             <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
             <Text style={styles.textDate}>{dateToShow}</Text>
+                <View style={styles.eerContainer}>
+                    <Text style={styles.label}>כמות מומלצת:</Text>
+                    <Text style={styles.value}>{EER} קלוריות </Text>
+                </View>
+                <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
                 <View style={styles.calsContainer}>
                     <View style={{ flexDirection: 'row'}}>
                         <Text style={styles.label}>צרכת:</Text>
                         <Text style={styles.value}>{consumed_calories}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row'}}>
-                        <Text style={styles.label}>מומלץ ליום:</Text>
-                        <Text style={styles.value}>{EER} קלוריות </Text>
-                    </View>
+
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.label}>סה"כ:</Text>
+                        <Text style={styles.label}>כמות יומית:</Text>
                         <Text style={styles.value}>{total_calories}</Text>
                     </View>
                 </View>
-                <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
                 <ScrollView style={styles.inputsContainer}>
                     {meals.map(meal => (
                         <View key={meal.title}>
@@ -101,12 +102,18 @@ const styles = StyleSheet.create({
     translucentBackground: {
         opacity: 0.5,
     },
+    eerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        padding: 5,
+        borderRadius: 5,
+    },
     calsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 5,
-        backgroundColor: '#f2f2f2',
         borderRadius: 5,
     },
     label: {

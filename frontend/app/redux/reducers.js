@@ -27,7 +27,7 @@ const initialState = {
     EER: 0,
     score: 0,
     consumed_calories: 0,
-    total_calories: 0,
+    total_calories: 1,
     meals: [
         {title: 'ארוחת בוקר', mealData:{}},
         {title: 'ארוחת צהריים', mealData: {}},
