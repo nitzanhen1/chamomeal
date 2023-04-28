@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet, LayoutAnimation} from "react-native";
+import {View, TouchableOpacity, Text, StyleSheet, LayoutAnimation, Alert} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
@@ -49,6 +49,10 @@ export default class Accordion extends Component{
         this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date)).then(result => {
             if(result){
                 this.setState({mealData: recipe})
+            }else {
+                Alert.alert('משהו השתבש, נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
             }
         })
     }

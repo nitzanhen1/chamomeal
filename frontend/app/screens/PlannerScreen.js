@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native'
 import React, {useEffect} from 'react'
 import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
@@ -17,7 +17,13 @@ export default function PlannerScreen() {
     useEffect(() => {
         if(replaced) {
             dispatch({type: SET_DATE});
-            dispatch(getDailyMenu(date)).then();
+            dispatch(getDailyMenu(date)).then(result => {
+                if(!result){
+                    Alert.alert('משהו השתבש, נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                }
+            })
             dispatch(setReplaced(false));
         }
     }, [replaced]);

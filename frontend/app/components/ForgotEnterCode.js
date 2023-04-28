@@ -29,6 +29,12 @@ const ForgotEnterCode = ({navigation, route}) => {
                 else if(status===200){
                     navigation.navigate('EnterNewPassword', {email: Email});
                 }
+                else if(status===419){
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                    navigation.navigate('Login');
+                }
                 else{
                     Alert.alert('אוי לא משהו קרה! נסה שוב', null,
                         [{text: 'אוקיי', style: 'cancel'}],

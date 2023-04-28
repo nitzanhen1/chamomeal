@@ -30,23 +30,30 @@ const QuestionnaireScreen = ({navigation, route}) => {
     const dispatch = useDispatch();
 
     function handleFinish(foodData) {
-        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(() =>{
-            const prevRouteName = route.params.prevRouteName;
-            if(prevRouteName=='PersonalScreen'){
-                Alert.alert('השינויים נשמרו', 'כמות הקלוריות המומלצת ליום השתנתה, האם תרצו להישאר עם התכנון היומי הנוכחי או לייצר חדש?',
-                    [
-                        { text: 'תפריט חדש', onPress: () => handleGenerateNewDaily() },
-                        {
-                            text: ' תפריט נוכחי',
-                            style: 'cancel',
-                            onPress: () => navigation.navigate('BottomNavigator')
-                        },
-                    ],
+        dispatch(updateUserPreferences(year_of_birth, height, weight, gender, physical_activity, foodData.vegan2, foodData.vegetarian2, foodData.without_lactose2, foodData.gluten_free2, foodData.kosher2)).then(result => {
+            if(result){
+                const prevRouteName = route.params.prevRouteName;
+                if(prevRouteName=='PersonalScreen'){
+                    Alert.alert('השינויים נשמרו', 'כמות הקלוריות המומלצת ליום השתנתה, האם תרצו להישאר עם התכנון היומי הנוכחי או לייצר חדש?',
+                        [
+                            { text: 'תפריט חדש', onPress: () => handleGenerateNewDaily() },
+                            {
+                                text: ' תפריט נוכחי',
+                                style: 'cancel',
+                                onPress: () => navigation.navigate('BottomNavigator')
+                            },
+                        ],
+                        { cancelable: true });
+                }
+                else{
+                    navigation.navigate('LoadingScreen');
+                }
+            }else{
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
                     { cancelable: true });
             }
-            else{
-                navigation.navigate('LoadingScreen');
-            }
+
         });
     }
 

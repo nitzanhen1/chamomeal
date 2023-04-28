@@ -27,21 +27,23 @@ export default function LoadingScreen({navigation}) {
         dispatch(getGlobalDetails()).then(status => {
             if(status===200){
                 dispatch({type: SET_DATE});
-                dispatch(getDailyMenu(date)).then((status) => {
-                    if(status===200){
+                dispatch(getDailyMenu(date)).then(result => {
+                    if (result){
                         dispatch(getFavorites());
                         navigation.navigate('BottomNavigator');
-                    }else if (status===419){
+                    }else{
+                        Alert.alert('משהו השתבש, נסה שוב', null,
+                            [{text: 'אוקיי', style: 'cancel'}],
+                            { cancelable: true });
                         navigation.navigate('Login');
                     }
+
                 });
-            }else if(status===419){
-                navigation.navigate('Login');
-            }
-            else{
+            }else{
                 Alert.alert('אוי לא משהו קרה! נסה שוב', null,
                     [{text: 'אוקיי', style: 'cancel'}],
                     { cancelable: true });
+                navigation.navigate('Login');
             }
         });}
 

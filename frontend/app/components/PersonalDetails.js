@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Platform, TouchableOpacity} from 'react-native';
 import {TextInput, RadioButton, HelperText} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
@@ -31,7 +31,7 @@ const PersonalDetails = ({navigation}) => {
     const [newBirthYearError, setBirthYearError] = useState('');
 
     const handleSubmit = () => {
-        if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday() && validateGender()) {
+        if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday(newBirthYear) && validateGender()){
             const newPersonalDetails = {newWeight, newHeight, newGender, newBirthYear};
             dispatch(setPersonalDetails(newPersonalDetails))
             navigation.navigate('PhysicalActivity')
@@ -56,43 +56,57 @@ const PersonalDetails = ({navigation}) => {
         showMode('date');
     };
 
-    function validateHeight(height) {
-        if (!newHeight) {
-            setHeightError('אנא הכנס גובה');
+    function validateHeight(height){
+        let re = /^[+]?\d+([.]\d+)?$/;
+        if(height==0) {
+            setHeightError("גובה לא תקין")
             return false
-        } else {
+        }else if (re.test(height)) {
             setHeightError('')
             return true
+        } else {
+            setHeightError("גובה לא תקין")
+            return false
         }
     }
 
-    function validateWeight(weight) {
-        if (!newWeight) {
-            setWeightError('אנא הכנס משקל');
+    function validateWeight(weight){
+        let re = /^[+]?\d+([.]\d+)?$/;
+        if(weight==0) {
+            setWeightError("משקל לא תקין")
             return false
-        } else {
+        }else if (re.test(weight)) {
             setWeightError('')
             return true
+        } else {
+            setWeightError("משקל לא תקין")
+            return false
         }
     }
 
-    function validateBirthday() {
-        if (newBirthYear == "") {
+    function validateBirthday(birthYear){
+        let re = /^\d{4}$/;
+        if (birthYear == "") {
             setBirthYearError('אנא הכנס שנת לידה');
             setShowBDayError(true);
             return false
-        } else if (newBirthYear > (new Date().getFullYear() + -16)) {
+        }else if (birthYear > (new Date().getFullYear() + -16)){
             setBirthYearError('עליך להיות מעל גיל 16 על מנת להשתמש באפליקציה');
             setShowBDayError(true);
             return false
-        } else if (newBirthYear < (new Date().getFullYear() + -120)) {
+        }else if (birthYear < (new Date().getFullYear() + -120)){
             setBirthYearError('אנא ודא שגילך קטן מ-120');
             setShowBDayError(true);
             return false
-        } else {
+        }else if (re.test(birthYear)){
             setBirthYearError('')
             setShowBDayError(false);
             return true
+        }
+        else {
+            setBirthYearError('שנה לא תקינה');
+            setShowBDayError(true);
+            return false
         }
         // if (!dateChanged) {
         //     setBirthYearError('אנא בחר את תאריך הלידה שלך');
@@ -136,7 +150,7 @@ const PersonalDetails = ({navigation}) => {
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
             />
-            <HelperText type="error" visible={!newHeight}>
+            <HelperText type="error" visible={newHeightError}>
                 {newHeightError}
             </HelperText>
 
@@ -156,7 +170,7 @@ const PersonalDetails = ({navigation}) => {
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
             />
-            <HelperText type="error" visible={!newWeight}>
+            <HelperText type="error" visible={newWeightError}>
                 {newWeightError}
             </HelperText>
 
@@ -184,14 +198,18 @@ const PersonalDetails = ({navigation}) => {
                 <View style={styles.genderContainer}>
                     <Text style={styles.genderTitle}>מין</Text>
                     <View style={styles.genderOptions}>
-                        <View style={styles.radioButtonContainer}>
-                            <RadioButton color={COLORS.lightGreen} value="0"></RadioButton>
-                            <Text style={styles.optionText}>זכר</Text>
-                        </View>
-                        <View style={styles.radioButtonContainer}>
-                            <RadioButton color={COLORS.lightGreen} value="1"/>
-                            <Text style={styles.optionText}>נקבה</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => setGender("0")}>
+                            <View style={styles.radioButtonContainer}>
+                                <RadioButton color={COLORS.lightGreen} value="0"></RadioButton>
+                                <Text style={styles.optionText}>זכר</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setGender("1")}>
+                            <View style={styles.radioButtonContainer}>
+                                <RadioButton color={COLORS.lightGreen} value="1"/>
+                                <Text style={styles.optionText}>נקבה</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <HelperText type="error" visible={!newGender}>
                         {newGenderError}
