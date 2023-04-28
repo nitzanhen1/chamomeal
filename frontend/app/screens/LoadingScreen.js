@@ -39,16 +39,11 @@ export default function LoadingScreen({navigation}) {
                     }
 
                 });
-            }else if(status===419){
-                Alert.alert('משהו השתבש, נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-                navigation.navigate('Login');
-            }
-            else{
+            }else{
                 Alert.alert('אוי לא משהו קרה! נסה שוב', null,
                     [{text: 'אוקיי', style: 'cancel'}],
                     { cancelable: true });
+                navigation.navigate('Login');
             }
         });}
 

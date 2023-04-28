@@ -54,7 +54,7 @@ const LoginScreen = ({navigation}) => {
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
                 dispatch(login(username,userPassword)).then((status)=>{
-                if(status===404) {
+                if(status===403) {
                     Alert.alert('שם משתמש או סיסמה אינם נכונים', null,
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });

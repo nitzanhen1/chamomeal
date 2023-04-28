@@ -59,17 +59,24 @@ const ChangePassword = ({navigation}) => {
 
     function handleSubmitPress(){
         if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)){
-            dispatch(updatePassword(oldPassword,newPassword)).then((success)=>{
-                if(success) {
-                    Alert.alert('סיסמה שונתה בהצלחה!', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.goBack();
-                } else {
+            dispatch(updatePassword(oldPassword,newPassword)).then((status)=>{
+                if(status===403) {
                     Alert.alert('סיסמה נוכחית שגויה', null,
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });
-                }});
+                }
+                else if(status===202){
+                    Alert.alert('הסיסמה שונתה בהצלחה!', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                    navigation.goBack();
+                }
+                else{
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                }
+            });
         }
     }
 

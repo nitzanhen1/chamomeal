@@ -171,7 +171,7 @@ async function updatePassword(user_id, old_pass, new_pass) {
             return
         }
     }
-    throw {status: 404, message: "password incorrect"};
+    throw {status: 403, message: "password incorrect"};
 }
 
 async function getUserDetails(user_id) {

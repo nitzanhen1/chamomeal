@@ -29,7 +29,7 @@ const ForgotEnterEmail = ({navigation}) => {
     const handleSubmit = () => {
         if (validateEmail(Email)){
             dispatch(forgotPassword(Email)).then((status)=>{
-                if(status===404) {
+                if(status===403) {
                     Alert.alert('אימייל לא קיים', null,
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });

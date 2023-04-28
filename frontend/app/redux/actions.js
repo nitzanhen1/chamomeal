@@ -194,11 +194,9 @@ export const getGlobalDetails = () => {
                 return response.status;
             }catch (error){
                 if(error.response) {
-                    if(error.response.status === 419){
-                        dispatch({
-                            type: LOGOUT,
-                        });
-                    }
+                    dispatch({
+                        type: LOGOUT,
+                    });
                     return error.response.status;
                 }
             }
@@ -324,8 +322,7 @@ export const updatePassword = (old_pass, new_pass) => {
                         old_pass: old_pass,
                         new_pass: new_pass,
                     });
-                if(response.status===202){
-                    return true;}
+                return response.status;
             }catch (error){
                 if(error.response) {
                     if(error.response.status === 419){
@@ -333,8 +330,8 @@ export const updatePassword = (old_pass, new_pass) => {
                             type: LOGOUT,
                         });
                     }
+                    return error.response.status;
                 }
-                return false;
             }
         }
     }catch (error) {

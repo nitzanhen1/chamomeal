@@ -29,7 +29,7 @@ export default function PersonalScreen({navigation}) {
             if(success) {
                 navigation.navigate('Login')
             } else {
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                Alert.alert('משהו השתבש', null,
                     [{text: 'אוקיי', style: 'cancel'}],
                     { cancelable: true });
                 navigation.navigate('Login')
