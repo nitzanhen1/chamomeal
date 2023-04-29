@@ -35,6 +35,8 @@ async function login(username, password){
         // check that the password is correct
         if (bcrypt.compareSync(password, user.password)) {
             return user;
+        } else{
+            throw {status: 403, message: "username or password incorrect"};
         }
     }else if(user.length==0){
         throw {status: 403, message: "username or password incorrect"};
