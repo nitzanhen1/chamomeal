@@ -4,14 +4,16 @@ import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
+import { useIsFocused } from "@react-navigation/native";
 import {TutorialOverlay} from "./TutorialScreen";
 import { ProgressBar } from 'react-native-paper';
+import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 
 
 export default function PlannerScreen() {
     const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const [expanded, setExpanded] = React.useState(false);
+    const focus = useIsFocused();
 
     useEffect(() => {
         if(replaced) {
@@ -27,9 +29,10 @@ export default function PlannerScreen() {
         }
     }, [replaced]);
 
-    useEffect(() => {
-        setExpanded(showTutorial);
-    }, [showTutorial]);
+    // useEffect(() => {
+    //     dispatch({type: SET_DATE});
+    //     dispatch(getDailyMenu(date)).then();
+    // }, []);
 
     let day = date.getDate();
     let month = date.getMonth() + 1; // getMonth return value between 0-11
@@ -41,7 +44,7 @@ export default function PlannerScreen() {
         <View style={styles.container}>
             {showTutorial && <TutorialOverlay />}
             <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
-            <Text style={styles.textDate}>{dateToShow}</Text>
+                <Text style={styles.textDate}>{dateToShow}</Text>
                 <View style={styles.eerContainer}>
                     <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
                     <Text style={styles.value}>{EER} קלוריות </Text>
@@ -66,12 +69,11 @@ export default function PlannerScreen() {
                                 mealData={meal.mealData}
                                 date={date}
                                 dispatch={dispatch}
-                                expanded={expanded}
                             />
                         </View>
                     ))}
                 </ScrollView>
-        </View>
+            </View>
         </View>
     )
 }
@@ -79,7 +81,7 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
     container: {
         direction: 'rtl',
-        height: '100%'
+        height: '84%',
     },
     inputsContainer: {
         marginTop: 10,
