@@ -10,7 +10,7 @@ export default class Accordion extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            expanded : true,
+            expanded: true,
             meal_type: {
                 "ארוחת בוקר": "breakfast",
                 "ארוחת צהריים": "lunch",
@@ -18,6 +18,14 @@ export default class Accordion extends Component{
             },
         }
     }
+
+    // componentDidUpdate() {
+    //     console.log("in func")
+    //     if (this.props.expanded) {
+    //         console.log("in if")
+    //         this.setState({ expanded: true });
+    //     }
+    // }
 
     render() {
         return (
@@ -28,11 +36,11 @@ export default class Accordion extends Component{
                         <Text style={[styles.title]}>{this.props.title}</Text>
                     </View>
 
-                    <Icon name={this.state.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={COLORS.dark} />
+                    <Icon name={(this.state.expanded || this.props.expanded) ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={COLORS.dark} />
                 </TouchableOpacity>
                 <View style={styles.parentHr}/>
                 {
-                    this.state.expanded &&
+                    (this.state.expanded || this.props.expanded) &&
                     <View style={{}}>
                         <View style={styles.fullWidthButton}>
                             <MealCard recipe={this.props.mealData} meal_type={this.state.meal_type[this.props.title]} />

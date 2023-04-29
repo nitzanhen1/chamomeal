@@ -4,7 +4,6 @@ import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
-import { useIsFocused } from "@react-navigation/native";
 import {TutorialOverlay} from "./TutorialScreen";
 import { ProgressBar } from 'react-native-paper';
 
@@ -12,7 +11,7 @@ import { ProgressBar } from 'react-native-paper';
 export default function PlannerScreen() {
     const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const focus = useIsFocused();
+    const [expanded, setExpanded] = React.useState(false);
 
     useEffect(() => {
         if(replaced) {
@@ -28,10 +27,9 @@ export default function PlannerScreen() {
         }
     }, [replaced]);
 
-    // useEffect(() => {
-    //     dispatch({type: SET_DATE});
-    //     dispatch(getDailyMenu(date)).then();
-    // }, []);
+    useEffect(() => {
+        setExpanded(showTutorial);
+    }, [showTutorial]);
 
     let day = date.getDate();
     let month = date.getMonth() + 1; // getMonth return value between 0-11
@@ -68,6 +66,7 @@ export default function PlannerScreen() {
                                 mealData={meal.mealData}
                                 date={date}
                                 dispatch={dispatch}
+                                expanded={expanded}
                             />
                         </View>
                     ))}
