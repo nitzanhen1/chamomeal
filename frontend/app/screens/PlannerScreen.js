@@ -45,7 +45,7 @@ export default function PlannerScreen() {
             <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
             <Text style={styles.textDate}>{dateToShow}</Text>
                 <View style={styles.eerContainer}>
-                    <Text style={styles.label}>כמות מומלצת:</Text>
+                    <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
                     <Text style={styles.value}>{EER} קלוריות </Text>
                 </View>
                 <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
