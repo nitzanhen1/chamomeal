@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import {HelperText, RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
@@ -48,22 +48,30 @@ const PhysicalActivity = ({navigation}) => {
 
             <RadioButton.Group onValueChange={newValue => setPA(newValue)} value={pa2}>
                 <View style={styles.paContainer}>
-                    <View style={styles.radioButtonContainer}>
-                        <RadioButton color={COLORS.lightGreen} value="sedentary"></RadioButton>
-                        <Text style={styles.optionText}>לא פעיל/ה</Text>
-                    </View>
-                    <View style={styles.radioButtonContainer}>
-                        <RadioButton color={COLORS.lightGreen} value="low active"/>
-                        <Text style={styles.optionText}>פעיל/ה במידה נמוכה</Text>
-                    </View>
-                    <View style={styles.radioButtonContainer}>
-                        <RadioButton color={COLORS.lightGreen} value="active"/>
-                        <Text style={styles.optionText}>פעיל/ה</Text>
-                    </View>
-                    <View style={styles.radioButtonContainer}>
-                        <RadioButton color={COLORS.lightGreen} value="very active"/>
-                        <Text style={styles.optionText}>פעיל/ה במידה רבה</Text>
-                    </View>
+                    <TouchableOpacity onPress={() => setPA("sedentary")}>
+                        <View style={styles.radioButtonContainer}>
+                            <RadioButton color={COLORS.lightGreen} value="sedentary"></RadioButton>
+                            <Text style={styles.optionText}>לא פעיל/ה</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPA("low active")}>
+                        <View style={styles.radioButtonContainer}>
+                            <RadioButton color={COLORS.lightGreen} value="low active"/>
+                            <Text style={styles.optionText}>פעיל/ה במידה נמוכה</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPA("active")}>
+                        <View style={styles.radioButtonContainer}>
+                            <RadioButton color={COLORS.lightGreen} value="active"/>
+                            <Text style={styles.optionText}>פעיל/ה</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPA("very active")}>
+                        <View style={styles.radioButtonContainer}>
+                            <RadioButton color={COLORS.lightGreen} value="very active"/>
+                            <Text style={styles.optionText}>פעיל/ה במידה רבה</Text>
+                        </View>
+                    </TouchableOpacity>
                     <HelperText type="error" visible={!pa2}>
                         {PAError}
                     </HelperText>

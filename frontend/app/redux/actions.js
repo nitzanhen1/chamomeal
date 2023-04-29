@@ -22,8 +22,8 @@ export const SET_DATE = 'SET_DATE';
 export const SET_SHOW_TUTORIAL = 'SET_SHOW_TUTORIAL';
 export const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';
 
-const API_URL = 'http://10.0.2.2:3000'; //localhost
-// const API_URL = 'https://chamomeal.cs.bgu.ac.il'; //remote backend
+// const API_URL = 'http://10.0.2.2:3000'; //localhost
+const API_URL = 'https://chamomeal.cs.bgu.ac.il'; //remote backend
 
 export const getDailyMenu = (date) => {
     try{
@@ -50,11 +50,16 @@ export const getDailyMenu = (date) => {
                         earned: data['earned'],
                     });
                 }
-                return response.status;
+                return true;
             }catch (error){
                 if(error.response) {
-                    return error.response.status;
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
                 }
+                return false;
             }
         }
     }catch (error) {
@@ -193,11 +198,9 @@ export const getGlobalDetails = () => {
                 return response.status;
             }catch (error){
                 if(error.response) {
-                    if(error.response.status === 419){
-                        dispatch({
-                            type: LOGOUT,
-                        });
-                    }
+                    dispatch({
+                        type: LOGOUT,
+                    });
                     return error.response.status;
                 }
             }
@@ -296,6 +299,7 @@ export const updateUserPreferences = (year_of_birth, height, weight, gender, phy
                     type: UPDATE_USER_PREFERENCES,
                     // preferences: data
                 });
+                return true;
 
             }catch (error) {
                 if(error.response) {
@@ -305,6 +309,7 @@ export const updateUserPreferences = (year_of_birth, height, weight, gender, phy
                         });
                     }
                 }
+                return false;
             }
 
         }
@@ -321,8 +326,7 @@ export const updatePassword = (old_pass, new_pass) => {
                         old_pass: old_pass,
                         new_pass: new_pass,
                     });
-                if(response.status===202){
-                    return true;}
+                return response.status;
             }catch (error){
                 if(error.response) {
                     if(error.response.status === 419){
@@ -330,8 +334,8 @@ export const updatePassword = (old_pass, new_pass) => {
                             type: LOGOUT,
                         });
                     }
+                    return error.response.status;
                 }
-                return false;
             }
         }
     }catch (error) {
@@ -433,6 +437,7 @@ export const getFavorites = () =>{
                     type: GET_FAVORITES,
                     favorites: data,
                 });
+                return true;
             }catch (error){
                 if(error.response) {
                     if(error.response.status === 419){
@@ -441,6 +446,7 @@ export const getFavorites = () =>{
                         });
                     }
                 }
+                return false;
             }
         }
     }catch (error) {
@@ -497,8 +503,8 @@ export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
                             type: LOGOUT,
                         });
                     }
-                    return false;
                 }
+                return false;
             }
 
         }
@@ -565,9 +571,9 @@ export const getSustainableRecipes = (recipe_id, meal_type, meal_score) =>{
                         dispatch({
                             type: LOGOUT,
                         });
-                        return false;
                     }
                 }
+                return false;
             }
         }
     }catch (error) {
@@ -609,7 +615,9 @@ export const replaceRecipe = (api_replace,from, recipe_id, date, meal_type, repl
                             earned: badgesData['earned'],
                         });
                     }
+                    return true;
                 }
+                return false;
             }catch (error){
                 if(error.response) {
                     if(error.response.status === 419){
@@ -618,6 +626,7 @@ export const replaceRecipe = (api_replace,from, recipe_id, date, meal_type, repl
                         });
                     }
                 }
+                return false;
             }
         }
     }catch (error) {
@@ -667,6 +676,11 @@ export const forgotPassword = (email) =>{
                 return response.status;
             }catch (error){
                 if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
                     return error.response.status;
                 }
             }
@@ -687,6 +701,11 @@ export const verifyResetPasswordCode = (email, code) =>{
                 return response.status;
             }catch (error){
                 if(error.response) {
+                    if(error.response.status === 419){
+                        dispatch({
+                            type: LOGOUT,
+                        });
+                    }
                     return error.response.status;
                 }
             }

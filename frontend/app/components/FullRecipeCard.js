@@ -72,7 +72,7 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                 </View>
                                 <View style={styles.details}>
                                     <Ionicons name="time-outline" size={24} color="black"/>
-                                    <Text style={styles.detailsText}>הכנה {recipe.preparation_time}</Text>
+                                    <Text style={styles.detailsText}>זמן הכנה {recipe.preparation_time}</Text>
                                     <Text style={styles.detailsText}>כולל {recipe.total_time}</Text>
                                 </View>
                                 <View style={styles.details}>

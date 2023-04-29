@@ -1,6 +1,6 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
 import {replaceRecipe, setHeartAndChoose} from "../redux/actions";
@@ -27,13 +27,20 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
 
     const handleChooseButton = () => {
         let replacementDiff = recipe["score"] - meal_score
-        dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff)).then()
-        if (sustainable) {
-            handleCloseSustainableModal();
-        } else {
-            dispatch(setHeartAndChoose("", replacementDiff, true, false));
-            navigation.navigate("Meal Planner");
-        }
+        dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff)).then(result =>{
+            if(!result){
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
+        });
+            if(sustainable) {
+                handleCloseSustainableModal();
+            }
+            else{
+                dispatch(setHeartAndChoose("",replacementDiff, true, false));
+                navigation.navigate("Meal Planner");
+            }
     }
 
     const getNumberTextColor = (number) => {

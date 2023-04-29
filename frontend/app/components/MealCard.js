@@ -1,6 +1,6 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {FontAwesome, Ionicons} from "@expo/vector-icons";
 import MoreOptionsMenu from "./MoreOptionsMenu";
 import {getSustainableRecipes, setHeartAndChoose} from "../redux/actions";
@@ -32,6 +32,10 @@ const MealCard = ({recipe, meal_type}) => {
         await dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.score)).then(sustainableRecipes => {
             if (sustainableRecipes){
                 setSustainableRecipes(sustainableRecipes)
+            }else{
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
             }
         });
     }

@@ -29,7 +29,7 @@ const ForgotEnterEmail = ({navigation}) => {
     const handleSubmit = () => {
         if (validateEmail(Email)){
             dispatch(forgotPassword(Email)).then((status)=>{
-                if(status===404) {
+                if(status===403) {
                     Alert.alert('אימייל לא קיים', null,
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });
@@ -41,6 +41,12 @@ const ForgotEnterEmail = ({navigation}) => {
                 }
                 else if(status===200){
                     navigation.navigate('EnterCode',{email: Email});
+                }
+                else if(status===419){
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                    navigation.navigate('Login');
                 }
                 else{
                     Alert.alert('אוי לא משהו קרה! נסה שוב', null,

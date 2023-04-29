@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native'
 import React, {useEffect} from 'react'
 import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
@@ -17,7 +17,13 @@ export default function PlannerScreen() {
     useEffect(() => {
         if(replaced) {
             dispatch({type: SET_DATE});
-            dispatch(getDailyMenu(date)).then();
+            dispatch(getDailyMenu(date)).then(result => {
+                if(!result){
+                    Alert.alert('משהו השתבש, נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                }
+            })
             dispatch(setReplaced(false));
         }
     }, [replaced]);
@@ -39,7 +45,7 @@ export default function PlannerScreen() {
             <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
             <Text style={styles.textDate}>{dateToShow}</Text>
                 <View style={styles.eerContainer}>
-                    <Text style={styles.label}>כמות מומלצת:</Text>
+                    <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
                     <Text style={styles.value}>{EER} קלוריות </Text>
                 </View>
                 <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
