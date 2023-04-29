@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Modal,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback, Platform
 } from 'react-native'
 import React, {useState} from 'react'
 import {useSelector} from "react-redux";
@@ -280,6 +280,9 @@ const styles = StyleSheet.create({
         margin: 12,
         resizeMode: 'contain',
         borderRadius: 10,
+        borderWidth: 2,
+        borderColor: 'rgba(236,200,79,0.71)',
+
     },
     bw_image: {
         opacity: 0.25,

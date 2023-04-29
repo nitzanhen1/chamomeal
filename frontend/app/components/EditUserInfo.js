@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert} from 'react-native'
+import {View, StyleSheet, Alert, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import { Input } from '@rneui/themed';
 import { updateUserDetails} from "../redux/actions";
@@ -76,7 +76,7 @@ const EditUserInfo = ({navigation}) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center',}}>
             <AntDesign name="edit" size={50} style={styles.editIcon}/>
             <Input
                 label='שם פרטי'
@@ -126,7 +126,7 @@ const EditUserInfo = ({navigation}) => {
                 titleStyle={styles.nextText}
                 radius={8}
             />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -135,12 +135,13 @@ const styles = StyleSheet.create({
         direction: 'rtl',
         height: '100%',
         width: '100%',
-        alignItems: 'center',
         backgroundColor: COLORS.white,
         paddingTop:30,
     },
     input:{
-        borderBottomColor: COLORS.lightGreen
+        borderBottomColor: COLORS.lightGreen,
+        width: '97%',
+        alignSelf: "center"
     },
     nextButton: {
         marginTop: 10,
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Regular',
         fontSize: 16,
         color: COLORS.grey,
+        marginLeft: 5
     },
     editIcon:{
         color: COLORS.grey,

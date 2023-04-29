@@ -7,6 +7,7 @@ import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
 import { useIsFocused } from "@react-navigation/native";
 import {TutorialOverlay} from "./TutorialScreen";
 import { ProgressBar } from 'react-native-paper';
+import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 
 
 export default function PlannerScreen() {
@@ -80,7 +81,7 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
     container: {
         direction: 'rtl',
-        height: '100%'
+        height: '84%',
     },
     inputsContainer: {
         marginTop: 10,

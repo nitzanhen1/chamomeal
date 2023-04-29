@@ -1,4 +1,15 @@
-import {Image, Modal, StyleSheet, Text, TouchableOpacity, View, Linking, Alert, ScrollView} from "react-native";
+import {
+    Image,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Linking,
+    Alert,
+    ScrollView,
+    TouchableWithoutFeedback
+} from "react-native";
 import {Divider} from 'react-native-elements';
 import COLORS from "../consts/colors";
 import {Ionicons, AntDesign, SimpleLineIcons} from '@expo/vector-icons';
@@ -33,126 +44,134 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
             >
                 <View style={styles.modalBackGround}>
                     <View style={styles.modalContainer}>
-                        <View style={styles.imgContainer}>
-                            <Image source={{uri: recipe.image}} style={styles.recipeImage}/>
-                            <View style={styles.icons}>
-                                {recipe.sodium_bool === 1 &&
-                                    <Image style={styles.redIcon} source={require('../assets/icon_sodium.png')}/>}
-                                {recipe.saturated_fat_bool === 1 && <Image style={styles.redIcon}
-                                                                           source={require('../assets/icon_saturated_fat.png')}/>}
-                            </View>
-                            <TouchableOpacity onPress={handleCloseFull}
-                                              style={{position: 'absolute', top: 10, right: 10}}>
-                                <AntDesign name="closecircleo" size={25} style={styles.exitIcon}/>
-                            </TouchableOpacity>
-                        </View>
-                        <ScrollView style={styles.information}>
-                            <View style={styles.titleContainer}>
-                                <Text style={styles.title}>{recipe.name}</Text>
-                            </View>
-                            <View style={styles.flowersContainer}>
-                                <View style={{flexDirection: 'row', paddingTop: 3}}>
-                                    <Ionicons name="flower-outline" size={25} style={styles.flowersIcon}/>
-                                    <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
+                        <TouchableWithoutFeedback>
+                            <View style={styles.imgContainer}>
+                                <Image source={{uri: recipe.image}} style={styles.recipeImage}/>
+                                <View style={styles.icons}>
+                                    {recipe.sodium_bool === 1 &&
+                                        <Image style={styles.redIcon} source={require('../assets/icon_sodium.png')}/>}
+                                    {recipe.saturated_fat_bool === 1 && <Image style={styles.redIcon}
+                                                                               source={require('../assets/icon_saturated_fat.png')}/>}
                                 </View>
-                                <Text style={styles.flowerText}>·</Text>
-                                <Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>
-                                <HeartIcon recipe={recipe}/>
-                            </View>
-                            <View style={styles.detailsContainer}>
-                                <View style={styles.details}>
-                                    <SimpleLineIcons name="energy" size={24} color="black"/>
-                                    <Text style={styles.detailsText}>קלוריות</Text>
-                                    <Text style={styles.detailsText}>{recipe.calories}</Text>
-                                </View>
-                                <View style={styles.details}>
-                                    <AntDesign name="shoppingcart" size={24} color="black"/>
-                                    <Text style={styles.detailsText}>מרכיבים</Text>
-                                    <Text style={styles.detailsText}>{recipe.ingredients_count} </Text>
-                                </View>
-                                <View style={styles.details}>
-                                    <Ionicons name="time-outline" size={24} color="black"/>
-                                    <Text style={styles.detailsText}>זמן הכנה {recipe.preparation_time}</Text>
-                                    <Text style={styles.detailsText}>כולל {recipe.total_time}</Text>
-                                </View>
-                                <View style={styles.details}>
-                                    <AntDesign name="dashboard" size={24} color="black"/>
-                                    <Text style={styles.detailsText}>רמת קושי</Text>
-                                    <Text style={styles.detailsText}>{recipe.difficulty} </Text>
-                                </View>
-                            </View>
-                            <View style={styles.dietary}>
-                                {recipe.kosher === 1 && <Text style={styles.dietaryText}>כשר</Text>}
-                                {recipe.vegetarian === 1 && <Text style={styles.dietaryText}> · צמחוני</Text>}
-                                {recipe.vegan === 1 && <Text style={styles.dietaryText}> · טבעוני</Text>}
-                                {recipe.gluten_free === 1 && <Text style={styles.dietaryText}> · ללא גלוטן</Text>}
-                                {recipe.without_lactose === 1 && <Text style={styles.dietaryText}> · ללא לקטוז</Text>}
-                            </View>
-                            <View>
-                                <TouchableOpacity style={styles.linkButton} onPress={onPressLink}>
-                                    <Text style={styles.linkText}>למתכון המלא לחצו כאן</Text>
+                                <TouchableOpacity onPress={handleCloseFull}
+                                                  style={{position: 'absolute', top: 10, right: 10}}>
+                                    <AntDesign name="closecircleo" size={25} style={styles.exitIcon}/>
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.nutritionRow}>
-                                <View style={styles.details}>
-                                    <Text style={styles.carbText}>פחמימות</Text>
-                                    <Text style={styles.detailsText}>{recipe.carbohydrates}</Text>
+                        </TouchableWithoutFeedback>
+                        <ScrollView style={styles.information}>
+                            <TouchableWithoutFeedback>
+                                <View>
+                                    <View style={styles.titleContainer}>
+                                        <Text style={styles.title}>{recipe.name}</Text>
+                                    </View>
+                                    <View style={styles.flowersContainer}>
+                                        <View style={{flexDirection: 'row', paddingTop: 3}}>
+                                            <Ionicons name="flower-outline" size={25} style={styles.flowersIcon}/>
+                                            <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
+                                        </View>
+                                        <Text style={styles.flowerText}>·</Text>
+                                        <Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>
+                                        <HeartIcon recipe={recipe}/>
+                                    </View>
+                                    <View style={styles.detailsContainer}>
+                                        <View style={styles.details}>
+                                            <SimpleLineIcons name="energy" size={24} color="black"/>
+                                            <Text style={styles.detailsText}>קלוריות</Text>
+                                            <Text style={styles.detailsText}>{recipe.calories}</Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <AntDesign name="shoppingcart" size={24} color="black"/>
+                                            <Text style={styles.detailsText}>מרכיבים</Text>
+                                            <Text style={styles.detailsText}>{recipe.ingredients_count} </Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <Ionicons name="time-outline" size={24} color="black"/>
+                                            <Text style={styles.detailsText}>זמן הכנה {recipe.preparation_time}</Text>
+                                            <Text style={styles.detailsText}>כולל {recipe.total_time}</Text>
+                                        </View>
+                                        <View style={styles.details}>
+                                            <AntDesign name="dashboard" size={24} color="black"/>
+                                            <Text style={styles.detailsText}>רמת קושי</Text>
+                                            <Text style={styles.detailsText}>{recipe.difficulty} </Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.dietary}>
+                                        {recipe.kosher === 1 && <Text style={styles.dietaryText}>כשר</Text>}
+                                        {recipe.vegetarian === 1 && <Text style={styles.dietaryText}> · צמחוני</Text>}
+                                        {recipe.vegan === 1 && <Text style={styles.dietaryText}> · טבעוני</Text>}
+                                        {recipe.gluten_free === 1 &&
+                                            <Text style={styles.dietaryText}> · ללא גלוטן</Text>}
+                                        {recipe.without_lactose === 1 &&
+                                            <Text style={styles.dietaryText}> · ללא לקטוז</Text>}
+                                    </View>
+                                    <View>
+                                        <TouchableOpacity style={styles.linkButton} onPress={onPressLink}>
+                                            <Text style={styles.linkText}>למתכון המלא לחצו כאן</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.nutritionRow}>
+                                        <View style={styles.details}>
+                                            <Text style={styles.carbText}>פחמימות</Text>
+                                            <Text style={styles.detailsText}>{recipe.carbohydrates}</Text>
+                                        </View>
+                                        <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                        <View style={styles.details}>
+                                            <Text style={styles.carbText}>חלבונים</Text>
+                                            <Text style={styles.detailsText}>{recipe.protein} </Text>
+                                        </View>
+                                        <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                        <View style={styles.details}>
+                                            <Text style={styles.carbText}>שומנים</Text>
+                                            <Text style={styles.detailsText}>{recipe.fats} </Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.nutritionContainer}>
+                                        <View style={styles.nutritionRow}>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>נתרן</Text>
+                                                <Text style={styles.detailsText}>{recipe.sodium}</Text>
+                                            </View>
+                                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>סיבים תזונתיים</Text>
+                                                <Text style={styles.detailsText}>{recipe.fibers} </Text>
+                                            </View>
+                                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>שומן רווי</Text>
+                                                <Text style={styles.detailsText}>{recipe.saturated_fat} </Text>
+                                            </View>
+                                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>כולסטרול</Text>
+                                                <Text style={styles.detailsText}>{recipe.cholesterol}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.nutritionRow}>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>סידן</Text>
+                                                <Text style={styles.detailsText}>{recipe.calcium}</Text>
+                                            </View>
+                                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>ברזל</Text>
+                                                <Text style={styles.detailsText}>{recipe.iron} </Text>
+                                            </View>
+                                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>אשלגן</Text>
+                                                <Text style={styles.detailsText}>{recipe.potassium} </Text>
+                                            </View>
+                                            <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
+                                            <View style={styles.details}>
+                                                <Text style={styles.nutritionText}>אבץ</Text>
+                                                <Text style={styles.detailsText}>{recipe.zinc}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
                                 </View>
-                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                <View style={styles.details}>
-                                    <Text style={styles.carbText}>חלבונים</Text>
-                                    <Text style={styles.detailsText}>{recipe.protein} </Text>
-                                </View>
-                                <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                <View style={styles.details}>
-                                    <Text style={styles.carbText}>שומנים</Text>
-                                    <Text style={styles.detailsText}>{recipe.fats} </Text>
-                                </View>
-                            </View>
-                            <View style={styles.nutritionContainer}>
-                                <View style={styles.nutritionRow}>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>נתרן</Text>
-                                        <Text style={styles.detailsText}>{recipe.sodium}</Text>
-                                    </View>
-                                    <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>סיבים תזונתיים</Text>
-                                        <Text style={styles.detailsText}>{recipe.fibers} </Text>
-                                    </View>
-                                    <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>שומן רווי</Text>
-                                        <Text style={styles.detailsText}>{recipe.saturated_fat} </Text>
-                                    </View>
-                                    <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>כולסטרול</Text>
-                                        <Text style={styles.detailsText}>{recipe.cholesterol}</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.nutritionRow}>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>סידן</Text>
-                                        <Text style={styles.detailsText}>{recipe.calcium}</Text>
-                                    </View>
-                                    <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>ברזל</Text>
-                                        <Text style={styles.detailsText}>{recipe.iron} </Text>
-                                    </View>
-                                    <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>אשלגן</Text>
-                                        <Text style={styles.detailsText}>{recipe.potassium} </Text>
-                                    </View>
-                                    <Divider width={2} color={COLORS.grey} orientation={"vertical"}/>
-                                    <View style={styles.details}>
-                                        <Text style={styles.nutritionText}>אבץ</Text>
-                                        <Text style={styles.detailsText}>{recipe.zinc}</Text>
-                                    </View>
-                                </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         </ScrollView>
                     </View>
                 </View>
