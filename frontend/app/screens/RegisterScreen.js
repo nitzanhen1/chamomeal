@@ -119,16 +119,7 @@ const RegisterScreen = ({navigation}) => {
                         {cancelable: false});
 
                     try {
-                        dispatch(login(username, password)).then((status) => {
-                            if (status === 202) {
-                                navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
-                            } else if (status === 200) {
-                                navigation.navigate('LoadingScreen');
-                            } else {
-                                navigation.navigate('Login');
-
-                            }
-                        });
+                        navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
                     } catch (error) {
                         console.log(error)
                     }

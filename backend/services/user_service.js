@@ -2,6 +2,7 @@ const DButils = require("../data/db_utils");
 const moment = require('moment');
 const bcrypt = require("bcryptjs");
 const logger = require("../logger")
+const recipe_service = require("./recipe_service")
 
 
 async function userMiddleware(req, res, next) {
@@ -82,6 +83,10 @@ async function getUserFromDB(user_id, cols = "*") {
 
 async function getGlobalDetails(user_id) {
     let user = await getUserFromDB(user_id);
+    if(user['EER']==null){ //not update preferences
+        throw {status: 404, message: "login without preferences"};
+    }
+
     let user_details = {
         first_name: user['first_name'],
         total_score: user['score'],
@@ -94,6 +99,8 @@ async function getGlobalDetails(user_id) {
     }
     let badges = await getBadgesFromDB(user_id);
     user_details['badges'] = Object.values(badges)
+    let favorites = await recipe_service.getFavoritesRecipes(user_id);
+    user_details['favorites'] = favorites
     return user_details
 }
 

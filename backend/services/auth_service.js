@@ -24,6 +24,7 @@ async function register(user_details) {
         await DButils.execQuery(
             `INSERT INTO badges (user_id) VALUES ('${result['insertId']}')`
         );
+        return (result['insertId'])
     }
 }
 

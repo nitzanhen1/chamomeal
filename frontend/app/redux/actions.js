@@ -193,7 +193,8 @@ export const getGlobalDetails = () => {
                     vegetarian: data['vegetarian'],
                     vegan: data['vegan'],
                     gluten_free: data['gluten_free'],
-                    without_lactose: data['without_lactose']
+                    without_lactose: data['without_lactose'],
+                    favorites: data['favorites']
                 });
                 return response.status;
             }catch (error){

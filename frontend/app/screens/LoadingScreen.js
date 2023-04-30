@@ -29,7 +29,6 @@ export default function LoadingScreen({navigation}) {
                 dispatch({type: SET_DATE});
                 dispatch(getDailyMenu(date)).then(result => {
                     if (result){
-                        dispatch(getFavorites());
                         navigation.navigate('BottomNavigator');
                     }else{
                         Alert.alert('משהו השתבש, נסה שוב', null,
@@ -40,9 +39,11 @@ export default function LoadingScreen({navigation}) {
 
                 });
             }else{
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
+                if(status != 419 && status != 404){
+                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                }
                 navigation.navigate('Login');
             }
         });}

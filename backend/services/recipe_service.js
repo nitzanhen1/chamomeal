@@ -31,14 +31,16 @@ async function generateDailyMenu(user_id, date) {
         const prefs = await user_service.getPreferences(user_id)
         let generatedMenu = await createMenu(user_id, date, prefs);
         let login_score = prefs['login_score'] + 1
-        await user_service.checkLoginBadges(user_id, login_score).then(async (result) => {
-            if (result[0] == true) {
-                generatedMenu["badges"] = Object.values(result[1]) //badges
-                generatedMenu["earned"] = result[2] //true\false
-            }
-        })
-        await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}', '${date}', '${generatedMenu["breakfast"]}', 
+        let result = await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}', '${date}', '${generatedMenu["breakfast"]}', 
                                     '${generatedMenu["lunch"]}', '${generatedMenu["dinner"]}', 0, 0, 0, 0)`);
+        if (result['insertId']){
+            await user_service.checkLoginBadges(user_id, login_score).then(async (result) => {
+                if (result[0] == true) {
+                    generatedMenu["badges"] = Object.values(result[1]) //badges
+                    generatedMenu["earned"] = result[2] //true\false
+                }
+            })
+        }
         return generatedMenu;
     } catch (err) {
         throw err;
