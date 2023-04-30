@@ -48,7 +48,7 @@ const BottomNavigator = ({ navigation }) => {
       initialRouteName="Meal Planner"
       activeColor={COLORS.primary}
       inactiveColor={COLORS.grey}
-      barStyle={{ backgroundColor: COLORS.white }}
+      barStyle={{ backgroundColor: COLORS.white, height: '7.5%' }}
       >
       <Tab.Screen
         name="Search"

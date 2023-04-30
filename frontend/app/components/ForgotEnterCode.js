@@ -112,11 +112,12 @@ const styles = StyleSheet.create({
     },
     textUp: {
         fontSize: 15,
+        alignSelf: "center",
         textAlign: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
         width: '100%',
         height: 25,
-        paddingRight: 20,
+        // paddingRight: 20,
         fontFamily: 'Rubik-Bold',
         letterSpacing: 1,
         color: COLORS.darkGrey

@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, Alert, TouchableOpacity, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {useDispatch} from "react-redux";
@@ -70,7 +70,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
             <AntDesign name="edit" size={50} style={styles.editIcon}/>
             <Input
                 label='סיסמה חדשה'
@@ -127,7 +127,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
                 titleStyle={styles.nextText}
                 radius={8}
             />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         direction: 'rtl',
         height: '100%',
         width: '100%',
-        alignItems: 'center',
+        // alignItems: 'center',
         backgroundColor: COLORS.white,
         paddingTop:30,
     },

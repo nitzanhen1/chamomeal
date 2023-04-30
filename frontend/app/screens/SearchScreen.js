@@ -139,7 +139,7 @@ export default function SearchScreen() {
             </View>
             {
                 expanded &&
-                <View>
+                <ScrollView>
 
                     <View style={styles.filterContainer}>
                         <Text style={styles.filterTitle}>העדפות</Text>
@@ -231,7 +231,7 @@ export default function SearchScreen() {
                             />
                         </View>
                     </View>
-                </View>
+                </ScrollView>
             }
             {whileSearch && <ActivityIndicator style={styles.indicator} size="large" color={COLORS.darkGreen} />}
             {!whileSearch && <ScrollView style={styles.inputsContainer}>

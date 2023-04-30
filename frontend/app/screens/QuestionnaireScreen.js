@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
     },
     formContainer: {
-        height: "83%",
+        height: "100%",
         width: "97%",
         backgroundColor: colors.grey,
         marginTop: 10,
