@@ -66,6 +66,7 @@ const ForgotEnterCode = ({navigation, route}) => {
                 keyboardType="numeric"
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Button
                 title="המשך"
@@ -98,11 +99,12 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     label:{
         fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
         fontSize: 16,
         color: COLORS.grey,
     },
@@ -135,6 +137,11 @@ const styles = StyleSheet.create({
         color: COLORS.dark,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
+    },
+    inputText: {
+        textAlign: "right",
+        fontFamily: 'Rubik-Regular'
+
     },
 })
 

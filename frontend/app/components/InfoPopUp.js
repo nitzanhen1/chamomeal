@@ -15,7 +15,7 @@ const InfoPopUp = ({icon, explanation, right}) => {
                     customStyles={right ? styles.menuStyle: styles.menuStyleNoMargin}>
                     <MenuOption
                         customStyles={styles.optionStyle}>
-                        <Text>{explanation}</Text>
+                        <Text style={styles.optionText}>{explanation}</Text>
                     </MenuOption>
                 </MenuOptions>
             </Menu>
@@ -56,5 +56,8 @@ const styles = StyleSheet.create({
             justifyContent: "space-between",
             opacity: 0.2,
         },
-    },
+    } ,
+    optionText:{
+    fontFamily: 'Rubik-Regular'
+}
 });

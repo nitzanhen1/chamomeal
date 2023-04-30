@@ -143,8 +143,8 @@ export default function App() {
                             headerTintColor: '#ffffff',
                             headerTitleStyle: {
                                 fontSize: 21,
-                                fontWeight: 'bold',
-                                fontFamily: 'Rubik-Regular',
+                                // fontWeight: 'bold',
+                                fontFamily: 'Rubik-Bold',
                             },
                         }}>
                         <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{headerShown:false}}/>
@@ -167,6 +167,10 @@ export default function App() {
                                           headerBackVisible: true,
                                           headerTitleAlign: "left",
                                           headerStyle: { backgroundColor : COLORS.white},
+                                          headerTitleStyle: {
+                                              fontSize: 24,
+                                              fontFamily: 'Rubik-Bold',
+                                          },
                                           headerTintColor: COLORS.grey
                                       }}/>
                         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}

@@ -263,8 +263,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         alignSelf: 'center',
         top: '60%',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         position: 'absolute',
+        fontFamily: 'Rubik-Regular'
     },
     list_img: {
         // top: 50,

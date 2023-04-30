@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
     },
     question: {
         fontFamily: 'Rubik-Regular',
-        fontWeight: '700',
+        fontSize: 15,
+        // fontWeight: '700',
         color: COLORS.darkGrey,
         marginHorizontal: 10,
         marginTop: 10

@@ -149,8 +149,21 @@ const PersonalDetails = ({navigation}) => {
                 underlineColor={COLORS.darkGrey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
+                theme={
+                    {
+                        fonts: {
+                            regular: {
+                                fontFamily: 'Rubik-Regular'
+                            }
+                        }
+                    }
+                }
             />
-            <HelperText type="error" visible={newHeightError}>
+            <HelperText
+                type="error"
+                visible={newHeightError}
+                style={{fontFamily: 'Rubik-Regular'}}
+            >
                 {newHeightError}
             </HelperText>
 
@@ -169,8 +182,21 @@ const PersonalDetails = ({navigation}) => {
                 underlineColor={COLORS.darkGrey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
+                theme={
+                    {
+                        fonts: {
+                            regular: {
+                                fontFamily: 'Rubik-Regular'
+                            }
+                        }
+                    }
+                }
             />
-            <HelperText type="error" visible={newWeightError}>
+            <HelperText
+                type="error"
+                visible={newWeightError}
+                style={{fontFamily: 'Rubik-Regular'}}
+            >
                 {newWeightError}
             </HelperText>
 
@@ -189,8 +215,21 @@ const PersonalDetails = ({navigation}) => {
                 underlineColor={COLORS.grey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
+                theme={
+                    {
+                        fonts: {
+                            regular: {
+                                fontFamily: 'Rubik-Regular'
+                            }
+                        }
+                    }
+                }
             />
-            <HelperText type="error" visible={showBDayError}>
+            <HelperText
+                type="error"
+                visible={showBDayError}
+                style={{fontFamily: 'Rubik-Regular'}}
+            >
                 {newBirthYearError}
             </HelperText>
 
@@ -211,7 +250,11 @@ const PersonalDetails = ({navigation}) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <HelperText type="error" visible={!newGender}>
+                    <HelperText
+                        type="error"
+                        visible={!newGender}
+                        style={{fontFamily: 'Rubik-Regular'}}
+                    >
                         {newGenderError}
                     </HelperText>
                 </View>
@@ -236,13 +279,14 @@ const styles = StyleSheet.create({
     },
     disclaimer: {
         fontFamily: 'Rubik-Regular',
-        fontWeight: '700',
+        // fontWeight: '700',
         color: COLORS.darkGrey,
+        fontSize: 14,
         marginHorizontal: 10,
         marginTop: 10
     },
     inputText: {
-        fontFamily: 'Rubik-Regular',
+        fontWeight: 'normal',
         backgroundColor: COLORS.white,
         width: '96%',
         alignSelf: "center"

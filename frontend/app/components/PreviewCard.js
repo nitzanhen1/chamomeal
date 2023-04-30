@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 20,
-        fontWeight: '900',
-        fontFamily: 'Rubik-Regular',
+        // fontWeight: '900',
+        fontFamily: 'Rubik-Bold',
         paddingLeft: 7,
         marginBottom: 3,
         lineHeight: 24
