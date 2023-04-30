@@ -12,17 +12,17 @@ import {
 import React, {useState} from 'react'
 import {useSelector} from "react-redux";
 import COLORS from "../consts/colors";
-import {AntDesign, FontAwesome} from "@expo/vector-icons";
+import {FontAwesome} from "@expo/vector-icons";
 
 export default function GameScreen() {
-    const {badges, first_name, score} = useSelector(state => state.mealReducer);
+    const {badges} = useSelector(state => state.mealReducer);
     const badge_details = [
-        {id: 1, badge: badges[0], source: require('../assets/badges/earth1.png'), text: '5 קיימות', showText: false},
-        {id: 2, badge: badges[1], source: require('../assets/badges/earth2.png'), text: '15 קיימות', showText: false},
-        {id: 3, badge: badges[2], source: require('../assets/badges/earth3.png'), text: '30 קיימות', showText: false},
-        {id: 4, badge: badges[3], source: require('../assets/badges/earth4.png'), text: '50 קיימות', showText: false},
-        {id: 5, badge: badges[4], source: require('../assets/badges/earth5.png'), text: '80 קיימות', showText: false},
-        {id: 6, badge: badges[5], source: require('../assets/badges/earth6.png'), text: '120 קיימות', showText: false},
+        {id: 1, badge: badges[0], source: require('../assets/badges/earth1.png'), text: '5 נק\' שדרוג', showText: false},
+        {id: 2, badge: badges[1], source: require('../assets/badges/earth2.png'), text: '15 נק\' שדרוג', showText: false},
+        {id: 3, badge: badges[2], source: require('../assets/badges/earth3.png'), text: '30 נק\' שדרוג', showText: false},
+        {id: 4, badge: badges[3], source: require('../assets/badges/earth4.png'), text: '50 נק\' שדרוג', showText: false},
+        {id: 5, badge: badges[4], source: require('../assets/badges/earth5.png'), text: '80 נק\' שדרוג', showText: false},
+        {id: 6, badge: badges[5], source: require('../assets/badges/earth6.png'), text: '120 נק\' שדרוג', showText: false},
 
         {id: 7, badge: badges[6], source: require('../assets/badges/flower1.png'), text: '10 פרחים', showText: false},
         {id: 8, badge: badges[7], source: require('../assets/badges/flower2.png'), text: '50 פרחים', showText: false},
@@ -91,10 +91,8 @@ export default function GameScreen() {
         <ScrollView>
 
             <View style={styles.container}>
-                {/*<Text style={styles.textCals}>{first_name} שלום</Text>*/}
-                {/*<Text style={styles.textCals}>עד כה צברת {score} פרחים</Text>*/}
                 <View style={styles.header}>
-                    <Text style={styles.subtitles}>קיימות</Text>
+                    <Text style={styles.subtitles}>החלפה לארוחות סביבתיות</Text>
                     <TouchableOpacity onPress={() => setModalVisibleOne(true)}>
 
                         <FontAwesome name="question-circle-o" size={25} style={styles.qIcon}/>
@@ -110,7 +108,7 @@ export default function GameScreen() {
                     scrollEnabled={false}
                 />
                 <View style={styles.header}>
-                    <Text style={styles.subtitles}>פרחים</Text>
+                    <Text style={styles.subtitles}>פרחים שצברת באכילת ארוחות</Text>
                     <TouchableOpacity onPress={() => setModalVisibleTwo(true)}>
 
                         <FontAwesome name="question-circle-o" size={25} style={styles.qIcon} o/>
@@ -127,7 +125,7 @@ export default function GameScreen() {
 
                 />
                 <View style={styles.header}>
-                    <Text style={styles.subtitles}>רצף התחברות</Text>
+                    <Text style={styles.subtitles}>כניסות יומיות</Text>
                     <TouchableOpacity onPress={() => setModalVisibleThree(true)}>
 
                         <FontAwesome name="question-circle-o" size={25} style={styles.qIcon} o/>
@@ -232,8 +230,8 @@ export default function GameScreen() {
                         >
                             <TouchableWithoutFeedback>
                                 <View style={styles.modalView}>
-                                    <Text style={styles.modalTitle}>רצף התחברות</Text>
-                                    <Text style={styles.modalText}>מתחברים ברציפות וצוברים תגים! </Text>
+                                    <Text style={styles.modalTitle}>כניסות יומיות</Text>
+                                    <Text style={styles.modalText}>מתחברים כל יום וצוברים תגים! </Text>
                                     <TouchableOpacity onPress={() => setModalVisibleThree(false)}>
                                         <Text style={styles.modalButton}>סגור</Text>
                                     </TouchableOpacity>
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     textImg: {
-        fontSize: 18,
+        fontSize: 16,
         alignSelf: 'center',
         top: '60%',
         fontWeight: 'bold',

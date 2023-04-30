@@ -7,6 +7,7 @@ import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
 import { useIsFocused } from "@react-navigation/native";
 import {TutorialOverlay} from "./TutorialScreen";
 import { ProgressBar } from 'react-native-paper';
+import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 
 
 export default function PlannerScreen() {
@@ -43,7 +44,7 @@ export default function PlannerScreen() {
         <View style={styles.container}>
             {showTutorial && <TutorialOverlay />}
             <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
-            <Text style={styles.textDate}>{dateToShow}</Text>
+                <Text style={styles.textDate}>{dateToShow}</Text>
                 <View style={styles.eerContainer}>
                     <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
                     <Text style={styles.value}>{EER} קלוריות </Text>
@@ -72,7 +73,7 @@ export default function PlannerScreen() {
                         </View>
                     ))}
                 </ScrollView>
-        </View>
+            </View>
         </View>
     )
 }
@@ -80,7 +81,7 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
     container: {
         direction: 'rtl',
-        height: '100%'
+        height: '84%',
     },
     inputsContainer: {
         marginTop: 10,
