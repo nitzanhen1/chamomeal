@@ -228,13 +228,12 @@ const styles = StyleSheet.create({
 
     },
     flowersIcon: {
-        color: COLORS.dark,
-        // marginBottom: 1
+        color: COLORS.dark
     },
     flowerText: {
         paddingHorizontal: 4,
         paddingTop: 2,
-        fontFamily: 'Rubik-Regular',
+        fontFamily: 'Rubik-Bold',
         // fontWeight: "bold",
         fontSize: 17,
         color: COLORS.dark,

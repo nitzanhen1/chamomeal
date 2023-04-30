@@ -348,6 +348,4 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Regular',
         fontSize: 17
     },
-
-
 });

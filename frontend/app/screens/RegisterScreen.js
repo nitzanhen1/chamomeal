@@ -1,13 +1,5 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    ScrollView,
-    Alert,
-    TouchableWithoutFeedback,
-    Modal
-} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, TouchableWithoutFeedback,
+    Modal} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {login, register} from "../redux/actions";
@@ -266,7 +258,6 @@ const RegisterScreen = ({navigation}) => {
                             />
                         </TouchableOpacity>
                     }
-
                 />
                 <Button
                     title="הירשם"
@@ -456,8 +447,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Bold',
         fontSize: 16
     }
-
-
 })
 
 export default RegisterScreen;
