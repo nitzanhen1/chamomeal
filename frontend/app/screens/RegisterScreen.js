@@ -170,7 +170,7 @@ const RegisterScreen = ({navigation}) => {
                     errorMessage={usernameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
-                    inputStyle={styles.inputText}
+                    inputStyle={styles.text}
                 />
                 <Input
                     onChangeText={(firstName) => {
@@ -182,7 +182,7 @@ const RegisterScreen = ({navigation}) => {
                     errorMessage={firstNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
-                    inputStyle={styles.inputText}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -195,7 +195,7 @@ const RegisterScreen = ({navigation}) => {
                     errorMessage={lastNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
-                    inputStyle={styles.inputText}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -209,7 +209,7 @@ const RegisterScreen = ({navigation}) => {
                     errorMessage={emailError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
-                    inputStyle={styles.inputText}
+                    inputStyle={styles.text}
 
                 />
                 <Input

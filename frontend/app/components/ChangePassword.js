@@ -102,7 +102,7 @@ const ChangePassword = ({navigation}) => {
                     }}
                     secureTextEntry={!isOldPasswordVisible}
                     maxLength={16}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                     errorMessage={oldPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -128,7 +128,7 @@ const ChangePassword = ({navigation}) => {
                     // placeholder="••••••••"
                     secureTextEntry={!isNewPasswordVisible}
                     maxLength={16}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -152,7 +152,7 @@ const ChangePassword = ({navigation}) => {
                     }}
                     // placeholder="••••••••"
                     secureTextEntry={!isConfirmPasswordVisible}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -191,7 +191,8 @@ const styles = StyleSheet.create({
         borderBottomColor: COLORS.lightGreen
     },
     text:{
-        textAlign:"right"
+        textAlign:"right",
+        fontFamily: 'Rubik-Regular'
     },
     nextButton: {
         marginTop: 10,
@@ -219,7 +220,12 @@ const styles = StyleSheet.create({
         right: 8,
         bottom: 8,
         justifyContent: 'center',
-    }
+    },
+    alertText: {
+        fontFamily: 'Rubik-Regular',
+        fontSize: 16,
+
+    },
 })
 
 export default ChangePassword;

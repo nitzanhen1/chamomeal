@@ -41,10 +41,10 @@ export default function App() {
         return null;
     }
 
-    function returnButton(){
+    function returnButton(from){
         const navigation = useNavigation();
         return (
-            <Feather name="arrow-right" size={30} style={styles.flowerIcon} onPress={() => {
+            <Feather name="arrow-right" size={30} style={from==='register'? styles.regIcon : styles.flowerIcon} onPress={() => {
                 Alert.alert('אתה בתוך שברצונך לצאת? שינויים שנעשו לא יישמרו', null,
                     [
                         { text: 'כן', onPress: () => navigation.goBack() },
@@ -164,8 +164,9 @@ export default function App() {
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen}
                                       options={{
                                           headerTitle:'הרשמה',
-                                          headerBackVisible: true,
-                                          headerTitleAlign: "left",
+                                          headerShown:true,
+                                          headerRight: () => (returnButton('register')
+                                          ),
                                           headerStyle: { backgroundColor : COLORS.white},
                                           headerTitleStyle: {
                                               fontSize: 24,
@@ -259,6 +260,9 @@ const styles = StyleSheet.create({
     },
     flowerIcon: {
         color:"white"
+    },
+    regIcon: {
+        color: COLORS.darkGrey
     },
     flowerText: {
         paddingHorizontal: 3,
