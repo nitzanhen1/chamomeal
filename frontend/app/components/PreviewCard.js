@@ -1,7 +1,7 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-import {Ionicons} from "@expo/vector-icons";
+import {Entypo, Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
 import {replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
@@ -79,10 +79,14 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             <Text style={styles.cardSubtitle}>·</Text>
-                            {sustainable && <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
-                                                  numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                            {sustainable && <View style={{flexDirection: 'row'}}>
+                                <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
+                                <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
+                                    numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text></View> }
                             {(!sustainable) && <InfoPopUp
-                                icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                                icon={<View style={{flexDirection: 'row'}}>
+                                    <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
+                                    <Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text></View>}
                                 explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
                                 right={false}
                             />}

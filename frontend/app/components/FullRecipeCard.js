@@ -12,12 +12,10 @@ import {
 } from "react-native";
 import {Divider} from 'react-native-elements';
 import COLORS from "../consts/colors";
-import {Ionicons, AntDesign, SimpleLineIcons} from '@expo/vector-icons';
+import {Ionicons, AntDesign, SimpleLineIcons, Entypo} from '@expo/vector-icons';
 import colors from "../consts/colors";
 import React, {useCallback} from "react";
 import HeartIcon from "./HeartIcon";
-import InfoPopUp from "./InfoPopUp";
-
 
 const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
 
@@ -71,7 +69,10 @@ const FullRecipeCard = ({visibleFullRecipe, handleCloseFull, recipe}) => {
                                             <Text style={styles.flowerText}>{recipe.score} פרחים</Text>
                                         </View>
                                         <Text style={styles.flowerText}>·</Text>
-                                        <Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>
+                                        <View style={{flexDirection: 'row', paddingTop: 3}}>
+                                            <Entypo name="tree" size={20} style={{color:"black", paddingHorizontal:4, paddingTop: 3}}/>
+                                            <Text style={styles.flowerText}>{recipe.GHG_per_unit + " GHG"}</Text>
+                                        </View>
                                         <HeartIcon recipe={recipe}/>
                                     </View>
                                     <View style={styles.detailsContainer}>

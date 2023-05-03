@@ -1,7 +1,7 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
 import {View, Text, Image, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-import {FontAwesome, Ionicons} from "@expo/vector-icons";
+import {Entypo, FontAwesome, Ionicons} from "@expo/vector-icons";
 import MoreOptionsMenu from "./MoreOptionsMenu";
 import {getSustainableRecipes, setHeartAndChoose} from "../redux/actions";
 import {useDispatch} from "react-redux";
@@ -80,7 +80,9 @@ const MealCard = ({recipe, meal_type}) => {
                                 <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                                 <Text style={styles.cardSubtitle}>·</Text>
                                 <InfoPopUp
-                                    icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
+                                    icon={<View style={{flexDirection: 'row'}}>
+                                        <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
+                                        <Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text></View>}
                                     explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
                                     right={false}
                                 />

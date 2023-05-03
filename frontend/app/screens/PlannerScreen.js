@@ -4,11 +4,8 @@ import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
-import { useIsFocused } from "@react-navigation/native";
-import {TutorialOverlay} from "./TutorialScreen";
 import { ProgressBar } from 'react-native-paper';
-import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
-
+import TutorialModal from "../components/tutorialModal";
 
 export default function PlannerScreen() {
     const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
@@ -37,38 +34,36 @@ export default function PlannerScreen() {
 
     return (
         <View style={styles.container}>
-            {showTutorial && <TutorialOverlay />}
-            <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
-                <Text style={styles.textDate}>{dateToShow}</Text>
-                <View style={styles.eerContainer}>
-                    <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
-                    <Text style={styles.value}>{EER} קלוריות </Text>
-                </View>
-                <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
-                <View style={styles.calsContainer}>
-                    <View style={{ flexDirection: 'row'}}>
-                        <Text style={styles.label}>אכלתי:</Text>
-                        <Text style={styles.value}>{consumed_calories}</Text>
-                    </View>
-
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.label}>הצעה יומית:</Text>
-                        <Text style={styles.value}>{total_calories}</Text>
-                    </View>
-                </View>
-                <ScrollView style={styles.inputsContainer}>
-                    {meals.map(meal => (
-                        <View key={meal.title}>
-                            <Accordion
-                                title={meal.title}
-                                mealData={meal.mealData}
-                                date={date}
-                                dispatch={dispatch}
-                            />
-                        </View>
-                    ))}
-                </ScrollView>
+            {showTutorial && <TutorialModal/>}
+            <Text style={styles.textDate}>{dateToShow}</Text>
+            <View style={styles.eerContainer}>
+                <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
+                <Text style={styles.value}>{EER} קלוריות </Text>
             </View>
+            <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
+            <View style={styles.calsContainer}>
+                <View style={{ flexDirection: 'row'}}>
+                    <Text style={styles.label}>אכלתי:</Text>
+                    <Text style={styles.value}>{consumed_calories}</Text>
+                </View>
+
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.label}>הצעה יומית:</Text>
+                    <Text style={styles.value}>{total_calories}</Text>
+                </View>
+            </View>
+            <ScrollView style={styles.inputsContainer}>
+                {meals.map(meal => (
+                    <View key={meal.title}>
+                        <Accordion
+                            title={meal.title}
+                            mealData={meal.mealData}
+                            date={date}
+                            dispatch={dispatch}
+                        />
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }
@@ -76,7 +71,7 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
     container: {
         direction: 'rtl',
-        height: '84%',
+        height: '100%',
     },
     inputsContainer: {
         marginTop: 10,
@@ -98,11 +93,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Regular',
         letterSpacing: 1,
         color: COLORS.darkGreen
-    },
-    mainContent: {
-    },
-    translucentBackground: {
-        opacity: 0.5,
     },
     eerContainer: {
         flexDirection: 'row',
