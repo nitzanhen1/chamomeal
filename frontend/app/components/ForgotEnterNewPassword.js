@@ -81,7 +81,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
                 }}
                 secureTextEntry={!isNewPasswordVisible}
                 maxLength={16}
-                errorStyle={{ color: 'red' }}
+                errorStyle={{ color: 'red', fontFamily: 'Rubik-Regular'}}
                 errorMessage={newPasswordError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -104,7 +104,7 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
                     validateConfirmPassword(confirmPassword)
                 }}
                 secureTextEntry={!isConfirmPasswordVisible}
-                errorStyle={{ color: 'red' }}
+                errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                 errorMessage={confirmPasswordError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
         borderBottomColor: COLORS.lightGreen
     },
     text:{
-        textAlign:"right"
+        textAlign:"right",
+        fontFamily: 'Rubik-Regular'
     },
     nextButton: {
         marginTop: 10,
@@ -153,11 +154,12 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     label:{
         fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
         fontSize: 16,
         color: COLORS.grey,
     },

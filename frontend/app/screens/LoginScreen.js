@@ -110,11 +110,12 @@ const LoginScreen = ({navigation}) => {
                         setUsername(username)
                     }}
                     placeholder='שם משתמש / אימייל'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily: "Rubik-Regular"}}
                     errorMessage={usernameError}
                     autoCapitalize='none'
                     containerStyle={styles.input}
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
                 />
                 <Input
                     value={userPassword}
@@ -125,7 +126,7 @@ const LoginScreen = ({navigation}) => {
                     placeholder="סיסמה"
                     secureTextEntry={!isPasswordVisible}
                     maxLength={16}
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily: "Rubik-Regular"}}
                     errorMessage={passwordError}
                     containerStyle={styles.input}
                     inputContainerStyle={styles.input}
@@ -182,7 +183,8 @@ const styles = StyleSheet.create({
         width: '98%',
     },
     text: {
-        textAlign: "right"
+        textAlign: "right",
+        fontFamily: "Rubik-Regular"
     },
     nextButton: {
         marginTop: 10,
@@ -191,11 +193,12 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     register: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
+        // fontWeight: 'bold',
         fontSize: 16,
         color: COLORS.darkGreen,
         textDecorationLine: "underline",
@@ -209,6 +212,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     account: {
+        fontFamily: 'Rubik-Regular',
         fontSize: 16,
         marginBottom: 5,
         textDecorationLine: "underline",

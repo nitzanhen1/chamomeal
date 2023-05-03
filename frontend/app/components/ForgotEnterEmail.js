@@ -66,10 +66,12 @@ const ForgotEnterEmail = ({navigation}) => {
                     validateEmail(email)
                 }}
                 keyboardType="email-address"
-                errorStyle={{ color: 'red' }}
+                errorStyle={{ color: 'red', fontFamily: 'Rubik-Regular' }}
                 errorMessage={emailError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
+
             />
             <Button
                 title="המשך"
@@ -102,18 +104,24 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     label:{
         fontFamily: 'Rubik-Regular',
+        fontWeight: 'normal',
         fontSize: 16,
         color: COLORS.grey,
     },
     editIcon:{
         color: COLORS.grey,
         margin:50,
-    }
+    },
+    inputText: {
+        textAlign: "right",
+        fontFamily: 'Rubik-Regular'
+
+    },
 })
 
 export default ForgotEnterEmail;

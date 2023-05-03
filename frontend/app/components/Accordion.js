@@ -75,11 +75,13 @@ const styles = StyleSheet.create({
         // this controls the ארוחת בוקר green header
     },
     title:{
-        fontSize: 16,
-        fontWeight:'bold',
+        fontSize: 17,
+        // fontWeight:'bold',
         color: COLORS.dark,
         marginTop: 4,
-        marginLeft: 10
+        marginLeft: 10,
+        fontFamily: 'Rubik-Bold'
+
     },
     row:{
         flexDirection: 'row',

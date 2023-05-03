@@ -94,6 +94,7 @@ const EditUserInfo = ({navigation}) => {
                 errorMessage={firstNameError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Input
                 label='שם משפחה'
@@ -107,6 +108,7 @@ const EditUserInfo = ({navigation}) => {
                 errorMessage={lastNameError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Input
                 label='אימייל'
@@ -121,6 +123,7 @@ const EditUserInfo = ({navigation}) => {
                 errorMessage={emailError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Button
                 title="שמור"
@@ -145,7 +148,8 @@ const styles = StyleSheet.create({
     input:{
         borderBottomColor: COLORS.lightGreen,
         width: '97%',
-        alignSelf: "center"
+        alignSelf: "center",
+
     },
     nextButton: {
         marginTop: 10,
@@ -158,14 +162,19 @@ const styles = StyleSheet.create({
         fontSize: 23
     },
     label:{
-        fontFamily: 'Rubik-Regular',
-        fontSize: 16,
+        fontFamily: 'Rubik-Bold',
+        fontWeight: "normal",
+        fontSize: 17,
         color: COLORS.grey,
         marginLeft: 5
     },
     editIcon:{
         color: COLORS.grey,
         margin:50,
+    },
+    inputText:{
+        fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
     }
 })
 

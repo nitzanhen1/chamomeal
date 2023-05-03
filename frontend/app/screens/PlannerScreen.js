@@ -110,11 +110,14 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         marginRight: 10,
+        fontFamily: 'Rubik-Bold'
+
     },
     value: {
         fontSize: 16,
+        fontFamily: 'Rubik-Regular'
     },
 
 })

@@ -156,11 +156,11 @@ const RegisterScreen = ({navigation}) => {
                         validateUsername(username)
                     }}
                     placeholder='שם משתמש'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={usernameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
-
+                    inputStyle={styles.text}
                 />
                 <Input
                     onChangeText={(firstName) => {
@@ -168,10 +168,11 @@ const RegisterScreen = ({navigation}) => {
                         validateFirstName(firstName)
                     }}
                     placeholder='שם פרטי'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={firstNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -180,10 +181,11 @@ const RegisterScreen = ({navigation}) => {
                         validateLastName(lastName)
                     }}
                     placeholder='שם משפחה'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={lastNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -193,10 +195,11 @@ const RegisterScreen = ({navigation}) => {
                     }}
                     placeholder='אימייל'
                     keyboardType="email-address"
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={emailError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -207,7 +210,7 @@ const RegisterScreen = ({navigation}) => {
                     placeholder="סיסמה"
                     secureTextEntry={!isPasswordVisible}
                     maxLength={16}
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -230,7 +233,7 @@ const RegisterScreen = ({navigation}) => {
                     }}
                     placeholder="אימות סיסמה"
                     secureTextEntry={!isConfirmPasswordVisible}
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{ color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
@@ -244,6 +247,7 @@ const RegisterScreen = ({navigation}) => {
                             />
                         </TouchableOpacity>
                     }
+
                 />
                 <Button
                     title="הירשם"
@@ -281,7 +285,9 @@ const styles = StyleSheet.create({
         width: '98%',
     },
     text: {
-        textAlign: "right"
+        textAlign: "right",
+        fontFamily: 'Rubik-Regular'
+
     },
     nextButton: {
         marginTop: 10,
@@ -290,10 +296,11 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     register: {
+        fontFamily: 'Rubik-Bold',
         fontSize: 16,
         color: COLORS.lightGreen,
         textDecorationLine: "underline",
@@ -306,6 +313,7 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     account: {
+        fontFamily: 'Rubik-Regular',
         fontSize: 16,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
@@ -316,7 +324,7 @@ const styles = StyleSheet.create({
         right: 8,
         bottom: 8,
         justifyContent: 'center',
-    }
+    },
 })
 
 export default RegisterScreen;

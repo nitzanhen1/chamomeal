@@ -131,6 +131,7 @@ export default function SearchScreen() {
                     onPress={() => searchRecipes()}
                     onClearIconPress={() => setNoResults(false)}
                     buttonStyle={styles.searchButton}
+                    titleStyle={styles.buttonText}
                     color={COLORS.grey}
                     containerColor={COLORS.lightGreen}
                 />
@@ -317,6 +318,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Regular',
         fontSize: 14,
         color: COLORS.darkGrey,
+        fontWeight: "normal"
     },
     divider: {
         marginHorizontal: 10,
@@ -336,5 +338,9 @@ const styles = StyleSheet.create({
     },
     indicator:{
         marginTop: '50%'
+    },
+    buttonText:{
+        fontFamily: 'Rubik-Regular',
+        fontSize: 17
     }
 });

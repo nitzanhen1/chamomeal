@@ -223,15 +223,19 @@ const styles = StyleSheet.create({
     flowersContainer: {
         flexDirection: 'row',
         marginTop: 6,
+        alignItems: "center",
+        justifyContent: "space-between"
+
     },
     flowersIcon: {
-        color: COLORS.dark
+        color: COLORS.dark,
+        // marginBottom: 1
     },
     flowerText: {
         paddingHorizontal: 7,
         paddingTop: 2,
-        fontFamily: 'Rubik-Regular',
-        fontWeight: "bold",
+        fontFamily: 'Rubik-Bold',
+        // fontWeight: "bold",
         fontSize: 17,
         color: COLORS.dark,
     },
