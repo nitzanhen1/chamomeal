@@ -37,7 +37,7 @@ export default function FavoriteScreen() {
                     <PreviewCard recipe={meal} sustainable={false} from={'favorites'}/>
                 </View>
             )}
-            {favorites.length==0 && <Text style={styles.helloText}>אין לך מועדפים</Text>}
+            {favorites.length===0 && <Text style={styles.helloText}>אין לך מועדפים</Text>}
         </ScrollView>
     )
 };
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 20,
         marginBottom: 15,
-        paddingRight: 20,
         fontFamily: 'Rubik-Bold',
         letterSpacing: 1,
         color: COLORS.darkGrey

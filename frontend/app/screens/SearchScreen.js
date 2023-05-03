@@ -51,6 +51,7 @@ export default function SearchScreen() {
         setBreakfastCheck(true);
         setLunchCheck(true);
         setDinnerCheck(true);
+        setNoResults(false);
     }
 
     useEffect(() => {
@@ -329,7 +330,6 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 20,
         marginBottom: 15,
-        paddingRight: 20,
         fontFamily: 'Rubik-Bold',
         letterSpacing: 1,
         color: COLORS.darkGrey

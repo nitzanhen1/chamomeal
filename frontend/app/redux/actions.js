@@ -482,6 +482,7 @@ export const addToFavorites = (recipe, favorites, meals, searchResults) =>{
                         }
                     }
                     if(isFavorite){
+                        favorites = favorites.filter(item => item["recipe_id"] !== recipe_id)
                         favorites.unshift(recipe);
                     }
                     else{
