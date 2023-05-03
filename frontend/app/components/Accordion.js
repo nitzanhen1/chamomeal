@@ -43,18 +43,26 @@ export default class Accordion extends Component{
         )
     }
 
-    markAsEaten=()=>{
+    markAsEaten=async () => {
         const recipe = this.props.mealData
         recipe.eaten = !recipe.eaten
-        let result = this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date));
-        if(result){
+        let result = await this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title], recipe.eaten, recipe.calories, recipe.score, this.props.date));
+        if (result) {
             this.setState({mealData: recipe})
-        }else {
-            Alert.alert('משהו השתבש, נסה שוב', null,
-                [{text: 'אוקיי', style: 'cancel'}],
-                { cancelable: true });
+        } else {
+            recipe.eaten = !recipe.eaten
         }
     }
+
+    // markAsEaten=async () => {
+    //     const recipe = this.props.mealData
+    //     let result = await this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title], !recipe.eaten, recipe.calories, recipe.score, this.props.date));
+    //     if (result) {
+    //         recipe.eaten = !recipe.eaten
+    //         this.setState({mealData: recipe})
+    //     } else {
+    //     }
+    // }
 
     toggleExpand=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

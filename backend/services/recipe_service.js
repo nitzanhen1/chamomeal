@@ -152,14 +152,17 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
     const meal_type_eaten = meal_type + '_eaten';
     let dailyMenu = await getDailyMenuFromDB(user_id, date);
     if (dailyMenu != null) {
-        let new_consumed_calories = dailyMenu['consumed_calories']
+        let recipes_id = [dailyMenu['breakfast'], dailyMenu['lunch'], dailyMenu['dinner']]
+        let recipes = await getRecipesByIdFromDB(recipes_id);
+        let new_consumed_calories = recipes[0]['calories']*dailyMenu['breakfast_eaten']+ recipes[1]['calories']*dailyMenu['lunch_eaten']+ recipes[2]['calories']*dailyMenu['dinner_eaten']
+        // let new_consumed_calories = dailyMenu['consumed_calories']
         let new_score = (await user_service.getUserFromDB(user_id))['score']
         if ((!dailyMenu[meal_type_eaten]) && (eaten)) {
             new_consumed_calories += meal_calories
             new_score += meal_score;
         } else if ((dailyMenu[meal_type_eaten]) && (!eaten)) {
-            new_consumed_calories -= meal_calories;
-            new_score -= meal_score;
+            new_consumed_calories = (new_consumed_calories-meal_calories)>0 ? (new_consumed_calories-meal_calories) : 0;
+            new_score = (new_score-meal_score)>0 ? (new_score-meal_score) : 0;
         }
 
         let updated_values = {
