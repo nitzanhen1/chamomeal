@@ -8,8 +8,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 import COLORS from "../consts/colors";
 import {Button} from '@rneui/themed';
-import InfoPopUp from "./InfoPopUp";
-
 
 const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) => {
 
@@ -79,17 +77,11 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             <Text style={styles.cardSubtitle}>·</Text>
-                            {sustainable && <View style={{flexDirection: 'row'}}>
+                            <View style={{flexDirection: 'row'}}>
                                 <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
                                 <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
-                                    numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text></View> }
-                            {(!sustainable) && <InfoPopUp
-                                icon={<View style={{flexDirection: 'row'}}>
-                                    <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
-                                    <Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text></View>}
-                                explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
-                                right={false}
-                            />}
+                                    numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text>
+                            </View>
                         </View>
                         {visibleFullRecipe &&
                             <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull}
@@ -97,19 +89,10 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                     </View>
                     <View style={styles.bottomContainer}>
                         <View style={styles.flowerContainer}>
-                            {sustainable &&
-                                <View style={{flexDirection: 'row'}}>
-                                    <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
-                                </View>}
-                            {(!sustainable) && <InfoPopUp
-                                icon={<View style={{flexDirection: 'row'}}>
-                                    <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
-                                </View>}
-                                explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית מופחתת"
-                                right={true}
-                            />}
+                            <View style={{flexDirection: 'row'}}>
+                                <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
+                                <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
+                            </View>
                         </View>
                         <View>
                             <View style={styles.heartIcon}>
