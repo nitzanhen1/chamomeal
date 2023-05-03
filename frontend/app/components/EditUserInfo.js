@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert, ScrollView} from 'react-native'
+import {StyleSheet, Alert, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import { Input } from '@rneui/themed';
 import { updateUserDetails} from "../redux/actions";
@@ -60,12 +60,16 @@ const EditUserInfo = ({navigation}) => {
 
     async function handleSubmitPress(){
         if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)){
-            let success = await dispatch(updateUserDetails(firstName,lastName,Email));
-            if(success) {
+            let status = await dispatch(updateUserDetails(firstName,lastName,Email));
+            if(status === 202) {
                 Alert.alert('הפרטים עודכנו בהצלחה!', null,
                     [{text: 'אוקיי', style: 'cancel'}],
                     { cancelable: true });
                 navigation.goBack();
+            } else if (status === 412) {
+                Alert.alert('האימייל כבר קיים במערכת', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
             } else {
                 Alert.alert('עדכון הפרטים נכשל', null,
                     [{text: 'אוקיי', style: 'cancel'}],

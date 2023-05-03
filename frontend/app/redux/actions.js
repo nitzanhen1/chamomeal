@@ -358,7 +358,7 @@ export const updateUserDetails = (first_name, last_name, email) => {
                         type: UPDATE_USER_DETAILS,
                         first_name: first_name,
                     });
-                    return true;}
+                    return response.status;}
             }catch (error){
                 if(error.response) {
                     if(error.response.status === 419){
@@ -366,8 +366,8 @@ export const updateUserDetails = (first_name, last_name, email) => {
                             type: LOGOUT,
                         });
                     }
+                    return error.response.status;
                 }
-                return false;
             }
         }
     }catch (error) {

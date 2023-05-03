@@ -197,6 +197,10 @@ async function getUserDetails(user_id) {
 }
 
 async function updateUserDetails(user_id, details) {
+    let users = await DButils.execQuery(`SELECT user_id, email FROM Users WHERE email='${details.email}'`);
+    if (users.length>0 && users[0]['user_id']!=user_id) {
+            throw {status: 412, message: "email already exists"};
+    }
     let {first_name, last_name, email} = details;
     await DButils.execQuery(`update Users set 
     first_name='${first_name}', last_name='${last_name}', email='${email}' where user_id='${user_id}'`);
