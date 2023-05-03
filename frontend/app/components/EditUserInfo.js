@@ -58,20 +58,20 @@ const EditUserInfo = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress(){
+    async function handleSubmitPress(){
         if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)){
-            dispatch(updateUserDetails(firstName,lastName,Email)).then((success)=>{
-                if(success) {
-                    Alert.alert('הפרטים עודכנו בהצלחה!', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.goBack();
-                } else {
-                    Alert.alert('עדכון הפרטים נכשל', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.navigate('Login');
-                }});
+            let success = await dispatch(updateUserDetails(firstName,lastName,Email));
+            if(success) {
+                Alert.alert('הפרטים עודכנו בהצלחה!', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+                navigation.goBack();
+            } else {
+                Alert.alert('עדכון הפרטים נכשל', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+                navigation.navigate('Login');
+            }
         }
     }
 

@@ -46,15 +46,14 @@ export default class Accordion extends Component{
     markAsEaten=()=>{
         const recipe = this.props.mealData
         recipe.eaten = !recipe.eaten
-        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date)).then(result => {
-            if(result){
-                this.setState({mealData: recipe})
-            }else {
-                Alert.alert('משהו השתבש, נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        })
+        let result = this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date));
+        if(result){
+            this.setState({mealData: recipe})
+        }else {
+            Alert.alert('משהו השתבש, נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     toggleExpand=()=>{

@@ -13,11 +13,10 @@ import {useBottomTabBarHeight} from "@react-navigation/bottom-tabs";
 export default function PlannerScreen() {
     const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const focus = useIsFocused();
 
     useEffect(() => {
+        dispatch({type: SET_DATE});
         if(replaced) {
-            dispatch({type: SET_DATE});
             dispatch(getDailyMenu(date)).then(result => {
                 if(!result){
                     Alert.alert('משהו השתבש, נסה שוב', null,
@@ -29,10 +28,6 @@ export default function PlannerScreen() {
         }
     }, [replaced]);
 
-    // useEffect(() => {
-    //     dispatch({type: SET_DATE});
-    //     dispatch(getDailyMenu(date)).then();
-    // }, []);
 
     let day = date.getDate();
     let month = date.getMonth() + 1; // getMonth return value between 0-11

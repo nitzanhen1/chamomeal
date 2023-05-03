@@ -25,22 +25,20 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
         setFullVisible(false);
     }
 
-    const handleChooseButton = () => {
+    const handleChooseButton = async () => {
         let replacementDiff = recipe["score"] - meal_score
-        dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff)).then(result =>{
-            if(!result){
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });
-            if(sustainable) {
-                handleCloseSustainableModal();
-            }
-            else{
-                dispatch(setHeartAndChoose("",replacementDiff, true, false));
-                navigation.navigate("Meal Planner");
-            }
+        let result = await dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff))
+        if (!result) {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+        }
+        if (sustainable) {
+            handleCloseSustainableModal();
+        } else {
+            dispatch(setHeartAndChoose("", replacementDiff, true, false));
+            navigation.navigate("Meal Planner");
+        }
     }
 
     const getNumberTextColor = (number) => {

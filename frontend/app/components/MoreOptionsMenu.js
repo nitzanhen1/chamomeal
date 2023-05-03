@@ -22,24 +22,22 @@ const OptionsMenu = ({recipe, meal_type}) => {
     }
     const handleAddToFavorite = async () => {
         changeFav();
-        dispatch(addToFavorites(recipe, favorites, meals, searchResults )).then(async success => {
-            if (!success) {
-                changeFav();
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });
+        let success = await dispatch(addToFavorites(recipe, favorites, meals, searchResults ))
+        if (!success) {
+            changeFav();
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
-    const handleReplaceByRandom = () => {
-        dispatch(replaceRecipe("replaceRecipeByRandom",'random', recipe["recipe_id"], date, meal_type, recipe["score"])).then(result =>{
-            if(!result){
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });
+    const handleReplaceByRandom = async () => {
+        let result = await dispatch(replaceRecipe("replaceRecipeByRandom", 'random', recipe["recipe_id"], date, meal_type, recipe["score"]))
+        if (!result) {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+        }
     }
 
     const handleReplaceBySearch = () => {

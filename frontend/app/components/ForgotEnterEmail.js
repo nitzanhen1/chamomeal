@@ -26,34 +26,29 @@ const ForgotEnterEmail = ({navigation}) => {
         }
     }
 
-    const handleSubmit = () => {
-        if (validateEmail(Email)){
-            dispatch(forgotPassword(Email)).then((status)=>{
-                if(status===403) {
-                    Alert.alert('אימייל לא קיים', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===400){
-                    Alert.alert('אימייל לא נשלח', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===200){
-                    navigation.navigate('EnterCode',{email: Email});
-                }
-                else if(status===419){
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.navigate('Login');
-                }
-                else{
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-            });
+    const handleSubmit = async () => {
+        if (validateEmail(Email)) {
+            let status = await dispatch(forgotPassword(Email));
+            if (status === 403) {
+                Alert.alert('אימייל לא קיים', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 400) {
+                Alert.alert('אימייל לא נשלח', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 200) {
+                navigation.navigate('EnterCode', {email: Email});
+            } else if (status === 419) {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+                navigation.navigate('Login');
+            } else {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            }
         }
     };
 

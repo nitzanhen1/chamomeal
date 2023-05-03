@@ -55,7 +55,7 @@ const LoginScreen = ({navigation}) => {
     async function handleSubmitPress() {
         if (validateUsername(username) && validatePassword(userPassword)) {
             try{
-                dispatch(login(username,userPassword)).then((status)=>{
+                let status = await dispatch(login(username,userPassword));
                 if(status===403) {
                     Alert.alert('שם משתמש או סיסמה אינם נכונים', null,
                         [{text: 'אוקיי', style: 'cancel'}],
@@ -72,7 +72,6 @@ const LoginScreen = ({navigation}) => {
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });
                 }
-                });
             } catch (error) {
                 console.log(error)
             }

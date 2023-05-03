@@ -23,34 +23,31 @@ export default function PersonalScreen({navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
 
 
-    function logoutUser() {
-        dispatch(logout()).then(()=> {
-                navigation.navigate('Login')
-        });
+    async function logoutUser() {
+        await dispatch(logout())
+        navigation.navigate('Login')
     }
 
     async function updateQuestionnaire() {
-        await dispatch(getQuestionnaireDetails()).then(result => {
-            if(result){
-                navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
-            } else {
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });
+        let result = await dispatch(getQuestionnaireDetails());
+        if(result){
+            navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
+        } else {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     async function updateUserDetails() {
-        await dispatch(getUserDetails()).then(result =>{
-            if(result){
-                navigation.navigate('EditUserInfo');
-            }else{
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });
+        let result = await dispatch(getUserDetails())
+        if(result){
+            navigation.navigate('EditUserInfo');
+        }else{
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     return (

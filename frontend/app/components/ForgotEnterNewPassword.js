@@ -45,19 +45,19 @@ const ForgotEnterNewPassword = ({navigation, route}) => {
         }
     }
 
-    const handleSubmitPress = () => {
-        if (validateNewPassword(newPassword) && validateConfirmPassword(confirmPassword)){
-            dispatch(resetPassword(Email, newPassword)).then((success)=>{
-                if(success) {
-                    Alert.alert('סיסמה שונתה בהצלחה!', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.navigate("Login");
-                } else {
-                    Alert.alert('משהו השתבש, נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }});
+    const handleSubmitPress = async () => {
+        if (validateNewPassword(newPassword) && validateConfirmPassword(confirmPassword)) {
+            let success = await dispatch(resetPassword(Email, newPassword))
+            if (success) {
+                Alert.alert('סיסמה שונתה בהצלחה!', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+                navigation.navigate("Login");
+            } else {
+                Alert.alert('משהו השתבש, נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            }
         }
     };
 

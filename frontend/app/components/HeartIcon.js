@@ -17,14 +17,14 @@ const HeartIcon = ({recipe}) => {
     }
     const handleHeartIconPress = async () => {
         changeFav();
-        dispatch(addToFavorites(recipe, favorites, meals, searchResults )).then(async success => {
-            if (!success) {
-                changeFav();
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });}
+        let success = await dispatch(addToFavorites(recipe, favorites, meals, searchResults ))
+        if (!success) {
+            changeFav();
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
+    }
 
     useEffect(() => {
         setFavorite(recipe.isFavorite ? 'heart' : 'heart-outline')

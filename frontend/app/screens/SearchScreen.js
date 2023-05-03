@@ -66,27 +66,24 @@ export default function SearchScreen() {
         kosher,
     ]);
 
-    function searchRecipes() {
+    async function searchRecipes() {
         Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(false);
         let format = /[@#$%^&*()_+=\[\]{};':"\\|.<>?]+/;
         let fixedQuery = searchQuery.replace(/'/g, "’");
         let checkQuery = format.test(fixedQuery) ? false : true;
-        if(checkQuery){
+        if (checkQuery) {
             setWhileSearch(true);
-            dispatch(search(fixedQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
-                kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
-                (data) => {
-                    setWhileSearch(false)
-                    if (data.length < 1) {
-                        setNoResults(true);
-                    } else {
-                        setNoResults(false);
-                    }
-                }
-            );
-        }else{
+            let data = await dispatch(search(fixedQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
+                kosherCheck, breakfastCheck, lunchCheck, dinnerCheck))
+            setWhileSearch(false)
+            if (data.length < 1) {
+                setNoResults(true);
+            } else {
+                setNoResults(false);
+            }
+        } else {
             dispatch(resetSearch());
             setNoResults(true);
         }

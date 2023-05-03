@@ -22,7 +22,6 @@ export const SET_DATE = 'SET_DATE';
 export const SET_SHOW_TUTORIAL = 'SET_SHOW_TUTORIAL';
 export const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';
 
-// const API_URL = 'http://10.0.2.2:3000'; //localhost
 const API_URL = 'https://chamomeal.cs.bgu.ac.il'; //remote backend
 
 export const getDailyMenu = (date) => {

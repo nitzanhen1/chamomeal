@@ -4,7 +4,7 @@ import {Input} from "react-native-elements";
 import {login, register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import {Ionicons} from "@expo/vector-icons";
 
 
@@ -28,7 +28,7 @@ const RegisterScreen = ({navigation}) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
-    function navToLogin(){
+    function navToLogin() {
         navigation.navigate('Login');
     }
 
@@ -106,37 +106,36 @@ const RegisterScreen = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress() {
+    async function handleSubmitPress() {
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
             validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)) {
-            dispatch(register(username, firstName, lastName, password, email)).then((status) => {
-                if (status === 201) {
-                    Alert.alert('תנאי שימוש', 'אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.',
-                        [
-                            {text: 'אישור', onPress: console.log('OK')},
+            let status = await dispatch(register(username, firstName, lastName, password, email))
+            if (status === 201) {
+                Alert.alert('תנאי שימוש', 'אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.',
+                    [
+                        {text: 'אישור', onPress: console.log('OK')},
 
-                        ],
-                        {cancelable: false});
+                    ],
+                    {cancelable: false});
 
-                    try {
-                        navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
-                    } catch (error) {
-                        console.log(error)
-                    }
-                } else if (status === 409) {
-                    Alert.alert('שם המשתמש כבר קיים במערכת', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        {cancelable: true});
-                } else if (status === 412) {
-                    Alert.alert('האימייל כבר קיים במערכת', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        {cancelable: true});
-                } else {
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        {cancelable: true});
+                try {
+                    navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
+                } catch (error) {
+                    console.log(error)
                 }
-            });
+            } else if (status === 409) {
+                Alert.alert('שם המשתמש כבר קיים במערכת', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 412) {
+                Alert.alert('האימייל כבר קיים במערכת', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            }
         }
     }
 
@@ -231,7 +230,7 @@ const RegisterScreen = ({navigation}) => {
                     }}
                     placeholder="אימות סיסמה"
                     secureTextEntry={!isConfirmPasswordVisible}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{color: 'red'}}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}

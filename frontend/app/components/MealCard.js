@@ -29,15 +29,14 @@ const MealCard = ({recipe, meal_type}) => {
     }
 
     const getMoreSustainableRecipes = async () => {
-        await dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.score)).then(sustainableRecipes => {
-            if (sustainableRecipes){
-                setSustainableRecipes(sustainableRecipes)
-            }else{
-                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-            }
-        });
+        let sustainableRecipes =  await dispatch(getSustainableRecipes(recipe.recipe_id, meal_type, recipe.score))
+        if (sustainableRecipes){
+            setSustainableRecipes(sustainableRecipes)
+        }else{
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     const getNumberTextColor = (number) => {

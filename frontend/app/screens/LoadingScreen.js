@@ -24,29 +24,27 @@ export default function LoadingScreen({navigation}) {
     const [sentenceIndex] = useState(Math.floor(Math.random()*sentences.length));
 
     async function handleGetGlobalDetails(){
-        dispatch(getGlobalDetails()).then(status => {
-            if(status===200){
-                dispatch({type: SET_DATE});
-                dispatch(getDailyMenu(date)).then(result => {
-                    if (result){
-                        navigation.navigate('BottomNavigator');
-                    }else{
-                        Alert.alert('משהו השתבש, נסה שוב', null,
-                            [{text: 'אוקיי', style: 'cancel'}],
-                            { cancelable: true });
-                        navigation.navigate('Login');
-                    }
-
-                });
+        let status = await dispatch(getGlobalDetails());
+        if(status===200){
+            dispatch({type: SET_DATE});
+            let result = await dispatch(getDailyMenu(date));
+            if (result){
+                navigation.navigate('BottomNavigator');
             }else{
-                if(status != 419 && status != 404){
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
+                Alert.alert('משהו השתבש, נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
                 navigation.navigate('Login');
             }
-        });}
+        }else{
+            if(status != 419 && status != 404){
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
+            navigation.navigate('Login');
+        }
+    }
 
     useEffect(() => {
         if(focus == true) {
