@@ -232,9 +232,9 @@ const styles = StyleSheet.create({
         // marginBottom: 1
     },
     flowerText: {
-        paddingHorizontal: 7,
+        paddingHorizontal: 4,
         paddingTop: 2,
-        fontFamily: 'Rubik-Bold',
+        fontFamily: 'Rubik-Regular',
         // fontWeight: "bold",
         fontSize: 17,
         color: COLORS.dark,

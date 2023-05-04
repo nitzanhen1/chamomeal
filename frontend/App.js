@@ -25,6 +25,8 @@ import {setShowTutorial} from "./app/redux/actions";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+    Text.defaultProps = Text.defaultProps || {};
+    Text.defaultProps.allowFontScaling = false;
 
     const [fontsLoaded] = useFonts({
         'Rubik-Regular': require('./app/assets/fonts/Rubik-Regular.ttf'),
