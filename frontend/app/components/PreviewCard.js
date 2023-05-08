@@ -1,15 +1,13 @@
 import React from 'react';
 import FullRecipeCard from "./FullRecipeCard";
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {Ionicons} from "@expo/vector-icons";
+import {View, Text, Image, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {Entypo, Ionicons} from "@expo/vector-icons";
 import HeartIcon from "./HeartIcon";
 import {replaceRecipe, setHeartAndChoose} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 import COLORS from "../consts/colors";
 import {Button} from '@rneui/themed';
-import InfoPopUp from "./InfoPopUp";
-
 
 const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) => {
 
@@ -25,9 +23,14 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
         setFullVisible(false);
     }
 
-    const handleChooseButton = () => {
+    const handleChooseButton = async () => {
         let replacementDiff = recipe["score"] - meal_score
-        dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff)).then()
+        let result = await dispatch(replaceRecipe("replaceRecipeById", from, recipe["recipe_id"], date, meal_type, replacementDiff))
+        if (!result) {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+        }
         if (sustainable) {
             handleCloseSustainableModal();
         } else {
@@ -74,13 +77,11 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                         <View style={{flexDirection: 'row'}}>
                             <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                             <Text style={styles.cardSubtitle}>·</Text>
-                            {sustainable && <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
-                                                  numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text>}
-                            {(!sustainable) && <InfoPopUp
-                                icon={<Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>}
-                                explanation="טביעת רגל פחמנית (GHG) של ארוחה נקבעת מסך גזי החממה הנפלטים ממרכיביה"
-                                right={false}
-                            />}
+                            <View style={{flexDirection: 'row'}}>
+                                <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
+                                <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
+                                    numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text>
+                            </View>
                         </View>
                         {visibleFullRecipe &&
                             <FullRecipeCard visibleFullRecipe={visibleFullRecipe} handleCloseFull={handleCloseFull}
@@ -88,19 +89,10 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                     </View>
                     <View style={styles.bottomContainer}>
                         <View style={styles.flowerContainer}>
-                            {sustainable &&
-                                <View style={{flexDirection: 'row'}}>
-                                    <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
-                                </View>}
-                            {(!sustainable) && <InfoPopUp
-                                icon={<View style={{flexDirection: 'row'}}>
-                                    <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
-                                    <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
-                                </View>}
-                                explanation="פרחים הם דירוג סביבתי של הארוחה בטווח 1-10 ציון גבוה מעיד על השפעה סביבתית מופחתת"
-                                right={true}
-                            />}
+                            <View style={{flexDirection: 'row'}}>
+                                <Ionicons name="flower-outline" size={22} style={{color: "black"}}/>
+                                <Text style={[styles.flowerText, {color: getNumberTextColor(recipe.score)}]}>{recipe.score}</Text>
+                            </View>
                         </View>
                         <View>
                             <View style={styles.heartIcon}>
@@ -155,8 +147,8 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 20,
-        fontWeight: '900',
-        fontFamily: 'Rubik-Regular',
+        // fontWeight: '900',
+        fontFamily: 'Rubik-Bold',
         paddingLeft: 7,
         marginBottom: 3,
         lineHeight: 24

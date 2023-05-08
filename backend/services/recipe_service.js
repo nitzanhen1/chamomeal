@@ -31,14 +31,15 @@ async function generateDailyMenu(user_id, date) {
         const prefs = await user_service.getPreferences(user_id)
         let generatedMenu = await createMenu(user_id, date, prefs);
         let login_score = prefs['login_score'] + 1
-        await user_service.checkLoginBadges(user_id, login_score).then(async (result) => {
+        let result = await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}', '${date}', '${generatedMenu["breakfast"]}', 
+                                    '${generatedMenu["lunch"]}', '${generatedMenu["dinner"]}', 0, 0, 0, 0)`);
+        if (result['insertId']){
+            let result = await user_service.checkLoginBadges(user_id, login_score);
             if (result[0] == true) {
                 generatedMenu["badges"] = Object.values(result[1]) //badges
                 generatedMenu["earned"] = result[2] //true\false
             }
-        })
-        await DButils.execQuery(`insert into MealPlanHistory values ('${user_id}', '${date}', '${generatedMenu["breakfast"]}', 
-                                    '${generatedMenu["lunch"]}', '${generatedMenu["dinner"]}', 0, 0, 0, 0)`);
+        }
         return generatedMenu;
     } catch (err) {
         throw err;
@@ -59,12 +60,11 @@ async function regenerateDailyMenu(user_id, date) {
             await DButils.execQuery(`update Users set score='${new_score}' where user_id = '${user_id}'`);
             const prefs = await user_service.getPreferences(user_id)
             let newMenu = await createMenu(user_id, date, prefs);
-            await user_service.checkEatenBadges(user_id, new_score).then(async (result) => {
-                if (result[0] == true) {
-                    newMenu["badges"] = Object.values(result[1]) //badges
-                    newMenu["earned"] = result[2] //true\false
-                }
-            })
+            let result = await user_service.checkEatenBadges(user_id, new_score);
+            if (result[0] == true) {
+                newMenu["badges"] = Object.values(result[1]) //badges
+                newMenu["earned"] = result[2] //true\false
+            }
             await DButils.execQuery(`update MealPlanHistory set breakfast='${newMenu["breakfast"]}', lunch='${newMenu["lunch"]}',
                                          dinner='${newMenu["dinner"]}', breakfast_eaten=0, lunch_eaten=0, dinner_eaten=0, 
                                          consumed_calories=0 where user_id = '${user_id}' and menu_date ='${date}'`);
@@ -152,14 +152,17 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
     const meal_type_eaten = meal_type + '_eaten';
     let dailyMenu = await getDailyMenuFromDB(user_id, date);
     if (dailyMenu != null) {
-        let new_consumed_calories = dailyMenu['consumed_calories']
+        let recipes_id = [dailyMenu['breakfast'], dailyMenu['lunch'], dailyMenu['dinner']]
+        let recipes = await getRecipesByIdFromDB(recipes_id);
+        let new_consumed_calories = recipes[0]['calories']*dailyMenu['breakfast_eaten']+ recipes[1]['calories']*dailyMenu['lunch_eaten']+ recipes[2]['calories']*dailyMenu['dinner_eaten']
+        // let new_consumed_calories = dailyMenu['consumed_calories']
         let new_score = (await user_service.getUserFromDB(user_id))['score']
         if ((!dailyMenu[meal_type_eaten]) && (eaten)) {
             new_consumed_calories += meal_calories
             new_score += meal_score;
         } else if ((dailyMenu[meal_type_eaten]) && (!eaten)) {
-            new_consumed_calories -= meal_calories;
-            new_score -= meal_score;
+            new_consumed_calories = (new_consumed_calories-meal_calories)>0 ? (new_consumed_calories-meal_calories) : 0;
+            new_score = (new_score-meal_score)>0 ? (new_score-meal_score) : 0;
         }
 
         let updated_values = {
@@ -167,12 +170,11 @@ async function markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_
             "new_score": new_score,
         }
 
-        await user_service.checkEatenBadges(user_id, new_score).then(async (result) => {
-            if (result[0] == true) {
-                updated_values["badges"] = Object.values(result[1]) //badges
-                updated_values["earned"] = result[2] //true\false
-            }
-        })
+        let result = await user_service.checkEatenBadges(user_id, new_score);
+        if (result[0] == true) {
+            updated_values["badges"] = Object.values(result[1]) //badges
+            updated_values["earned"] = result[2] //true\false
+        }
 
         await DButils.execQuery(`update MealPlanHistory set ${meal_type_eaten}='${Number(eaten)}', consumed_calories='${new_consumed_calories}' where user_id='${user_id}' and menu_date='${date}'`);
         await DButils.execQuery(`update Users set score='${new_score}' where user_id='${user_id}'`);
@@ -188,12 +190,11 @@ async function replaceRecipeById(user_id, recipe_id, date, meal_type, replacemen
         await DButils.execQuery(`update MealPlanHistory set ${meal_type}='${recipe_id}' where user_id = '${user_id}' and menu_date = '${date}'`);
         let updatedValues = {}
         if (replacement_score >0){
-            await user_service.checkReplaceBadges(user_id, replacement_score).then(async (result) => {
-                if (result[0] == true) {
-                    updatedValues["badges"] = Object.values(result[1]) //badges
-                    updatedValues["earned"] = result[2] //true\false
-                }
-            })
+            let result = await user_service.checkReplaceBadges(user_id, replacement_score);
+            if (result[0] == true) {
+                updatedValues["badges"] = Object.values(result[1]) //badges
+                updatedValues["earned"] = result[2] //true\false
+            }
         }
         let dailyMenu = await getDailyMenu(user_id, date)
         updatedValues["dailyMenu"] = dailyMenu

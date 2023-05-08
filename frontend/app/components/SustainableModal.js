@@ -33,7 +33,7 @@ const SustainableModal = ({
                             </TouchableOpacity>
                             {recipes.length!= 0 && <Ionicons style={styles.iconMore} name="sync-circle-outline"
                                       onPress={getMoreSustainableRecipes}/>}
-                            <Text style={styles.textHeader}>ארוחות מקיימות לסביבה</Text>
+                            <Text style={styles.textHeader}>שדרגו ותעזרו לסביבה</Text>
                         </View>
                         <ScrollView style={styles.information}>
                             {recipes.map(recipe =>
@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignItems: 'center',
         width: '100%',
-        height: 30,
         marginTop: 20,
         marginBottom: 15,
         paddingRight: 20,

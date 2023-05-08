@@ -24,6 +24,7 @@ async function register(user_details) {
         await DButils.execQuery(
             `INSERT INTO badges (user_id) VALUES ('${result['insertId']}')`
         );
+        return (result['insertId'])
     }
 }
 
@@ -35,16 +36,19 @@ async function login(username, password){
         // check that the password is correct
         if (bcrypt.compareSync(password, user.password)) {
             return user;
+        } else{
+            throw {status: 403, message: "username or password incorrect"};
         }
+    }else if(user.length==0){
+        throw {status: 403, message: "username or password incorrect"};
     }
-    throw {status: 404, message: "username or password incorrect"};
 
 }
 
 async function forgotPassword(email){
     let user_email = await DButils.execQuery(`SELECT first_name, email FROM Users WHERE email = '${email}'`);
     if(user_email.length==0){
-        throw {status: 404, message: "email doesn't exists"};
+        throw {status: 403, message: "email doesn't exists"};
     }
     const verificationCode = await generateResetPasswordCode(user_email[0].email)
     let success =  await sendResetPasswordEmail(user_email[0].first_name, user_email[0].email, verificationCode);

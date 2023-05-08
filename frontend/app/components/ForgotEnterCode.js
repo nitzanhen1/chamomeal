@@ -14,31 +14,32 @@ const ForgotEnterCode = ({navigation, route}) => {
     const [code, setCode] = useState('');
     const [Email] = useState(route.params.email)
 
-    const handleSubmit = () => {
-            dispatch(verifyResetPasswordCode(Email, code)).then((status)=>{
-                if(status===401) {
-                    Alert.alert('הקוד אינו תקף יותר', null,
-                    [{text: 'אוקיי', style: 'cancel'}],
-                    { cancelable: true });
-                }
-                else if(status===408){
-                    Alert.alert('הקוד שהוזן אינו נכון', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===200){
-                    navigation.navigate('EnterNewPassword', {email: Email});
-                }
-                else{
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-            });
+    const handleSubmit = async () => {
+        let status = await dispatch(verifyResetPasswordCode(Email, code));
+        if (status === 401) {
+            Alert.alert('הקוד אינו תקף יותר', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+        } else if (status === 408) {
+            Alert.alert('הקוד שהוזן אינו נכון', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+        } else if (status === 200) {
+            navigation.navigate('EnterNewPassword', {email: Email});
+        } else if (status === 419) {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+            navigation.navigate('Login');
+        } else {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                {cancelable: true});
+        }
     };
 
-    const handleSendAgain = () =>{
-        dispatch(forgotPassword(Email)).then();
+    const handleSendAgain = async () =>{
+        await dispatch(forgotPassword(Email))
     }
 
 
@@ -60,6 +61,7 @@ const ForgotEnterCode = ({navigation, route}) => {
                 keyboardType="numeric"
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Button
                 title="המשך"
@@ -92,11 +94,12 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     label:{
         fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
         fontSize: 16,
         color: COLORS.grey,
     },
@@ -106,11 +109,12 @@ const styles = StyleSheet.create({
     },
     textUp: {
         fontSize: 15,
+        alignSelf: "center",
         textAlign: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
         width: '100%',
         height: 25,
-        paddingRight: 20,
+        // paddingRight: 20,
         fontFamily: 'Rubik-Bold',
         letterSpacing: 1,
         color: COLORS.darkGrey
@@ -128,6 +132,11 @@ const styles = StyleSheet.create({
         color: COLORS.dark,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
+    },
+    inputText: {
+        textAlign: "right",
+        fontFamily: 'Rubik-Regular'
+
     },
 })
 

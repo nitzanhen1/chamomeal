@@ -5,6 +5,7 @@ import {login, register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import {Button} from '@rneui/themed';
+import {Ionicons} from "@expo/vector-icons";
 
 
 const RegisterScreen = ({navigation}) => {
@@ -23,6 +24,9 @@ const RegisterScreen = ({navigation}) => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
     function navToLogin() {
         navigation.navigate('Login');
@@ -102,48 +106,46 @@ const RegisterScreen = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress() {
+    async function handleSubmitPress() {
         if (validateUsername(username) && validateFirstName(firstName) && validateLastName(lastName) &&
             validateEmail(email) && validatePassword(password) && validateConfirmPassword(confirmPassword)) {
-            dispatch(register(username, firstName, lastName, password, email)).then((status) => {
-                if (status === 201) {
-                    Alert.alert('תנאי שימוש', 'אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.',
-                        [
-                            {text: 'אישור', onPress: console.log('OK')},
+            let status = await dispatch(register(username, firstName, lastName, password, email))
+            if (status === 201) {
+                Alert.alert('תנאי שימוש', 'אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד. סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם. ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי. כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד. על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.',
+                    [
+                        {text: 'אישור', onPress: console.log('OK')},
 
-                        ],
-                        {cancelable: false});
+                    ],
+                    {cancelable: false});
 
-                    try {
-                        dispatch(login(username, password)).then((status) => {
-                            if (status === 202) {
-                                navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
-                            } else if (status === 200) {
-                                navigation.navigate('LoadingScreen');
-                            } else {
-                                navigation.navigate('Login');
-
-                            }
-                        });
-                    } catch (error) {
-                        console.log(error)
-                    }
-                } else if (status === 409) {
-                    Alert.alert('שם המשתמש כבר קיים במערכת', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        {cancelable: true});
-                } else if (status === 412) {
-                    Alert.alert('האימייל כבר קיים במערכת', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        {cancelable: true});
-                } else {
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        {cancelable: true});
+                try {
+                    navigation.navigate('QuestionnaireScreen', {prevRouteName: 'RegisterScreen'});
+                } catch (error) {
+                    console.log(error)
                 }
-            });
+            } else if (status === 409) {
+                Alert.alert('שם המשתמש כבר קיים במערכת', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 412) {
+                Alert.alert('האימייל כבר קיים במערכת', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            }
         }
     }
+
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+    };
 
     return (
         <View style={styles.view}>
@@ -154,11 +156,11 @@ const RegisterScreen = ({navigation}) => {
                         validateUsername(username)
                     }}
                     placeholder='שם משתמש'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={usernameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
-
+                    inputStyle={styles.text}
                 />
                 <Input
                     onChangeText={(firstName) => {
@@ -166,10 +168,11 @@ const RegisterScreen = ({navigation}) => {
                         validateFirstName(firstName)
                     }}
                     placeholder='שם פרטי'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={firstNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -178,10 +181,11 @@ const RegisterScreen = ({navigation}) => {
                         validateLastName(lastName)
                     }}
                     placeholder='שם משפחה'
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={lastNameError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -191,10 +195,11 @@ const RegisterScreen = ({navigation}) => {
                     }}
                     placeholder='אימייל'
                     keyboardType="email-address"
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={emailError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
+                    inputStyle={styles.text}
 
                 />
                 <Input
@@ -203,13 +208,22 @@ const RegisterScreen = ({navigation}) => {
                         validatePassword(password)
                     }}
                     placeholder="סיסמה"
-                    secureTextEntry={true}
+                    secureTextEntry={!isPasswordVisible}
                     maxLength={16}
-                    errorStyle={{color: 'red'}}
+                    errorStyle={{color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
 
                 />
                 <Input
@@ -218,12 +232,22 @@ const RegisterScreen = ({navigation}) => {
                         validateConfirmPassword(confirmPassword)
                     }}
                     placeholder="אימות סיסמה"
-                    secureTextEntry={true}
-                    errorStyle={{color: 'red'}}
+                    secureTextEntry={!isConfirmPasswordVisible}
+                    errorStyle={{ color: 'red', fontFamily:'Rubik-Regular'}}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleConfirmPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isConfirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
+
                 />
                 <Button
                     title="הירשם"
@@ -261,7 +285,9 @@ const styles = StyleSheet.create({
         width: '98%',
     },
     text: {
-        textAlign: "right"
+        textAlign: "right",
+        fontFamily: 'Rubik-Regular'
+
     },
     nextButton: {
         marginTop: 10,
@@ -270,10 +296,11 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     register: {
+        fontFamily: 'Rubik-Bold',
         fontSize: 16,
         color: COLORS.lightGreen,
         textDecorationLine: "underline",
@@ -286,9 +313,17 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     account: {
+        fontFamily: 'Rubik-Regular',
         fontSize: 16,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
+    },
+    iconContainer: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        bottom: 8,
+        justifyContent: 'center',
     },
 })
 

@@ -51,6 +51,7 @@ export default function SearchScreen() {
         setBreakfastCheck(true);
         setLunchCheck(true);
         setDinnerCheck(true);
+        setNoResults(false);
     }
 
     useEffect(() => {
@@ -66,27 +67,24 @@ export default function SearchScreen() {
         kosher,
     ]);
 
-    function searchRecipes() {
+    async function searchRecipes() {
         Keyboard.dismiss();
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(false);
         let format = /[@#$%^&*()_+=\[\]{};':"\\|.<>?]+/;
         let fixedQuery = searchQuery.replace(/'/g, "’");
         let checkQuery = format.test(fixedQuery) ? false : true;
-        if(checkQuery){
+        if (checkQuery) {
             setWhileSearch(true);
-            dispatch(search(fixedQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
-                kosherCheck, breakfastCheck, lunchCheck, dinnerCheck)).then(
-                (data) => {
-                    setWhileSearch(false)
-                    if (data.length < 1) {
-                        setNoResults(true);
-                    } else {
-                        setNoResults(false);
-                    }
-                }
-            );
-        }else{
+            let data = await dispatch(search(fixedQuery, ingredientsCheck, lactoseCheck, glutenCheck, veganCheck, vegetarianCheck,
+                kosherCheck, breakfastCheck, lunchCheck, dinnerCheck))
+            setWhileSearch(false)
+            if (data.length < 1) {
+                setNoResults(true);
+            } else {
+                setNoResults(false);
+            }
+        } else {
             dispatch(resetSearch());
             setNoResults(true);
         }
@@ -133,13 +131,14 @@ export default function SearchScreen() {
                     onPress={() => searchRecipes()}
                     onClearIconPress={() => setNoResults(false)}
                     buttonStyle={styles.searchButton}
+                    titleStyle={styles.buttonText}
                     color={COLORS.grey}
                     containerColor={COLORS.lightGreen}
                 />
             </View>
             {
                 expanded &&
-                <View>
+                <ScrollView>
 
                     <View style={styles.filterContainer}>
                         <Text style={styles.filterTitle}>העדפות</Text>
@@ -231,7 +230,7 @@ export default function SearchScreen() {
                             />
                         </View>
                     </View>
-                </View>
+                </ScrollView>
             }
             {whileSearch && <ActivityIndicator style={styles.indicator} size="large" color={COLORS.darkGreen} />}
             {!whileSearch && <ScrollView style={styles.inputsContainer}>
@@ -319,6 +318,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Rubik-Regular',
         fontSize: 14,
         color: COLORS.darkGrey,
+        fontWeight: "normal"
     },
     divider: {
         marginHorizontal: 10,
@@ -332,12 +332,15 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 20,
         marginBottom: 15,
-        paddingRight: 20,
         fontFamily: 'Rubik-Bold',
         letterSpacing: 1,
         color: COLORS.darkGrey
     },
     indicator:{
         marginTop: '50%'
+    },
+    buttonText:{
+        fontFamily: 'Rubik-Regular',
+        fontSize: 17
     }
 });

@@ -23,26 +23,31 @@ export default function PersonalScreen({navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
 
 
-    function logoutUser() {
-        dispatch(logout()).then(()=> {
-                navigation.navigate('Login')
-        });
+    async function logoutUser() {
+        await dispatch(logout())
+        navigation.navigate('Login')
     }
 
     async function updateQuestionnaire() {
-        await dispatch(getQuestionnaireDetails()).then(result => {
-            if(result){
-                navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
-            }
-        });
+        let result = await dispatch(getQuestionnaireDetails());
+        if(result){
+            navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
+        } else {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     async function updateUserDetails() {
-        await dispatch(getUserDetails()).then(result =>{
-            if(result){
-                navigation.navigate('EditUserInfo');
-            }
-        });
+        let result = await dispatch(getUserDetails())
+        if(result){
+            navigation.navigate('EditUserInfo');
+        }else{
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     return (
@@ -76,8 +81,8 @@ export default function PersonalScreen({navigation}) {
                 buttonStyle={{height: 50}}
             />
             <Button
-                title="התנתק"
-                onPress={() => logoutUser()}
+                title="תנאי שימוש"
+                onPress={() => setModalVisible(true)}
                 color = {COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
@@ -85,8 +90,8 @@ export default function PersonalScreen({navigation}) {
                 buttonStyle={{height: 50}}
             />
             <Button
-                title="תנאי שימוש"
-                onPress={() => setModalVisible(true)}
+                title="התנתק"
+                onPress={() => logoutUser()}
                 color = {COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}

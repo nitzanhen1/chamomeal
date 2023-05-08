@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet, LayoutAnimation} from "react-native";
+import {View, TouchableOpacity, Text, StyleSheet, LayoutAnimation, Alert} from "react-native";
 import COLORS from "../consts/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
@@ -43,15 +43,26 @@ export default class Accordion extends Component{
         )
     }
 
-    markAsEaten=()=>{
+    markAsEaten=async () => {
         const recipe = this.props.mealData
         recipe.eaten = !recipe.eaten
-        this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title],recipe.eaten, recipe.calories, recipe.score, this.props.date)).then(result => {
-            if(result){
-                this.setState({mealData: recipe})
-            }
-        })
+        let result = await this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title], recipe.eaten, recipe.calories, recipe.score, this.props.date));
+        if (result) {
+            this.setState({mealData: recipe})
+        } else {
+            recipe.eaten = !recipe.eaten
+        }
     }
+
+    // markAsEaten=async () => {
+    //     const recipe = this.props.mealData
+    //     let result = await this.props.dispatch(markAsEaten(this.state.meal_type[this.props.title], !recipe.eaten, recipe.calories, recipe.score, this.props.date));
+    //     if (result) {
+    //         recipe.eaten = !recipe.eaten
+    //         this.setState({mealData: recipe})
+    //     } else {
+    //     }
+    // }
 
     toggleExpand=()=>{
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -64,11 +75,13 @@ const styles = StyleSheet.create({
         // this controls the ארוחת בוקר green header
     },
     title:{
-        fontSize: 16,
-        fontWeight:'bold',
+        fontSize: 17,
+        // fontWeight:'bold',
         color: COLORS.dark,
         marginTop: 4,
-        marginLeft: 10
+        marginLeft: 10,
+        fontFamily: 'Rubik-Bold'
+
     },
     row:{
         flexDirection: 'row',

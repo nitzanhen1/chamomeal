@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
     question: {
         fontFamily: 'Rubik-Regular',
-        fontWeight: '700',
+        fontSize: 15,
         color: COLORS.darkGrey,
         marginHorizontal: 10,
         marginTop: 10
@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     },
     optionText: {
         fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
         fontSize: 17,
         color: COLORS.darkGrey,
     },

@@ -45,7 +45,7 @@ router.post("/markAsEaten", async (req, res, next) =>{
         const {date, meal_type, eaten, meal_calories, meal_score} = req.body;
         const updated_values = await recipe_service.markAsEaten(user_id, date, meal_type, eaten, meal_calories, meal_score);
         res.status(202).send(updated_values);
-        logger.http({label: 'POST /markAsEaten', message:'success', user_id: req.user_id, controller: 'recipe', meta:{ status: 202, body: '', date: req.body.date, meal_type: req.body.meal_type }});
+        logger.http({label: 'POST /markAsEaten', message:'success', user_id: req.user_id, controller: 'recipe', meta:{ status: 202, body: '', date: req.body.date, meal_type: req.body.meal_type, meal_calories: req.body.meal_calories, meal_score: req.body.meal_score  }});
     }catch(error){
         logger.http({label: 'POST /markAsEaten', message:'error', user_id: req.user_id, controller: 'recipe', meta: {error: error, date: req.body.date, meal_type: req.body.meal_type}});
         next(error);

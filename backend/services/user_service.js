@@ -2,6 +2,7 @@ const DButils = require("../data/db_utils");
 const moment = require('moment');
 const bcrypt = require("bcryptjs");
 const logger = require("../logger")
+const recipe_service = require("./recipe_service")
 
 
 async function userMiddleware(req, res, next) {
@@ -82,6 +83,10 @@ async function getUserFromDB(user_id, cols = "*") {
 
 async function getGlobalDetails(user_id) {
     let user = await getUserFromDB(user_id);
+    if(user['EER']==null){ //not update preferences
+        throw {status: 404, message: "login without preferences"};
+    }
+
     let user_details = {
         first_name: user['first_name'],
         total_score: user['score'],
@@ -94,6 +99,8 @@ async function getGlobalDetails(user_id) {
     }
     let badges = await getBadgesFromDB(user_id);
     user_details['badges'] = Object.values(badges)
+    let favorites = await recipe_service.getFavoritesRecipes(user_id);
+    user_details['favorites'] = favorites
     return user_details
 }
 
@@ -176,7 +183,7 @@ async function updatePassword(user_id, old_pass, new_pass) {
             return
         }
     }
-    throw {status: 404, message: "password incorrect"};
+    throw {status: 403, message: "password incorrect"};
 }
 
 async function getUserDetails(user_id) {
@@ -190,6 +197,10 @@ async function getUserDetails(user_id) {
 }
 
 async function updateUserDetails(user_id, details) {
+    let users = await DButils.execQuery(`SELECT user_id, email FROM Users WHERE email='${details.email}'`);
+    if (users.length>0 && users[0]['user_id']!=user_id) {
+            throw {status: 412, message: "email already exists"};
+    }
     let {first_name, last_name, email} = details;
     await DButils.execQuery(`update Users set 
     first_name='${first_name}', last_name='${last_name}', email='${email}' where user_id='${user_id}'`);

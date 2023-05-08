@@ -7,7 +7,9 @@ router.post("/register", async (req, res, next) => {
     // logger.http({label: 'POST /register', message:'request', user_id: 0, controller: 'auth', meta:{username: req.body.username, email: req.body.email}})
     try {
         let user_details = req.body
-        await auth_service.register(user_details);
+        let user_id = await auth_service.register(user_details);
+        // Set cookie
+        req.session.user_id = user_id;
         res.status(201).send({ message: "new user created", success: true });
         logger.http({label: 'POST /register', message:'success', user_id: 0, controller: 'auth', meta:{ status: 201, body: 'new user created', username: req.body.username, email: req.body.email }});
     } catch (error) {

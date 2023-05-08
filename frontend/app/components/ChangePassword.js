@@ -1,11 +1,11 @@
-import {View, StyleSheet, Alert} from 'react-native'
+import {View, StyleSheet, Alert, TouchableOpacity, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {updatePassword} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import { Button} from '@rneui/themed';
-import {AntDesign} from "@expo/vector-icons";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
 
 
 const ChangePassword = ({navigation}) => {
@@ -18,6 +18,10 @@ const ChangePassword = ({navigation}) => {
     const [passwordError, setPasswordError] = useState('');
     const [oldPasswordError, setOldPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
+    const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
     function validateOldPassword(oldPassword){
         if (!oldPassword) {
@@ -53,24 +57,40 @@ const ChangePassword = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress(){
+    async function handleSubmitPress(){
         if (validatePassword(newPassword) && validateConfirmPassword(confirmPassword) && validateOldPassword(oldPassword)){
-            dispatch(updatePassword(oldPassword,newPassword)).then((success)=>{
-                if(success) {
-                    Alert.alert('סיסמה שונתה בהצלחה!', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.goBack();
-                } else {
-                    Alert.alert('סיסמה נוכחית שגויה', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }});
+            let status = await dispatch(updatePassword(oldPassword,newPassword));
+            if(status===403) {
+                Alert.alert('סיסמה נוכחית שגויה', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
+            else if(status===202){
+                Alert.alert('הסיסמה שונתה בהצלחה!', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+                navigation.goBack();
+            }
+            else{
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+            }
         }
     }
 
+    const toggleOldPasswordVisibility = () => {
+        setIsOldPasswordVisible(!isOldPasswordVisible);
+    };
+    const toggleNewPasswordVisibility = () => {
+        setIsNewPasswordVisible(!isNewPasswordVisible);
+    };
+    const toggleConfirmPasswordVisibility = () => {
+        setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+    };
+
     return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
                 <AntDesign name="edit" size={50} style={styles.editIcon}/>
                 <Input
                     label='סיסמה נוכחית'
@@ -79,14 +99,23 @@ const ChangePassword = ({navigation}) => {
                         setOldPassword(password)
                         validateOldPassword(password)
                     }}
-                    secureTextEntry={true}
+                    secureTextEntry={!isOldPasswordVisible}
                     maxLength={16}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                     errorMessage={oldPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
                     // placeholder="••••••••"
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleOldPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isOldPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Input
                     label='סיסמה חדשה'
@@ -96,13 +125,22 @@ const ChangePassword = ({navigation}) => {
                         validatePassword(password)
                     }}
                     // placeholder="••••••••"
-                    secureTextEntry={true}
+                    secureTextEntry={!isNewPasswordVisible}
                     maxLength={16}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                     errorMessage={passwordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleNewPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isNewPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Input
                     label='אימות סיסמה חדשה'
@@ -112,12 +150,21 @@ const ChangePassword = ({navigation}) => {
                         validateConfirmPassword(confirmPassword)
                     }}
                     // placeholder="••••••••"
-                    secureTextEntry={true}
-                    errorStyle={{ color: 'red' }}
+                    secureTextEntry={!isConfirmPasswordVisible}
+                    errorStyle={{ color: 'red' , fontFamily: 'Rubik-Regular'}}
                     errorMessage={confirmPasswordError}
                     autoCapitalize='none'
                     inputContainerStyle={styles.input}
                     inputStyle={styles.text}
+                    rightIcon={
+                        <TouchableOpacity onPress={toggleConfirmPasswordVisibility} style={styles.iconContainer}>
+                            <Ionicons
+                                name={isConfirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
+                                size={24}
+                                color="#999"
+                            />
+                        </TouchableOpacity>
+                    }
                 />
                 <Button
                     title="שמור"
@@ -127,7 +174,7 @@ const ChangePassword = ({navigation}) => {
                     titleStyle={styles.nextText}
                     radius={8}
                 />
-            </View>
+            </ScrollView>
     )
 }
 
@@ -136,7 +183,6 @@ const styles = StyleSheet.create({
         direction: 'rtl',
         height: '100%',
         width: '100%',
-        alignItems: 'center',
         backgroundColor: COLORS.white,
         paddingTop:30,
     },
@@ -144,7 +190,8 @@ const styles = StyleSheet.create({
         borderBottomColor: COLORS.lightGreen
     },
     text:{
-        textAlign:"right"
+        textAlign:"right",
+        fontFamily: 'Rubik-Regular'
     },
     nextButton: {
         marginTop: 10,
@@ -153,18 +200,31 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     label:{
         fontFamily: 'Rubik-Regular',
+        fontWeight: 'normal',
         fontSize: 16,
         color: COLORS.grey,
     },
     editIcon:{
         color: COLORS.grey,
         margin:50,
-    }
+    },
+    iconContainer: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        bottom: 8,
+        justifyContent: 'center',
+    },
+    alertText: {
+        fontFamily: 'Rubik-Regular',
+        fontSize: 16,
+
+    },
 })
 
 export default ChangePassword;

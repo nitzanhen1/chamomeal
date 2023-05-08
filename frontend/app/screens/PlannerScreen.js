@@ -1,31 +1,30 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native'
 import React, {useEffect} from 'react'
 import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
 import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
-import { useIsFocused } from "@react-navigation/native";
-import {TutorialOverlay} from "./TutorialScreen";
 import { ProgressBar } from 'react-native-paper';
-
+import TutorialModal from "../components/tutorialModal";
 
 export default function PlannerScreen() {
     const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
-    const focus = useIsFocused();
 
     useEffect(() => {
+        dispatch({type: SET_DATE});
         if(replaced) {
-            dispatch({type: SET_DATE});
-            dispatch(getDailyMenu(date)).then();
+            dispatch(getDailyMenu(date)).then(result => {
+                if(!result){
+                    Alert.alert('משהו השתבש, נסה שוב', null,
+                        [{text: 'אוקיי', style: 'cancel'}],
+                        { cancelable: true });
+                }
+            })
             dispatch(setReplaced(false));
         }
     }, [replaced]);
 
-    // useEffect(() => {
-    //     dispatch({type: SET_DATE});
-    //     dispatch(getDailyMenu(date)).then();
-    // }, []);
 
     let day = date.getDate();
     let month = date.getMonth() + 1; // getMonth return value between 0-11
@@ -35,38 +34,36 @@ export default function PlannerScreen() {
 
     return (
         <View style={styles.container}>
-            {showTutorial && <TutorialOverlay />}
-            <View style={[styles.mainContent, showTutorial && styles.translucentBackground]}>
+            {showTutorial && <TutorialModal/>}
             <Text style={styles.textDate}>{dateToShow}</Text>
-                <View style={styles.eerContainer}>
-                    <Text style={styles.label}>כמות מומלצת:</Text>
-                    <Text style={styles.value}>{EER} קלוריות </Text>
+            <View style={styles.eerContainer}>
+                <Text style={styles.label}>תוכנית מותאמת אישית:</Text>
+                <Text style={styles.value}>{EER} קלוריות </Text>
+            </View>
+            <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
+            <View style={styles.calsContainer}>
+                <View style={{ flexDirection: 'row'}}>
+                    <Text style={styles.label}>אכלתי:</Text>
+                    <Text style={styles.value}>{consumed_calories}</Text>
                 </View>
-                <ProgressBar style={{ height: 6, width: undefined }}  progress={consumed_calories/total_calories} color={COLORS.darkGreen} />
-                <View style={styles.calsContainer}>
-                    <View style={{ flexDirection: 'row'}}>
-                        <Text style={styles.label}>אכלתי:</Text>
-                        <Text style={styles.value}>{consumed_calories}</Text>
-                    </View>
 
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.label}>הצעה יומית:</Text>
-                        <Text style={styles.value}>{total_calories}</Text>
-                    </View>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.label}>הצעה יומית:</Text>
+                    <Text style={styles.value}>{total_calories}</Text>
                 </View>
-                <ScrollView style={styles.inputsContainer}>
-                    {meals.map(meal => (
-                        <View key={meal.title}>
-                            <Accordion
-                                title={meal.title}
-                                mealData={meal.mealData}
-                                date={date}
-                                dispatch={dispatch}
-                            />
-                        </View>
-                    ))}
-                </ScrollView>
-        </View>
+            </View>
+            <ScrollView style={styles.inputsContainer}>
+                {meals.map(meal => (
+                    <View key={meal.title}>
+                        <Accordion
+                            title={meal.title}
+                            mealData={meal.mealData}
+                            date={date}
+                            dispatch={dispatch}
+                        />
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     )
 }
@@ -74,7 +71,7 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
     container: {
         direction: 'rtl',
-        height: '100%'
+        height: '100%',
     },
     inputsContainer: {
         marginTop: 10,
@@ -97,11 +94,6 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
         color: COLORS.darkGreen
     },
-    mainContent: {
-    },
-    translucentBackground: {
-        opacity: 0.5,
-    },
     eerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -118,11 +110,14 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         marginRight: 10,
+        fontFamily: 'Rubik-Bold'
+
     },
     value: {
         fontSize: 16,
+        fontFamily: 'Rubik-Regular'
     },
 
 })

@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert} from 'react-native'
+import {StyleSheet, Alert, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import { Input } from '@rneui/themed';
 import { updateUserDetails} from "../redux/actions";
@@ -58,25 +58,29 @@ const EditUserInfo = ({navigation}) => {
         }
     }
 
-    function handleSubmitPress(){
+    async function handleSubmitPress(){
         if (validateFirstName(firstName) && validateLastName(lastName) && validateEmail(Email)){
-            dispatch(updateUserDetails(firstName,lastName,Email)).then((success)=>{
-                if(success) {
-                    Alert.alert('הפרטים עודכנו בהצלחה!', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.goBack();
-                } else {
-                    Alert.alert('עדכון הפרטים נכשל', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                    navigation.navigate('Login');
-                }});
+            let status = await dispatch(updateUserDetails(firstName,lastName,Email));
+            if(status === 202) {
+                Alert.alert('הפרטים עודכנו בהצלחה!', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+                navigation.goBack();
+            } else if (status === 412) {
+                Alert.alert('האימייל כבר קיים במערכת', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else {
+                Alert.alert('עדכון הפרטים נכשל', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    { cancelable: true });
+                navigation.navigate('Login');
+            }
         }
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center',}}>
             <AntDesign name="edit" size={50} style={styles.editIcon}/>
             <Input
                 label='שם פרטי'
@@ -90,6 +94,7 @@ const EditUserInfo = ({navigation}) => {
                 errorMessage={firstNameError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Input
                 label='שם משפחה'
@@ -103,6 +108,7 @@ const EditUserInfo = ({navigation}) => {
                 errorMessage={lastNameError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Input
                 label='אימייל'
@@ -117,6 +123,7 @@ const EditUserInfo = ({navigation}) => {
                 errorMessage={emailError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
             />
             <Button
                 title="שמור"
@@ -126,7 +133,7 @@ const EditUserInfo = ({navigation}) => {
                 titleStyle={styles.nextText}
                 radius={8}
             />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -135,12 +142,14 @@ const styles = StyleSheet.create({
         direction: 'rtl',
         height: '100%',
         width: '100%',
-        alignItems: 'center',
         backgroundColor: COLORS.white,
         paddingTop:30,
     },
     input:{
-        borderBottomColor: COLORS.lightGreen
+        borderBottomColor: COLORS.lightGreen,
+        width: '97%',
+        alignSelf: "center",
+
     },
     nextButton: {
         marginTop: 10,
@@ -153,13 +162,19 @@ const styles = StyleSheet.create({
         fontSize: 23
     },
     label:{
-        fontFamily: 'Rubik-Regular',
-        fontSize: 16,
+        fontFamily: 'Rubik-Bold',
+        fontWeight: "normal",
+        fontSize: 17,
         color: COLORS.grey,
+        marginLeft: 5
     },
     editIcon:{
         color: COLORS.grey,
         margin:50,
+    },
+    inputText:{
+        fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
     }
 })
 

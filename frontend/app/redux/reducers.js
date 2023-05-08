@@ -15,6 +15,7 @@ import {
     SET_HEART_AND_CHOOSE,
     SET_DATE, SET_REPLACED,
     SET_SHOW_TUTORIAL,
+    UPDATE_USER_DETAILS
 } from './actions';
 
 const initialState = {
@@ -56,7 +57,7 @@ function mealReducer(state = initialState, action) {
     switch (action.type) {
         case GET_GLOBAL_DETAILS:
             return { ...state, first_name: action.first_name, score: action.score, badges: action.badges, EER: action.EER, vegan: action.vegan, vegetarian: action.vegetarian, without_lactose: action.without_lactose,
-                gluten_free: action.gluten_free, kosher: action.kosher}
+                gluten_free: action.gluten_free, kosher: action.kosher, favorites: action.favorites}
         case GET_Q_DETAILS:
             return { ...state, gender: action.gender, year_of_birth: action.year_of_birth, height: action.height, weight: action.weight, physical_activity: action.physical_activity, vegan: action.vegan, vegetarian: action.vegetarian, without_lactose: action.without_lactose,
                 gluten_free: action.gluten_free, kosher: action.kosher}
@@ -97,6 +98,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, date: new Date()};
         case SET_SHOW_TUTORIAL:
             return { ...state, showTutorial: action.showTutorial};
+        case UPDATE_USER_DETAILS:
+            return {...state, first_name: action.first_name}
         default:
             return state;
     }

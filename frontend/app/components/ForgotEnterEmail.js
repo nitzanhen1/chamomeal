@@ -26,28 +26,29 @@ const ForgotEnterEmail = ({navigation}) => {
         }
     }
 
-    const handleSubmit = () => {
-        if (validateEmail(Email)){
-            dispatch(forgotPassword(Email)).then((status)=>{
-                if(status===404) {
-                    Alert.alert('אימייל לא קיים', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===400){
-                    Alert.alert('אימייל לא נשלח', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-                else if(status===200){
-                    navigation.navigate('EnterCode',{email: Email});
-                }
-                else{
-                    Alert.alert('אוי לא משהו קרה! נסה שוב', null,
-                        [{text: 'אוקיי', style: 'cancel'}],
-                        { cancelable: true });
-                }
-            });
+    const handleSubmit = async () => {
+        if (validateEmail(Email)) {
+            let status = await dispatch(forgotPassword(Email));
+            if (status === 403) {
+                Alert.alert('אימייל לא קיים', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 400) {
+                Alert.alert('אימייל לא נשלח', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            } else if (status === 200) {
+                navigation.navigate('EnterCode', {email: Email});
+            } else if (status === 419) {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+                navigation.navigate('Login');
+            } else {
+                Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                    [{text: 'אוקיי', style: 'cancel'}],
+                    {cancelable: true});
+            }
         }
     };
 
@@ -65,10 +66,12 @@ const ForgotEnterEmail = ({navigation}) => {
                     validateEmail(email)
                 }}
                 keyboardType="email-address"
-                errorStyle={{ color: 'red' }}
+                errorStyle={{ color: 'red', fontFamily: 'Rubik-Regular' }}
                 errorMessage={emailError}
                 autoCapitalize='none'
                 inputContainerStyle={styles.input}
+                inputStyle={styles.inputText}
+
             />
             <Button
                 title="המשך"
@@ -101,18 +104,24 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     nextText: {
-        fontWeight: 'bold',
+        fontFamily: 'Rubik-Bold',
         fontSize: 20
     },
     label:{
         fontFamily: 'Rubik-Regular',
+        fontWeight: 'normal',
         fontSize: 16,
         color: COLORS.grey,
     },
     editIcon:{
         color: COLORS.grey,
         margin:50,
-    }
+    },
+    inputText: {
+        textAlign: "right",
+        fontFamily: 'Rubik-Regular'
+
+    },
 })
 
 export default ForgotEnterEmail;
