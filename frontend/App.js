@@ -1,3 +1,6 @@
+import { I18nManager } from "react-native"
+I18nManager.forceRTL(true);
+I18nManager.allowRTL(true);
 import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, Text, SafeAreaView, StatusBar, TouchableOpacity, Alert} from 'react-native';
 import BottomNavigator from './app/components/BottomNavigator';
@@ -5,9 +8,6 @@ import COLORS from './app/consts/colors';
 import {NavigationContainer, getFocusedRouteNameFromRoute, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useFonts} from 'expo-font';
-import { I18nManager } from "react-native"
-I18nManager.forceRTL(true);
-I18nManager.allowRTL(true);
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import { Store } from './app/redux/store';
 import LoginScreen from "./app/screens/LoginScreen";
