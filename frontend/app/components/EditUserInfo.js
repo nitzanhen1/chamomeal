@@ -22,11 +22,12 @@ const EditUserInfo = ({navigation}) => {
     const [emailError, setEmailError] = useState('');
 
     function validateFirstName(firstName){
+        let re = /[0-9!@#$%^&*()_+=\[\]{};':"\\|.,<>?]+/
         if (!firstName) {
             setFirstNameError('נדרש שם פרטי');
             return false
-        } else if (firstName.includes(' ')) {
-            setFirstNameError('שם פרטי מכיל רווחים');
+        } else if (re.test(firstName)) {
+            setFirstNameError('שם פרטי לא יכול להכיל מספרים ותווים מיוחדים')
             return false
         } else {
             setFirstNameError('')
@@ -35,11 +36,12 @@ const EditUserInfo = ({navigation}) => {
     }
 
     function validateLastName(lastName){
+        let re = /[0-9!@#$%^&*()_+=\[\]{};':"\\|.,<>?]+/
         if (!lastName) {
             setLastNameError('נדרש שם משפחה');
             return false
-        } else if (lastName.includes(' ')) {
-            setLastNameError('שם משפחה מכיל רווחים');
+        } else if (re.test(lastName)) {
+            setLastNameError('שם משפחה לא יכול להכיל מספרים ותווים מיוחדים')
             return false
         } else {
             setLastNameError('')

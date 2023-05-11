@@ -33,8 +33,12 @@ const RegisterScreen = ({navigation}) => {
     }
 
     function validateUsername(username) {
+        let re = /['"\\|]+/
         if (!username) {
             setUsernameError('נדרש שם משתמש');
+            return false
+        } else if (re.test(username)) {
+            setUsernameError('שם משתמש לא תקין')
             return false
         } else if (username.includes(' ')) {
             setUsernameError('שם משתמש מכיל רווחים');
@@ -46,11 +50,12 @@ const RegisterScreen = ({navigation}) => {
     }
 
     function validateFirstName(firstName) {
+        let re = /[0-9!@#$%^&*()_+=\[\]{};':"\\|.,<>?]+/
         if (!firstName) {
             setFirstNameError('נדרש שם פרטי');
             return false
-        } else if (firstName.includes(' ')) {
-            setFirstNameError('שם פרטי מכיל רווחים');
+        } else if (re.test(firstName)) {
+            setFirstNameError('שם פרטי לא יכול להכיל מספרים ותווים מיוחדים')
             return false
         } else {
             setFirstNameError('')
@@ -59,11 +64,12 @@ const RegisterScreen = ({navigation}) => {
     }
 
     function validateLastName(lastName) {
+        let re = /[0-9!@#$%^&*()_+=\[\]{};':"\\|.,<>?]+/
         if (!lastName) {
             setLastNameError('נדרש שם משפחה');
             return false
-        } else if (lastName.includes(' ')) {
-            setLastNameError('שם משפחה מכיל רווחים');
+        } else if (re.test(lastName)) {
+            setLastNameError('שם משפחה לא יכול להכיל מספרים ותווים מיוחדים')
             return false
         } else {
             setLastNameError('')
@@ -72,7 +78,7 @@ const RegisterScreen = ({navigation}) => {
     }
 
     function validateEmail(email) {
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let re = /^(([^<>()\[\]\\.,;:'\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (re.test(email)) {
             setEmailError('')
             return true
