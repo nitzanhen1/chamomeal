@@ -2,7 +2,7 @@ import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, TouchableWi
     Modal} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
-import {login, register} from "../redux/actions";
+import {register} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import COLORS from "../consts/colors";
 import {Button, CheckBox} from '@rneui/themed';
@@ -37,7 +37,7 @@ const RegisterScreen = ({navigation}) => {
     }
 
     function validateUsername(username) {
-        let re = /['"\\|]+/
+        let re = /[@'"\\|]+/
         if (!username) {
             setUsernameError('נדרש שם משתמש');
             return false
@@ -96,9 +96,16 @@ const RegisterScreen = ({navigation}) => {
         let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(password)) {
             setPasswordError('')
+            if(confirmPassword && password != confirmPassword){
+                setConfirmPasswordError("הסיסמה אינה תואמת");
+            }
+            else {
+                setConfirmPasswordError('')
+            }
             return true
         } else {
             setPasswordError("6-16 תווים - אותיות גדולות וקטנות")
+            setConfirmPasswordError('')
             return false
         }
     }
@@ -363,7 +370,7 @@ const styles = StyleSheet.create({
     register: {
         fontFamily: 'Rubik-Bold',
         fontSize: 16,
-        color: COLORS.lightGreen,
+        color: COLORS.darkGreen,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
         textDecorationColor: COLORS.darkGreen,

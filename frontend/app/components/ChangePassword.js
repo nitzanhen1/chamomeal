@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert, TouchableOpacity, ScrollView} from 'react-native'
+import {StyleSheet, Alert, TouchableOpacity, ScrollView} from 'react-native'
 import React, {useState} from 'react'
 import {Input} from "react-native-elements";
 import {updatePassword} from "../redux/actions";
@@ -37,9 +37,16 @@ const ChangePassword = ({navigation}) => {
         let re = /^(?!.* )^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,16}$/;
         if (re.test(newPassword)) {
             setPasswordError('')
+            if(confirmPassword && newPassword != confirmPassword){
+                setConfirmPasswordError("הסיסמה אינה תואמת");
+            }
+            else {
+                setConfirmPasswordError('')
+            }
             return true
         } else {
             setPasswordError("6-16 תווים - אותיות גדולות וקטנות")
+            setConfirmPasswordError('')
             return false
         }
     }
