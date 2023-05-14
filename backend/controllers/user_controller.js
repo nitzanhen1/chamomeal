@@ -8,7 +8,7 @@ router.use(async function (req, res, next) {
 });
 
 router.get("/getGlobalDetails", async (req, res, next) => {
-    // logger.http({label: 'GET /getGlobalDetails', message:'request', user_id: req.user_id, controller: 'user', meta:{}})
+    logger.http({label: 'GET /getGlobalDetails', message:'request', user_id: req.user_id, controller: 'user', meta:{}})
     try {
         const user_id = req.user_id;
         const globalDetails = await user_service.getGlobalDetails(user_id)
