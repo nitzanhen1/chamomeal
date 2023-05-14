@@ -56,29 +56,15 @@ const QuestionnaireScreen = ({navigation, route}) => {
 
     function handleBack() {
         const prevRouteName = route.params.prevRouteName;
-        if (prevRouteName === 'PersonalScreen') {
-            Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
-                [
-                    {text: 'כן', onPress: () => navigation.goBack()},
-                    {
-                        text: 'לא',
-                        style: 'cancel',
-                    },
-                ],
-                {cancelable: true});
-        } else if (prevRouteName == 'RegisterScreen') {
-            Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
-                [
-                    {text: 'כן', onPress: () => navigation.navigate('Login')},
-                    {
-                        text: 'לא',
-                        style: 'cancel',
-                    },
-                ],
-                {cancelable: true});
-            // dispatch(setEarned(false));
-        }
-
+        Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
+            [
+                {text: 'כן', onPress: () => {prevRouteName === 'RegisterScreen' ? navigation.navigate('Login') : navigation.goBack()}},
+                {
+                    text: 'לא',
+                    style: 'cancel',
+                },
+            ],
+            {cancelable: true});
     }
 
     async function handleGenerateNewDaily() {
