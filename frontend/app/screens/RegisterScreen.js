@@ -37,7 +37,7 @@ const RegisterScreen = ({navigation}) => {
     }
 
     function validateUsername(username) {
-        let re = /['"\\|]+/
+        let re = /[@'"\\|]+/
         if (!username) {
             setUsernameError('נדרש שם משתמש');
             return false
