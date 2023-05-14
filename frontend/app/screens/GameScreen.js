@@ -89,7 +89,6 @@ export default function GameScreen() {
 
     return (
         <ScrollView>
-
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.subtitles}>החלפה לארוחות סביבתיות</Text>
@@ -278,11 +277,13 @@ const styles = StyleSheet.create({
     image: {
         width: 100,
         height: 100,
-        margin: 12,
+        marginVertical: 7,
+        marginHorizontal: '2%',
         resizeMode: 'contain',
         borderRadius: 10,
         borderWidth: 2,
         borderColor: 'rgba(236,200,79,0.71)',
+        alignSelf: "center"
 
     },
     bw_image: {
@@ -315,14 +316,14 @@ const styles = StyleSheet.create({
         // marginTop: 15,
         justifyContent: "space-between",
         height: 32,
-        paddingHorizontal: 27
+        paddingHorizontal: '5%'
         // alignItems: "stretch",
         // alignContent: "center"
     },
     qIcon: {
         marginTop: 3,
         color: COLORS.darkGrey,
-
+        // left: 4
         // alignSelf: "flex-end"
     },
     modalView: {

@@ -55,16 +55,30 @@ const QuestionnaireScreen = ({navigation, route}) => {
     }
 
     function handleBack() {
-        Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
-            [
-                {text: 'כן', onPress: () => navigation.goBack()},
-                {
-                    text: 'לא',
-                    style: 'cancel',
-                },
-            ],
-            {cancelable: true});
-        // dispatch(setEarned(false));
+        const prevRouteName = route.params.prevRouteName;
+        if (prevRouteName === 'PersonalScreen') {
+            Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
+                [
+                    {text: 'כן', onPress: () => navigation.goBack()},
+                    {
+                        text: 'לא',
+                        style: 'cancel',
+                    },
+                ],
+                {cancelable: true});
+        } else if (prevRouteName == 'RegisterScreen') {
+            Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
+                [
+                    {text: 'כן', onPress: () => navigation.navigate('Login')},
+                    {
+                        text: 'לא',
+                        style: 'cancel',
+                    },
+                ],
+                {cancelable: true});
+            // dispatch(setEarned(false));
+        }
+
     }
 
     async function handleGenerateNewDaily() {

@@ -75,10 +75,12 @@ const PreviewCard = ({recipe, sustainable, handleCloseSustainableModal, from}) =
                     <View style={styles.cardTextContent}>
                         <Text numberOfLines={2} style={styles.cardTitle}>{recipe.name}</Text>
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
+                            <Text style={styles.cardSubtitle}>{from === 'sustainability' ? (recipe.calories +  " קל'") : (recipe.calories + " קלוריות")}</Text>
                             <Text style={styles.cardSubtitle}>·</Text>
                             <View style={{flexDirection: 'row'}}>
-                                <Entypo name="tree" size={16} style={{color:"black", paddingLeft: 4, paddingRight: 3}}/>
+                                {from != 'sustainability' &&
+                                    <Entypo name="tree" size={16} style={{color:"black", paddingLeft: 4, paddingRight: 3}}/>
+                                }
                                 <Text ellipsizeMode="middle" style={styles.cardGHGSubtitle}
                                     numberOfLines={1}>{recipe.GHG_per_unit + " GHG"}</Text>
                             </View>
