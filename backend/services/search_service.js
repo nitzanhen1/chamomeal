@@ -14,10 +14,10 @@ async function search(user_id, searchQuery, onlyIngredients, without_lactose, gl
     }
     if(!onlyIngredients){
         recipe_name_query = `and name NOT LIKE '%${searchQuery}%'`
-        let recipes_with_name = await DButils.execQuery(`select distinct * from recipes where name LIKE '%${searchQuery}%' ${prefs_query} ${meal_type_query} order by score desc limit 30`);
+        let recipes_with_name = await DButils.execQuery(`select distinct * from recipes where name LIKE '%${searchQuery}%' ${prefs_query} ${meal_type_query} order by score desc limit 60`);
         results = results.concat(recipes_with_name)
     }
-    if(results.length>=30){
+    if(results.length>=60){
         results = await recipe_service.addIsFavorite(user_id, results)
         return results;
     }
@@ -27,7 +27,7 @@ async function search(user_id, searchQuery, onlyIngredients, without_lactose, gl
         return results;
     }
     let ingredients_recipes_ids = (ingredients_recipes.map(element => element['recipe_id'])).join()
-    let recipes_with_ing = await DButils.execQuery(`select distinct * from recipes where (recipe_id in (${ingredients_recipes_ids}) ${recipe_name_query}) ${prefs_query} ${meal_type_query} order by score desc limit ${30-results.length}`);
+    let recipes_with_ing = await DButils.execQuery(`select distinct * from recipes where (recipe_id in (${ingredients_recipes_ids}) ${recipe_name_query}) ${prefs_query} ${meal_type_query} order by score desc limit ${60-results.length}`);
     results = results.concat(recipes_with_ing)
     results = await recipe_service.addIsFavorite(user_id, results)
     return results;
