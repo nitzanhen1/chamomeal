@@ -40,7 +40,7 @@ describe('Auth Test', () => {
 
             assert.strictEqual(response.status, 201);
             assert.deepStrictEqual(response.body.message,  "new user created");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
         });
 
         it('should respond with an error if username already exist', async () => {
@@ -48,13 +48,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([{username:'user1', email:'user2@user.com'}]);
 
-            const response = await request(app)
-                .post('/auth/register')
-                .send(newUser);
+            const response = await request(app).post('/auth/register').send(newUser);
 
             assert.strictEqual(response.status, 409);
             assert.deepStrictEqual(response.body.message,  "username already exists");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
 
         it('should respond with an error if email already exist', async () => {
@@ -62,13 +60,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([{username:'user2', email:'user1@user.com'}]);
 
-            const response = await request(app)
-                .post('/auth/register')
-                .send(newUser);
+            const response = await request(app).post('/auth/register').send(newUser);
 
             assert.strictEqual(response.status, 412);
             assert.deepStrictEqual(response.body.message,  "email already exists");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
     });
 
@@ -85,13 +81,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([{user_id:1, username:'user1', password:hash_password, EER:null}]);
 
-            const response = await request(app)
-                .post('/auth/login')
-                .send(user);
+            const response = await request(app).post('/auth/login').send(user);
 
             assert.strictEqual(response.status, 202);
             assert.deepStrictEqual(response.body.message,  "login without preferences");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
         });
 
          it('should login a user successfully with preferences', async () => {
@@ -100,13 +94,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([{user_id:1, username:'user1', password:hash_password, EER:2000}]);
 
-            const response = await request(app)
-                .post('/auth/login')
-                .send(user);
+            const response = await request(app).post('/auth/login').send(user);
 
             assert.strictEqual(response.status, 200);
             assert.deepStrictEqual(response.body.message,  "successful login");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
         });
 
         it('should respond with an error if password incorrect', async () => {
@@ -115,13 +107,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([{user_id:1, username:'user1', password:hash_password, EER:null}]);
 
-            const response = await request(app)
-                .post('/auth/login')
-                .send(user);
+            const response = await request(app).post('/auth/login').send(user);
 
             assert.strictEqual(response.status, 403);
             assert.deepStrictEqual(response.body.message,  "username or password incorrect");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
 
         it('should respond with an error if username do not exist', async () => {
@@ -129,13 +119,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([]);
 
-            const response = await request(app)
-                .post('/auth/login')
-                .send(user);
+            const response = await request(app).post('/auth/login').send(user);
 
             assert.strictEqual(response.status, 403);
             assert.deepStrictEqual(response.body.message,  "username or password incorrect");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
     });
 
@@ -145,25 +133,21 @@ describe('Auth Test', () => {
             app.request.session = { user_id: 1 }
             app.request.session.reset = () => { app.request.session = null};
 
-            const response = await request(app)
-                .post('/auth/logout')
-                .send()
+            const response = await request(app).post('/auth/logout').send()
 
             assert.strictEqual(response.status, 200);
             assert.deepStrictEqual(response.body.message,  "successful logout");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
             assert.deepStrictEqual( app.request.session,  null);
         });
 
         it('should respond with an error if no user is logged in', async () => {
 
-            const response = await request(app)
-                .post('/auth/logout')
-                .send()
+            const response = await request(app).post('/auth/logout').send()
 
             assert.strictEqual(response.status, 419);
             assert.deepStrictEqual(response.body.message,  "no user is logged in");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
     });
 
@@ -179,13 +163,11 @@ describe('Auth Test', () => {
             const sgMailStub = sinon.stub(sgMail, 'send');
             sgMailStub.onCall(0).resolves(true);
 
-            const response = await request(app)
-                .post('/auth/forgotPassword')
-                .send(email)
+            const response = await request(app).post('/auth/forgotPassword').send(email)
 
             assert.strictEqual(response.status, 200);
             assert.deepStrictEqual(response.body.message,  "successfully sent verification code to email");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
         });
 
         it('should respond with an error if email not exist', async () => {
@@ -193,13 +175,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([]);
 
-            const response = await request(app)
-                .post('/auth/forgotPassword')
-                .send(email)
+            const response = await request(app).post('/auth/forgotPassword').send(email)
 
             assert.strictEqual(response.status, 403);
             assert.deepStrictEqual(response.body.message,  "email doesn't exists");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
 
         it('should respond with an error if failed to send an email', async () => {
@@ -211,13 +191,11 @@ describe('Auth Test', () => {
             const sgMailStub = sinon.stub(sgMail, 'send');
             sgMailStub.onCall(0).resolves(false);
 
-            const response = await request(app)
-                .post('/auth/forgotPassword')
-                .send(email)
+            const response = await request(app).post('/auth/forgotPassword').send(email)
 
             assert.strictEqual(response.status, 400);
             assert.deepStrictEqual(response.body.message,  "failed to send an email");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
     });
 
@@ -234,13 +212,11 @@ describe('Auth Test', () => {
             execQueryStub.onCall(0).resolves([{expiryTime:Math.floor(Date.now() / 1000) }]);
             execQueryStub.onCall(1).resolves();
 
-            const response = await request(app)
-                .post('/auth/verifyResetPasswordCode')
-                .send(body)
+            const response = await request(app).post('/auth/verifyResetPasswordCode').send(body)
 
             assert.strictEqual(response.status, 200);
             assert.deepStrictEqual(response.body.message,  "verification code is correct");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
         });
 
         it('should respond with an error if the code has expired', async () => {
@@ -249,13 +225,11 @@ describe('Auth Test', () => {
             execQueryStub.onCall(0).resolves([{expiryTime:Math.floor(Date.now() / 1000 - 600) }]);
             execQueryStub.onCall(1).resolves();
 
-            const response = await request(app)
-                .post('/auth/verifyResetPasswordCode')
-                .send(body)
+            const response = await request(app).post('/auth/verifyResetPasswordCode').send(body)
 
             assert.strictEqual(response.status, 401);
             assert.deepStrictEqual(response.body.message,  "verification code expired");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
 
         it('should respond with an error if the code is incorrect', async () => {
@@ -263,13 +237,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves([]);
 
-            const response = await request(app)
-                .post('/auth/verifyResetPasswordCode')
-                .send(body)
+            const response = await request(app).post('/auth/verifyResetPasswordCode').send(body)
 
             assert.strictEqual(response.status, 408);
             assert.deepStrictEqual(response.body.message,  "verification code is incorrect");
-            assert.deepStrictEqual(response.body.success,  false);
+            assert.strictEqual(response.body.success,  false);
         });
     });
 
@@ -285,13 +257,11 @@ describe('Auth Test', () => {
             const execQueryStub = sinon.stub(db, 'execQuery');
             execQueryStub.onCall(0).resolves();
 
-            const response = await request(app)
-                .post('/auth/resetPassword')
-                .send(body)
+            const response = await request(app).post('/auth/resetPassword').send(body)
 
             assert.strictEqual(response.status, 202);
             assert.deepStrictEqual(response.body.message,  "password updated successfully");
-            assert.deepStrictEqual(response.body.success,  true);
+            assert.strictEqual(response.body.success,  true);
         });
     });
 
