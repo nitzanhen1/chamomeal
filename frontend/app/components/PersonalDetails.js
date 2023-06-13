@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Platform, TouchableOpacity} from 'react-native';
 import {TextInput, RadioButton, HelperText} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPersonalDetails} from "../redux/actions";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const PersonalDetails = ({navigation}) => {
@@ -12,12 +12,14 @@ const PersonalDetails = ({navigation}) => {
         height,
         weight,
         year_of_birth,
-        gender} = useSelector(state => state.mealReducer);
+        gender
+    } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const [newHeight, setHeight] = useState(height);
     const [newWeight, setWeight] = useState(weight);
     const [newGender, setGender] = useState(gender);
     const [newBirthYear, setBirthYear] = useState(year_of_birth);
+    const [showBDayError, setShowBDayError] = useState(false);
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
@@ -29,7 +31,7 @@ const PersonalDetails = ({navigation}) => {
     const [newBirthYearError, setBirthYearError] = useState('');
 
     const handleSubmit = () => {
-        if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday() && validateGender()){
+        if (validateHeight(newHeight) && validateWeight(newWeight) && validateBirthday(newBirthYear) && validateGender()){
             const newPersonalDetails = {newWeight, newHeight, newGender, newBirthYear};
             dispatch(setPersonalDetails(newPersonalDetails))
             navigation.navigate('PhysicalActivity')
@@ -55,40 +57,56 @@ const PersonalDetails = ({navigation}) => {
     };
 
     function validateHeight(height){
-        if (!newHeight) {
-            setHeightError('אנא הכנס גובה');
+        let re = /^[+]?\d+([.]\d+)?$/;
+        if(height==0) {
+            setHeightError("גובה לא תקין")
             return false
-        }
-        else {
+        }else if (re.test(height)) {
             setHeightError('')
             return true
+        } else {
+            setHeightError("גובה לא תקין")
+            return false
         }
     }
 
     function validateWeight(weight){
-        if (!newWeight) {
-            setWeightError('אנא הכנס משקל');
+        let re = /^[+]?\d+([.]\d+)?$/;
+        if(weight==0) {
+            setWeightError("משקל לא תקין")
             return false
-        }else {
+        }else if (re.test(weight)) {
             setWeightError('')
             return true
+        } else {
+            setWeightError("משקל לא תקין")
+            return false
         }
     }
 
-    function validateBirthday(){
-        if (!newBirthYear) {
+    function validateBirthday(birthYear){
+        let re = /^\d{4}$/;
+        if (birthYear == "") {
             setBirthYearError('אנא הכנס שנת לידה');
+            setShowBDayError(true);
             return false
-        }else if (newBirthYear > (new Date(new Date().setFullYear(new Date().getFullYear() + -16)))){
+        }else if (birthYear > (new Date().getFullYear() + -16)){
             setBirthYearError('עליך להיות מעל גיל 16 על מנת להשתמש באפליקציה');
+            setShowBDayError(true);
             return false
-        }else if (newBirthYear < (new Date(new Date().setFullYear(new Date().getFullYear() + -120)))){
+        }else if (birthYear < (new Date().getFullYear() + -120)){
             setBirthYearError('אנא ודא שגילך קטן מ-120');
+            setShowBDayError(true);
             return false
+        }else if (re.test(birthYear)){
+            setBirthYearError('')
+            setShowBDayError(false);
+            return true
         }
         else {
-            setBirthYearError('')
-            return true
+            setBirthYearError('שנה לא תקינה');
+            setShowBDayError(true);
+            return false
         }
         // if (!dateChanged) {
         //     setBirthYearError('אנא בחר את תאריך הלידה שלך');
@@ -99,11 +117,11 @@ const PersonalDetails = ({navigation}) => {
         // }
     }
 
-    function validateGender(){
+    function validateGender() {
         if (!newGender) {
             setGenderError('אנא בחר מין');
             return false
-        }else {
+        } else {
             setGenderError('')
             return true
         }
@@ -124,14 +142,28 @@ const PersonalDetails = ({navigation}) => {
                 keyboardType='numeric'
                 onChangeText={(height) => {
                     setHeight(height);
-                    validateHeight(height)}}
+                    validateHeight(height)
+                }}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.darkGrey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
+                theme={
+                    {
+                        fonts: {
+                            regular: {
+                                fontFamily: 'Rubik-Regular'
+                            }
+                        }
+                    }
+                }
             />
-            <HelperText type="error" visible={!newHeight}>
+            <HelperText
+                type="error"
+                visible={newHeightError}
+                style={{fontFamily: 'Rubik-Regular'}}
+            >
                 {newHeightError}
             </HelperText>
 
@@ -143,63 +175,61 @@ const PersonalDetails = ({navigation}) => {
                 keyboardType='numeric'
                 onChangeText={(weight) => {
                     setWeight(weight);
-                    validateWeight(weight)}}
+                    validateWeight(weight)
+                }}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.darkGrey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
+                theme={
+                    {
+                        fonts: {
+                            regular: {
+                                fontFamily: 'Rubik-Regular'
+                            }
+                        }
+                    }
+                }
             />
-            <HelperText type="error" visible={!newWeight}>
+            <HelperText
+                type="error"
+                visible={newWeightError}
+                style={{fontFamily: 'Rubik-Regular'}}
+            >
                 {newWeightError}
             </HelperText>
-
-            {/*<TextInput*/}
-            {/*    mode="flat"*/}
-            {/*    label="תאריך לידה"*/}
-            {/*    value={!dateChanged ? '':newBirthYear.toISOString().substring(0, 10)}*/}
-            {/*    onChangeText={(newBirthYear) => {*/}
-            {/*        setBirthYear(newBirthYear.toISOString().substring(0, 10));*/}
-            {/*        setDateChanged(true);*/}
-            {/*    }}*/}
-            {/*    selectionColor={COLORS.primary}*/}
-            {/*    activeUnderlineColor={COLORS.primary}*/}
-            {/*    underlineColor={COLORS.darkGrey}*/}
-            {/*    style={styles.inputText}*/}
-            {/*    underlineStyle={styles.inputContainer}*/}
-            {/*    right={<TextInput.Icon icon="calendar" onPress={showDatepicker}/>}*/}
-            {/*    editable={false}*/}
-            {/*/>*/}
-            {/*<HelperText type="error" visible={!dateChanged}>*/}
-            {/*    {newBirthYearError}*/}
-            {/*</HelperText>*/}
-
-            {/*{show && (*/}
-            {/*    <DateTimePicker*/}
-            {/*        testID="dateTimePicker"*/}
-            {/*        value={newBirthYear}*/}
-            {/*        mode={mode}*/}
-            {/*        is24Hour={true}*/}
-            {/*        onChange={onChange}*/}
-            {/*        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + -16))}*/}
-            {/*    />*/}
-            {/*)}*/}
 
             <TextInput
                 mode="flat"
                 label="שנת לידה"
                 value={newBirthYear}
                 placeholder='yyyy'
+                keyboardType='numeric'
                 onChangeText={(newBirthYear) => {
                     setBirthYear(newBirthYear);
-                    validateBirthday(newBirthYear)}}
+                    validateBirthday(newBirthYear)
+                }}
                 selectionColor={COLORS.primary}
                 activeUnderlineColor={COLORS.primary}
                 underlineColor={COLORS.grey}
                 style={styles.inputText}
                 underlineStyle={styles.inputContainer}
+                theme={
+                    {
+                        fonts: {
+                            regular: {
+                                fontFamily: 'Rubik-Regular'
+                            }
+                        }
+                    }
+                }
             />
-            <HelperText type="error" visible={!newBirthYear}>
+            <HelperText
+                type="error"
+                visible={showBDayError}
+                style={{fontFamily: 'Rubik-Regular'}}
+            >
                 {newBirthYearError}
             </HelperText>
 
@@ -207,16 +237,24 @@ const PersonalDetails = ({navigation}) => {
                 <View style={styles.genderContainer}>
                     <Text style={styles.genderTitle}>מין</Text>
                     <View style={styles.genderOptions}>
-                        <View style={styles.radioButtonContainer}>
-                            <RadioButton color={COLORS.lightGreen} value="0"></RadioButton>
-                            <Text style={styles.optionText}>זכר</Text>
-                        </View>
-                        <View style={styles.radioButtonContainer}>
-                            <RadioButton color={COLORS.lightGreen} value="1"/>
-                            <Text style={styles.optionText}>נקבה</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => setGender("0")}>
+                            <View style={styles.radioButtonContainer}>
+                                <RadioButton color={COLORS.lightGreen} value="0"></RadioButton>
+                                <Text style={styles.optionText}>זכר</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setGender("1")}>
+                            <View style={styles.radioButtonContainer}>
+                                <RadioButton color={COLORS.lightGreen} value="1"/>
+                                <Text style={styles.optionText}>נקבה</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <HelperText type="error" visible={!newGender}>
+                    <HelperText
+                        type="error"
+                        visible={!newGender}
+                        style={{fontFamily: 'Rubik-Regular'}}
+                    >
                         {newGenderError}
                     </HelperText>
                 </View>
@@ -224,7 +262,7 @@ const PersonalDetails = ({navigation}) => {
             <Button
                 title="המשך"
                 onPress={handleSubmit}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -241,19 +279,19 @@ const styles = StyleSheet.create({
     },
     disclaimer: {
         fontFamily: 'Rubik-Regular',
-        fontWeight: '700',
+        // fontWeight: '700',
         color: COLORS.darkGrey,
+        fontSize: 14,
         marginHorizontal: 10,
         marginTop: 10
     },
     inputText: {
-        fontFamily: 'Rubik-Regular',
+        fontWeight: 'normal',
         backgroundColor: COLORS.white,
-        marginHorizontal: 10,
-        marginVertical: 0
+        width: '96%',
+        alignSelf: "center"
     },
     genderTitle: {
-
         fontFamily: 'Rubik-Regular',
         fontSize: 17,
         color: COLORS.darkGrey,
@@ -281,7 +319,6 @@ const styles = StyleSheet.create({
     nextButton: {
         marginTop: 0,
         width: '85%',
-        height: 65,
         alignSelf: "center"
     },
     nextText: {

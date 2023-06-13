@@ -1,12 +1,17 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, {useEffect} from 'react'
+import {
+    View,
+    Text,
+    StyleSheet,
+    Modal,
+    TouchableOpacity,
+    ScrollView,
+    TouchableWithoutFeedback
+} from 'react-native'
+import React, {useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getDailyMenu,
     getQuestionnaireDetails,
-    getGlobalDetails,
     logout,
-    register,
     getUserDetails
 } from "../redux/actions";
 import COLORS from "../consts/colors";
@@ -15,26 +20,34 @@ import { Button} from '@rneui/themed';
 export default function PersonalScreen({navigation}) {
     const { first_name } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
+    const [modalVisible, setModalVisible] = useState(false);
 
-    function logoutUser() {
-        dispatch(logout()).then((success)=> {
-            if(success) {
-                navigation.navigate('Login')
-            } else {
-                alert('something went wrong')
-                navigation.navigate('Login')
-            }
-        });
+
+    async function logoutUser() {
+        await dispatch(logout())
+        navigation.navigate('Login')
     }
 
     async function updateQuestionnaire() {
-        await dispatch(getQuestionnaireDetails()).then();
-        navigation.navigate('QuestionnaireScreen');
+        let result = await dispatch(getQuestionnaireDetails());
+        if(result){
+            navigation.navigate('QuestionnaireScreen', { prevRouteName: 'PersonalScreen' });
+        } else {
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     async function updateUserDetails() {
-        await dispatch(getUserDetails()).then();
-        navigation.navigate('EditUserInfo');
+        let result = await dispatch(getUserDetails())
+        if(result){
+            navigation.navigate('EditUserInfo');
+        }else{
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
     }
 
     return (
@@ -68,6 +81,15 @@ export default function PersonalScreen({navigation}) {
                 buttonStyle={{height: 50}}
             />
             <Button
+                title="תנאי שימוש"
+                onPress={() => setModalVisible(true)}
+                color = {COLORS.lightGreen}
+                containerStyle={styles.nextButton}
+                titleStyle={styles.nextText}
+                radius={8}
+                buttonStyle={{height: 50}}
+            />
+            <Button
                 title="התנתק"
                 onPress={() => logoutUser()}
                 color = {COLORS.lightGreen}
@@ -76,6 +98,43 @@ export default function PersonalScreen({navigation}) {
                 radius={8}
                 buttonStyle={{height: 50}}
             />
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {setModalVisible(false)}}
+            >
+                <TouchableOpacity
+                    style={styles.container}
+                    activeOpacity={1}
+                    onPressOut={() => {setModalVisible(false)}}
+                >
+                    <ScrollView
+                        directionalLockEnabled={true}
+                        contentContainerStyle={styles.modalBackGround}
+                    >
+                        <TouchableWithoutFeedback>
+                            <View style={styles.modalView}>
+                                <Text style={styles.modalTitle}>תנאי שימוש</Text>
+
+                                <Text style={styles.modalText} >
+                                    · אפליקציה זו היא פרויקט הגמר של קבוצת סטודנטים ומיועדת למטרות מחקר בלבד.{'\n'}
+                                    · סימוני האלרגיות וההעדפות התזונתיות המופיעים באפליקציה מקורם באתר אחר ואיננו לוקחים אחריות על דיוקם או שלמותם.{'\n'}
+                                    · ברצוננו להזכיר למשתמשים שלנו שאיננו דיאטנים מוסמכים ואין לראות במידע המסופק באפליקציה זו ייעוץ רפואי.{'\n'}
+                                    · כל החלטה שתתקבל על סמך המידע המסופק באפליקציה זו היא באחריות המשתמש בלבד.{'\n'}
+                                    · על ידי שימוש באפליקציה זו, את/ה מסכימ/ה לשחרר אותנו מכל אחריות הקשורה לשימוש בה.{'\n'}
+                                    · כל הזכויות למתכונים ופרטיהם שמורות לאתר foody.
+                                </Text>
+                                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                                    <Text style={styles.modalButton}>סגור</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </ScrollView>
+                </TouchableOpacity>
+            </Modal>
+
         </View>
   )
 }
@@ -108,5 +167,43 @@ const styles = StyleSheet.create({
     nextText: {
         fontFamily: 'Rubik-Bold',
         fontSize: 22
+    },
+    modalBackGround: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 30,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalText: {
+        fontFamily: 'Rubik-Regular',
+        marginVertical: 10,
+        // textAlign: 'center',
+        fontSize: 16,
+    },
+    modalTitle: {
+        fontFamily: 'Rubik-Bold',
+        fontSize: 16,
+        color: COLORS.primary
+
+    },
+    modalButton: {
+        fontFamily: 'Rubik-Bold',
+
+        color: COLORS.primary,
     },
 })

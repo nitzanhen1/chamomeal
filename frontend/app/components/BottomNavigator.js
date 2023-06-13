@@ -17,12 +17,12 @@ import {setEarned} from "../redux/actions";
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomNavigator = ({ navigation }) => {
-    const {earned} = useSelector(state => state.mealReducer);
+    const {earned, EER} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     useEffect(() => {
         // This code will be executed whenever the value of 'badges' changes
         if(earned){
-            Alert.alert('כל הכבוד', 'זכית בהישג חדש! תוכל לצפות בו בעמוד הקיימות',
+            Alert.alert('כל הכבוד', 'זכית בהישג חדש! תוכל לצפות בו בעמוד ההישגים',
                 [
                     { text: 'צפה כעת', onPress: () => navigation.navigate('Sustainability') },
                     {
@@ -35,20 +35,28 @@ const BottomNavigator = ({ navigation }) => {
         }
     }, [earned]);
 
+    useEffect(() => {
+        // This code will be executed whenever the value of 'badges' changes
+        if(EER == 0){
+            // console.log("eer")
+            navigation.navigate('Login')
+        }
+    }, [EER]);
+
   return (
     <Tab.Navigator
       initialRouteName="Meal Planner"
       activeColor={COLORS.primary}
       inactiveColor={COLORS.grey}
-      barStyle={{ backgroundColor: COLORS.white }}
+      barStyle={{ backgroundColor: COLORS.white, height: '7.5%'}}
       >
       <Tab.Screen
         name="Search"
         component={SearchScreen}
         options={{
             tabBarLabel: "חיפוש",
-          tabBarIcon: ({color}) => (
-            <Icon name="search" color={color} size={26} />
+            tabBarIcon: ({color}) => (
+            <Icon name="search" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
@@ -58,7 +66,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "מועדפים",
           tabBarIcon: ({color}) => (
-            <Icon name="favorite-border" color={color} size={26} />
+            <Icon name="favorite-border" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
@@ -69,7 +77,7 @@ const BottomNavigator = ({ navigation }) => {
             tabBarLabel: "תפריט יומי",
           tabBarIcon: ({color}) => (
             <View style={styles.centerTabd}>
-              <Icon name="list-alt" color={color} size={26} />
+              <Icon name="list-alt" color={color} size={26} style={{bottom: 2}}/>
             </View>
           ),
         }}
@@ -80,7 +88,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "ההישגים שלי",
           tabBarIcon: ({color}) => (
-            <Icon name="public" color={color} size={26} />
+            <Icon name="public" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />
@@ -90,7 +98,7 @@ const BottomNavigator = ({ navigation }) => {
         options={{
             tabBarLabel: "פרופיל אישי",
           tabBarIcon: ({color}) => (
-            <Icon name="account-circle" color={color} size={26} />
+            <Icon name="account-circle" color={color} size={26} style={{bottom: 2}}/>
           ),
         }}
       />

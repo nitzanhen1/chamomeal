@@ -12,7 +12,8 @@ const FoodPreferences = (props) => {
         vegetarian,
         without_lactose,
         gluten_free,
-        kosher} = useSelector(state => state.mealReducer);
+        kosher
+    } = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
     const [vegan2, setVegan] = useState(vegan);
     const [vegetarian2, setVegetarian] = useState(vegetarian);
@@ -20,7 +21,7 @@ const FoodPreferences = (props) => {
     const [gluten_free2, setGluten] = useState(gluten_free);
     const [kosher2, setKosher] = useState(kosher);
 
-    async function handleFood(){
+    async function handleFood() {
         const foodData = {vegan2, vegetarian2, without_lactose2, gluten_free2, kosher2};
         await dispatch(setFoodPreference(foodData));
         props.handleFinish(foodData);
@@ -36,7 +37,7 @@ const FoodPreferences = (props) => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.question}>
-                באפשרותכם לסמן יותר מהעדפה אחת
+                ניתן לסמן יותר מהעדפה אחת או אף אחת מהאפשרויות
             </Text>
             <View style={styles.prefContainer}>
                 <CheckBox
@@ -83,7 +84,7 @@ const FoodPreferences = (props) => {
             <Button
                 title="סיים"
                 onPress={handleFood}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -91,7 +92,7 @@ const FoodPreferences = (props) => {
             <Button
                 title="חזור"
                 onPress={handleBack}
-                color = {COLORS.white}
+                color={COLORS.white}
                 containerStyle={styles.backButton}
                 titleStyle={styles.backText}
                 radius={8}
@@ -106,16 +107,9 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: COLORS.white,
     },
-    title: {
-        fontFamily: 'Rubik-Bold',
-        fontWeight: "600",
-        fontSize: 27,
-        color: COLORS.title,
-        marginHorizontal: 10,
-    },
     question: {
         fontFamily: 'Rubik-Regular',
-        fontWeight: '700',
+        fontSize: 15,
         color: COLORS.darkGrey,
         marginHorizontal: 10,
         marginTop: 10
@@ -127,14 +121,15 @@ const styles = StyleSheet.create({
     },
     optionText: {
         fontFamily: 'Rubik-Regular',
+        fontWeight: "normal",
         fontSize: 17,
         color: COLORS.darkGrey,
     },
     checkContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        height:50,
-        borderWidth:1,
+        height: 50,
+        borderWidth: 1,
         borderColor: COLORS.darkGrey,
         marginVertical: 10,
         borderRadius: 10,
@@ -142,9 +137,8 @@ const styles = StyleSheet.create({
     nextButton: {
         marginTop: 10,
         width: '85%',
-        height: 65,
+        marginBottom: '5%',
         alignSelf: "center"
-
     },
     nextText: {
         fontFamily: 'Rubik-Bold',
@@ -152,7 +146,6 @@ const styles = StyleSheet.create({
     },
     backButton: {
         width: '85%',
-        height: 45,
         alignSelf: "center",
         borderWidth: 1,
         borderColor: COLORS.lightGreen

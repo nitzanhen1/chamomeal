@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity} from 'react-native'
-import React from 'react';
+import {Alert, StyleSheet, TouchableOpacity} from 'react-native'
+import React, {useEffect} from 'react';
 import {addToFavorites} from "../redux/actions";
 import Iconn from "react-native-vector-icons/MaterialCommunityIcons";
 import {useDispatch, useSelector} from "react-redux";
@@ -17,11 +17,19 @@ const HeartIcon = ({recipe}) => {
     }
     const handleHeartIconPress = async () => {
         changeFav();
-        dispatch(addToFavorites(recipe, favorites, meals, searchResults )).then(async success => {
-            if (!success) {
-                changeFav();
-            }
-        });}
+        let success = await dispatch(addToFavorites(recipe, favorites, meals, searchResults ))
+        if (!success) {
+            changeFav();
+            Alert.alert('אוי לא משהו קרה! נסה שוב', null,
+                [{text: 'אוקיי', style: 'cancel'}],
+                { cancelable: true });
+        }
+    }
+
+    useEffect(() => {
+        setFavorite(recipe.isFavorite ? 'heart' : 'heart-outline')
+    }, [recipe.isFavorite
+    ]);
 
 
     return (
@@ -33,15 +41,10 @@ const HeartIcon = ({recipe}) => {
 
 const styles = StyleSheet.create({
     heartIcon: {
-        // alignSelf: "flex-end",
-        // paddingTop: 10,
-        // paddingLeft: 10,
     },
     heartContainer: {
-        // backgroundColor: COLORS.lightGreen,
-        width: '73%',
-        bottom: 5
-        // alignItems:"",
+        bottom: 5,
+        paddingLeft: '15%', //TODO works well only for preview card
     }
 });
 export default HeartIcon;

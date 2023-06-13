@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import {HelperText, RadioButton} from 'react-native-paper';
 import COLORS from "../consts/colors";
 import {useDispatch, useSelector} from "react-redux";
 import {setPhysicalActivity} from "../redux/actions";
-import { Button} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 
 
 const PhysicalActivity = ({navigation}) => {
@@ -16,7 +16,7 @@ const PhysicalActivity = ({navigation}) => {
 
 
     const handlePA = () => {
-        if (validatePA()){
+        if (validatePA()) {
             dispatch(setPhysicalActivity(pa2))
             navigation.navigate('FoodPreferences')
         }
@@ -27,7 +27,7 @@ const PhysicalActivity = ({navigation}) => {
         navigation.navigate('PersonalDetails')
     };
 
-    function validatePA(){
+    function validatePA() {
         if (!pa2) {
             setPAError('שדה זה הוא חובה');
             return false
@@ -36,6 +36,7 @@ const PhysicalActivity = ({navigation}) => {
             return true
         }
     }
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             {/*<Text style={styles.title}>*/}
@@ -47,22 +48,30 @@ const PhysicalActivity = ({navigation}) => {
 
             <RadioButton.Group onValueChange={newValue => setPA(newValue)} value={pa2}>
                 <View style={styles.paContainer}>
+                    <TouchableOpacity onPress={() => setPA("sedentary")}>
                         <View style={styles.radioButtonContainer}>
                             <RadioButton color={COLORS.lightGreen} value="sedentary"></RadioButton>
                             <Text style={styles.optionText}>לא פעיל/ה</Text>
                         </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPA("low active")}>
                         <View style={styles.radioButtonContainer}>
                             <RadioButton color={COLORS.lightGreen} value="low active"/>
                             <Text style={styles.optionText}>פעיל/ה במידה נמוכה</Text>
                         </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPA("active")}>
                         <View style={styles.radioButtonContainer}>
                             <RadioButton color={COLORS.lightGreen} value="active"/>
                             <Text style={styles.optionText}>פעיל/ה</Text>
                         </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => setPA("very active")}>
                         <View style={styles.radioButtonContainer}>
                             <RadioButton color={COLORS.lightGreen} value="very active"/>
                             <Text style={styles.optionText}>פעיל/ה במידה רבה</Text>
                         </View>
+                    </TouchableOpacity>
                     <HelperText type="error" visible={!pa2}>
                         {PAError}
                     </HelperText>
@@ -71,7 +80,7 @@ const PhysicalActivity = ({navigation}) => {
             <Button
                 title="המשך"
                 onPress={handlePA}
-                color = {COLORS.lightGreen}
+                color={COLORS.lightGreen}
                 containerStyle={styles.nextButton}
                 titleStyle={styles.nextText}
                 radius={8}
@@ -79,7 +88,7 @@ const PhysicalActivity = ({navigation}) => {
             <Button
                 title="חזור"
                 onPress={handleBack}
-                color = {COLORS.white}
+                color={COLORS.white}
                 containerStyle={styles.backButton}
                 titleStyle={styles.backText}
                 radius={8}
@@ -94,34 +103,13 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: COLORS.white,
     },
-    // title: {
-    //     fontFamily: 'Rubik-Bold',
-    //     fontWeight: "600",
-    //     fontSize: 27,
-    //     color: COLORS.title,
-    //     marginHorizontal: 10,
-    //
-    // },
     question: {
         fontFamily: 'Rubik-Regular',
-        fontWeight: '700',
+        fontSize: 15,
+        // fontWeight: '700',
         color: COLORS.darkGrey,
         marginHorizontal: 10,
-        marginTop:10
-
-    },
-    inputText: {
-        fontFamily: 'Rubik-Regular',
-        backgroundColor: COLORS.white,
-        marginHorizontal: 10,
-        marginVertical: 10
-    },
-    genderTitle: {
-
-        fontFamily: 'Rubik-Regular',
-        fontSize: 17,
-        color: COLORS.darkGrey,
-        marginHorizontal: 12,
+        marginTop: 10
     },
     paContainer: {
         flexDirection: 'column',
@@ -141,16 +129,15 @@ const styles = StyleSheet.create({
     radioButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        height:50,
-        borderWidth:1,
+        height: 50,
+        borderWidth: 1,
         borderColor: COLORS.darkGrey,
         marginVertical: 10,
         borderRadius: 10,
     },
     nextButton: {
-        marginTop: 0,
         width: '85%',
-        height: 65,
+        marginBottom: '5%',
         alignSelf: "center"
     },
     nextText: {
@@ -159,7 +146,6 @@ const styles = StyleSheet.create({
     },
     backButton: {
         width: '85%',
-        height: 45,
         alignSelf: "center",
         borderWidth: 1,
         borderColor: COLORS.lightGreen
