@@ -60,7 +60,7 @@ async function generateResetPasswordCode(email) {
     const expiryTime = currentTime + 600;
     try {
         await DButils.execQuery(`update Users set verificationCode='${verificationCode}', expiryTime ='${expiryTime}' where email='${email}'`);
-        logger.debug({label:'resetPassword', message:`token generated for user ${email}`})
+        logger.debug({label:'resetPassword', message:`token generated for user ${email}`, user_id:0, meta:{ email: email}})
     }catch (error){
         throw error;
     }

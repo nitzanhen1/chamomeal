@@ -13,6 +13,7 @@ export const UPDATE_USER_PREFERENCES = 'UPDATE_USER_PREFERENCES';
 export const UPDATE_BADGES = 'UPDATE_BADGES';
 export const SET_EARNED = 'SET_EARNED';
 export const SET_REPLACED = 'SET_REPLACED';
+export const DATE_CHANGED = 'DATE_CHANGED';
 export const LOGOUT = 'LOGOUT';
 export const GET_FAVORITES = 'GET_FAVORITES';
 export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
@@ -24,11 +25,11 @@ export const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';
 
 const API_URL = 'https://chamomeal.cs.bgu.ac.il'; //remote backend
 
-export const getDailyMenu = (date) => {
+export const getDailyMenu = () => {
     try{
         return async dispatch =>{
             try {
-                const date_today = date.toISOString().substring(0, 10);
+                const date_today = new Date().toISOString().substring(0, 10);
                 const response = await axios.get(`${API_URL}/recipes/getDailyMenu/${date_today}`);
                 const data = response.data;
                 let mealsData = [
@@ -780,5 +781,20 @@ export const regenerateDailyMenu = (date) => {
         }
     }catch (error) {
         console.log(error);
+    }
+}
+
+export const checkDate = (old_date) =>{
+    return async dispatch =>{
+        const new_date = new Date();
+        dispatch({
+            type: SET_DATE,
+        });
+        if(old_date.getDate() !== new_date.getDate()){
+            dispatch({
+                type: DATE_CHANGED,
+                date_changed: true
+            });
+        }
     }
 }

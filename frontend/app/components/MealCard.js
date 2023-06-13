@@ -79,7 +79,7 @@ const MealCard = ({recipe, meal_type}) => {
                                 <Text style={styles.cardSubtitle}>{recipe.calories + " קלוריות"}</Text>
                                 <Text style={styles.cardSubtitle}>·</Text>
                                 <View style={{flexDirection: 'row'}}>
-                                        <Entypo name="tree" size={16} style={{color:"black", paddingHorizontal:4}}/>
+                                        <Entypo name="tree" size={16} style={{color:"black", paddingLeft: 4, paddingRight: 3}}/>
                                         <Text style={styles.cardSubtitle}>{recipe.GHG_per_unit + " GHG"}</Text>
                                 </View>
                             </View>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     },
     cardSubtitle: {
         marginBottom: 5,
-        marginRight:15,
+        marginRight:6,
         fontSize: 15,
         fontFamily: 'Rubik-Regular',
     },

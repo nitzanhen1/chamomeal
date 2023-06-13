@@ -2,7 +2,7 @@
   "expo": {
     "name": "Chamomeal",
     "slug": "Chamomeal",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon_chamo.png",
     "userInterfaceStyle": "light",
@@ -27,7 +27,7 @@
       }
     },
     "web": {
-      "favicon": "./app/assets/favicon.png"
+      "favicon": "./app/assets/icon.png"
     }
   }
 }

@@ -27,8 +27,12 @@ const LoginScreen = ({navigation}) => {
     }
 
     function validateUsername(username) {
+        let re = /['"\\|]+/
         if (!username) {
             setUsernameError('נדרש שם משתמש');
+            return false
+        } else if (re.test(username)) {
+            setUsernameError('שם משתמש לא תקין')
             return false
         } else if (username.includes(' ')) {
             setUsernameError('שם משתמש מכיל רווחים');

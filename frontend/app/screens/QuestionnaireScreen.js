@@ -55,16 +55,16 @@ const QuestionnaireScreen = ({navigation, route}) => {
     }
 
     function handleBack() {
+        const prevRouteName = route.params.prevRouteName;
         Alert.alert('אתה בטוח שברצונך לבטל את השינויים?', null,
             [
-                {text: 'כן', onPress: () => navigation.goBack()},
+                {text: 'כן', onPress: () => {prevRouteName === 'RegisterScreen' ? navigation.navigate('Login') : navigation.goBack()}},
                 {
                     text: 'לא',
                     style: 'cancel',
                 },
             ],
             {cancelable: true});
-        // dispatch(setEarned(false));
     }
 
     async function handleGenerateNewDaily() {

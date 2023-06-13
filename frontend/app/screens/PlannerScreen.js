@@ -3,27 +3,36 @@ import React, {useEffect} from 'react'
 import COLORS from '../consts/colors'
 import Accordion from "../components/Accordion";
 import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, SET_DATE, setReplaced} from "../redux/actions";
+import {checkDate, DATE_CHANGED, getDailyMenu, setReplaced} from "../redux/actions";
 import { ProgressBar } from 'react-native-paper';
 import TutorialModal from "../components/tutorialModal";
+import {useIsFocused} from "@react-navigation/native";
 
 export default function PlannerScreen() {
-    const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial} = useSelector(state => state.mealReducer);
+    const { meals, consumed_calories, total_calories, date, EER, replaced, showTutorial, date_changed} = useSelector(state => state.mealReducer);
     const dispatch = useDispatch();
+    const focus = useIsFocused();
 
     useEffect(() => {
-        dispatch({type: SET_DATE});
-        if(replaced) {
-            dispatch(getDailyMenu(date)).then(result => {
+            dispatch(checkDate(date));
+    }, [focus]);
+
+    useEffect(() => {
+        if(replaced || date_changed) {
+            dispatch(getDailyMenu()).then(result => {
                 if(!result){
                     Alert.alert('משהו השתבש, נסה שוב', null,
                         [{text: 'אוקיי', style: 'cancel'}],
                         { cancelable: true });
                 }
             })
+            dispatch({
+                type: DATE_CHANGED,
+                date_changed: false
+            });
             dispatch(setReplaced(false));
         }
-    }, [replaced]);
+    }, [replaced, date_changed]);
 
 
     let day = date.getDate();

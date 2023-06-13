@@ -15,7 +15,7 @@ import {
     SET_HEART_AND_CHOOSE,
     SET_DATE, SET_REPLACED,
     SET_SHOW_TUTORIAL,
-    UPDATE_USER_DETAILS
+    UPDATE_USER_DETAILS, DATE_CHANGED
 } from './actions';
 
 const initialState = {
@@ -25,6 +25,7 @@ const initialState = {
     badges: [],
     earned: false,
     replaced: false,
+    date_changed: false,
     EER: 0,
     score: 0,
     consumed_calories: 0,
@@ -75,6 +76,8 @@ function mealReducer(state = initialState, action) {
             return { ...state, earned: action.earned };
         case SET_REPLACED:
             return { ...state, replaced: action.replaced };
+        case DATE_CHANGED:
+            return { ...state, date_changed: action.date_changed };
         case LOGOUT:
             return initialState;
         case SET_FOOD_PREFERENCE:

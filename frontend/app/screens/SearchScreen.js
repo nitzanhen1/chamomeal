@@ -138,7 +138,12 @@ export default function SearchScreen() {
             </View>
             {
                 expanded &&
-                <ScrollView>
+                <ScrollView
+                    contentContainerStyle={styles.contentContainer}
+                    showsVerticalScrollIndicator={true}
+                    scrollIndicatorInsets={{ right: 1 }}
+                    persistentScrollbar={true}
+                >
 
                     <View style={styles.filterContainer}>
                         <Text style={styles.filterTitle}>העדפות</Text>
@@ -342,5 +347,5 @@ const styles = StyleSheet.create({
     buttonText:{
         fontFamily: 'Rubik-Regular',
         fontSize: 17
-    }
+    },
 });

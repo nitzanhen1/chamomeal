@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View, Text, Image, ImageBackground} from 'react-native';
-import {useDispatch, useSelector} from "react-redux";
-import {getDailyMenu, getFavorites, getGlobalDetails, SET_DATE} from "../redux/actions";
+import {useDispatch} from "react-redux";
+import {getDailyMenu, getGlobalDetails} from "../redux/actions";
 import COLORS from "../consts/colors";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -9,7 +9,6 @@ export default function LoadingScreen({navigation}) {
 
     const dispatch = useDispatch();
     const focus = useIsFocused();
-    const {date} = useSelector(state => state.mealReducer);
     const sentences = [
         'תכנון ארוחות יכול לעזור \nלהפחית בזבוז מזון ולחסוך כסף',
         'מעל 30%\n מפליטות גזי החממה העולמיות\n מגיעות מייצור מזון',
@@ -26,8 +25,7 @@ export default function LoadingScreen({navigation}) {
     async function handleGetGlobalDetails(){
         let status = await dispatch(getGlobalDetails());
         if(status===200){
-            dispatch({type: SET_DATE});
-            let result = await dispatch(getDailyMenu(date));
+            let result = await dispatch(getDailyMenu());
             if (result){
                 navigation.navigate('BottomNavigator');
             }else{
@@ -80,14 +78,11 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         justifyContent: 'center',
-        // backgroundColor: COLORS.white,
-
     },
     backgroundImage: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     title:{
         bottom: 30
@@ -95,7 +90,6 @@ const styles = StyleSheet.create({
     image: {
         width: 271,
         height: 130,
-
     },
     loadingText: {
         fontSize: 20,
