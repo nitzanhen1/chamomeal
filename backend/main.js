@@ -143,3 +143,5 @@ process.on("SIGINT", function () {
     }
     process.exit();
 });
+
+module.exports = app;
